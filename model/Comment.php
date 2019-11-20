@@ -17,7 +17,7 @@ class Comment {
 		$this->hydrate($data);
 	}
 
-	public function hydrate(array $data) {
+	private function hydrate(array $data) {
 		foreach ($data as $key => $value)
 		{
 			$setter = 'set' . ucfirst($key);
@@ -27,12 +27,6 @@ class Comment {
 	}
 
 	//SETTERS
-	public function setId($id) {
-		$id = (int) $id;
-		if ($id > 0)
-			$this->_id = $id;
-	}
-
 	public function setText($text) {
 		if (is_string($text))
 			$this->_text = $text;
@@ -45,6 +39,12 @@ class Comment {
 
 	public function setTime($time) {
 		$this->_date = $date;
+	}
+
+	private function setId($id) {
+		$id = (int) $id;
+		if ($id > 0)
+			$this->_id = $id;
 	}
 
 	//GETTERS

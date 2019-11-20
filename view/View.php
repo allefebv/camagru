@@ -10,8 +10,15 @@ class View {
 	}
 
 	public function generate($data) {
+
+		//Corps de la vue, partie specifique
 		$content = $this->generateFile($this->_file, $data);
-		$view = $this->generateFile('view/template.php', array('title' => $this->_title, 'content' => $content));
+		$header = $this->generateHeader();
+		//Template qui reutilise le corps ($content + $title)
+		$view = $this->generateFile('view/template.php',
+			array('title' => $this->_title,
+				'content' => $content,
+				'header' => $header));
 		echo $view;
 	}
 
@@ -25,6 +32,12 @@ class View {
 		}
 		else
 			throw new Exception('Fichier '.$file.' Introuvable');
+	}
+
+	private function generateHeader() {
+		ob_start();
+		require 'ViewHeader.php';
+		return ob_get_clean();
 	}
 }
 

@@ -24,10 +24,18 @@ abstract class Model {
 		$req = $this->getDb()->prepare('SELECT * FROM ' . $table . ' ORDER BY id desc');
 		$req->execute();
 		while ($data = $req->fetch())
-		{
 			$var[] = new $obj($data);
-			$var[0]->author();
-		}
+		return $var;
+		$req->closeCursor();
+	}
+
+	protected function getOneBy($table, $obj, $key, $value) {
+		$req = $this->getDb()->prepare('SELECT * FROM ' . $table . ' WHERE ' . $key . ' = \'' . $value . '\' ORDER BY id desc');
+		$req->execute();
+		$data = $req->fetch();
+		if ($data === FALSE)
+			return NULL;
+		$var = new $obj($data);
 		return $var;
 		$req->closeCursor();
 	}

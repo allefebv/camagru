@@ -8,6 +8,10 @@ class CommentManager extends Model {
 		return $this->getAll('comments', 'Comment');
 	}
 
+	public function getComment($id) {
+
+	}
+
 	public function add(Comment $comment) {
 
 	}
@@ -19,11 +23,6 @@ class CommentManager extends Model {
 	public function update(Comment $comment) {
 
 	}
-
-	public function getComment($id) {
-
-	}
-
 }
 
 ?>

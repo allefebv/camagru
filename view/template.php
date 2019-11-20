@@ -7,7 +7,7 @@
         <title><?= $title ?></title>
     </head>
     <body>
-    <h1 class="hero has-background-black">Hello !</h1>
+    <?= $header ?>
     <?= $content ?>
     <footer>Made by allefebv</footer>
     </body>
