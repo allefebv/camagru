@@ -29,7 +29,6 @@ class ControllerAuth {
 			new ControllerAccueil(NULL);
 		else
 		{
-			echo "TEST";
 			$this->_view = new View('Login');
 			if (empty($this->_user))
 				$this->_view->generate(array('error' => 'username'));

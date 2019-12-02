@@ -1,17 +1,13 @@
 <?php
 require_once($_SERVER['DOCUMENT_ROOT'].'/autoloader.php');
-/*
-** The purpose of this class is to represent Comments
-** Comments caracteristics and comments functionnalities
-** hydratation with array of the private attributes
-*/
 
-class Comment {
+class Image {
 
 	private $_id;
-	private $_text;
-	private $_author;
+	private $_pathToImage;
 	private $_publicationDate;
+	private $_likeCounter;
+	private $_comments=array();
 
 	public function __construct(array $data) {
 		$this->hydrate($data);
@@ -27,43 +23,31 @@ class Comment {
 	}
 
 	//SETTERS
-	public function setText($text) {
-		if (is_string($text))
-			$this->_text = $text;
+	public function setPathToImage($pathToImage) {
+		if (is_string($pathToImage))
+			$this->_pathToImage = $pathToImage;
 	}
 
-	public function setAuthor($author) {
-		if (is_string($author))
-			$this->_author = $author;
+	public function setId($id) {
+		$id = (int) $id;
+		if ($id > 0)
+			$this->_id = $id;
 	}
 
 	public function setPublicationDate($publicationDate) {
 		$this->_publicationDate = $publicationDate;
 	}
 
-	private function setId($id) {
-		$id = (int) $id;
-		if ($id > 0)
-			$this->_id = $id;
+	//GETTERS
+	public function pathToImage() {
+		return $this->_pathToImage;
 	}
 
-	//GETTERS
 	public function id() {
 		return $this->_id;
-	}
-
-	public function text() {
-		return $this->_text;
-	}
-
-	public function author() {
-		return $this->_author;
 	}
 
 	public function publicationDate() {
 		return $this->_publicationDate;
 	}
-
 }
-
-?>

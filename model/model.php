@@ -39,6 +39,17 @@ abstract class Model {
 		return $var;
 		$req->closeCursor();
 	}
+
+/*	protected function convertKey() {
+
+	}
+
+	protected function snakeToCamel($string, $capitalizeFirstChar = false) {
+		$str = str_replace('-', '', ucwords($string, '-'));
+		if (!$capitalizeFirstChar)
+			$str = lcfirst($str);
+		return $str;
+	} */
 }
 
 ?>

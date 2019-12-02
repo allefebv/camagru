@@ -1,25 +1,22 @@
 <?php
 require_once($_SERVER['DOCUMENT_ROOT'].'/autoloader.php');
-require_once($_SERVER['DOCUMENT_ROOT'].'/model/Comment.php');
-require_once($_SERVER['DOCUMENT_ROOT'].'/model/Image.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/view/View.php');
 
-class ControllerAccueil {
+class ControllerEditor {
 
-	private $_imageManager;
 	private $_view;
 
 	public function __construct($url) {
 		if (isset($url) && count($url) > 1)
 			throw new Exception('Page Introuvable');
+		else if (!isset($_SESSION['logged']))
+			throw new Exception('Section Autorisée aux utilisateurs connectés');
 		else
-			$this->gallery();
+			$this->editor();
 	}
 
-	private function gallery() {
-		$this->_imageManager = new ImageManager;
-		$images = $this->_imageManager->getImages();
-		$this->_view = new View('Accueil');
+	private function editor() {
+		$this->_view = new View('Editor');
 		$this->_view->generate(array('images' => $images));
 	}
 

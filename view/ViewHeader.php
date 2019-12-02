@@ -1,14 +1,57 @@
-<h1 class="hero has-background-black">Hello ! <?= $_SESSION['logged'] ?></h1>
+<nav class="navbar" role="navigation" aria-label="main navigation">
+	<div class="navbar-brand">
+		<a class="navbar-item button" href="index.php">
+			<img src="../public/test.png" height=100%>
+		</a>
+		<a id="myBurger" role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navMenu">
+			<span aria-hidden="true"></span>
+			<span aria-hidden="true"></span>
+			<span aria-hidden="true"></span>
+		</a>
+  	</div>
+	<div id="navMenu" class="navbar-menu">
+		<div class="navbar-start">
+			<?if (isset($_SESSION['logged'])): ?>
+				<div class="navbar-item">
+					<form action="index.php?url=editor" method="POST">
+						<input class="button is-light" type="submit" name="editor" value="Editeur"/>
+					</form>
+				</div>
+			<?endif;?>
+		</div>
+		<div class="navbar-end">
+			<?if (isset($_SESSION['logged'])): ?>
+				<div class="navbar-item">
+					<form action="index.php?url=auth" method="POST">
+						<input class="button is-light" type="submit" name="logout" value="Déconnexion"/>
+					</form>
+				</div>
+			<?else:?>
+				<div class="navbar-item">
+					<form action="index.php?url=account" method="POST">
+						<input class="button is-light" type="submit" name="login" value="Connexion"/>
+					</form>
+				</div>
+				<div class="navbar-item">
+					<form action="index.php?url=account" method="POST">
+						<input class="button is-light" type="submit" name="create" value="Créer un compte"/>
+					</form>
+				</div>
+			<?endif;?>
+		</div>
+	</div>
+</nav>
 
-<?if (isset($_SESSION['logged'])): ?>
-	<form action="index.php?url=auth" name="logout" method="POST">
-		<input type="submit" name="logout" value="Logout"/>
-	</form>
-<?else:?>
-	<form action="index.php?url=account" name="login" method="POST">
-		<input type="submit" name="login" value="Login"/>
-	</form>
-	<form action="index.php?url=account" name="create" method="POST">
-		<input type="submit" name="create" value="Create Account"/>
-	</form>
-<?endif;?>
+<script>
+
+	document.addEventListener('DOMContentLoaded', () => {
+		$navbarBurger = document.getElementById('myBurger');
+		$navbarBurger.addEventListener('click', () => {
+			const target = $navbarBurger.dataset.target;
+			const $target = document.getElementById($navbarBurger.dataset.target);
+			$navbarBurger.classList.toggle('is-active');
+			$target.classList.toggle('is-active');
+			});
+	});
+
+</script>

@@ -5,7 +5,7 @@ class CommentManager extends Model {
 
 	//table DB 'comments' et classe
 	public function getComments() {
-		return $this->getAll('comments', 'Comment');
+		return $this->getAll('comment', 'Comment');
 	}
 
 	public function getComment($id) {

@@ -29,10 +29,7 @@ class User {
 		if (!empty($username) && is_string($username))
 			$this->_username = $username;
 		else
-		{
-			echo "test11111";
 			$this->setErrors('username');
-		}
 	}
 
 	public function setPassword($password) {
@@ -46,7 +43,7 @@ class User {
 			$this->setErrors('email');
 	}
 
-		//specific setters for DB retrieving
+	//specific setters for DB retrieving
 	private function setInscriptionDate($inscriptionDate) {
 		$inscriptionDate = (int) $inscriptionDate;
 		if ($inscriptionDate > 0)
@@ -59,7 +56,7 @@ class User {
 			$this->_id = $id;
 	}
 
-		//setter for errors
+	//setter for errors
 	private function setErrors($error) {
 		echo $error;
 		$this->_errors[$error] = $error;

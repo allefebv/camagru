@@ -7,8 +7,16 @@
         <title><?= $title ?></title>
     </head>
     <body>
-    <?= $header ?>
-    <?= $content ?>
-    <footer>Made by allefebv</footer>
+        <div class="hero is-fullheight has-background-dark has-text-white-ter">
+            <div class="hero-head">
+                <?= $header ?>
+            </div>
+            <div class="hero-body has-background-grey">
+                <?= $content ?>
+            </div>
+            <div class="hero-foot">
+                Made by allefebv
+            </div>
+        </div>
     </body>
 </html>

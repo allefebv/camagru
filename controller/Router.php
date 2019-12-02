@@ -1,5 +1,6 @@
 <?php
 require_once($_SERVER['DOCUMENT_ROOT'].'/autoloader.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/view/View.php');
 
 class Router {
 	private $_controller;
@@ -30,7 +31,8 @@ class Router {
 		}
 		catch(Exception $e) {
 			$errorMsg = $e->getMessage();
-			require_once('view/viewError.php');
+			$this->_view = new View('Error');
+			$this->_view->generate(array('errorMsg' => $errorMsg));
 		}
 	}
 }
