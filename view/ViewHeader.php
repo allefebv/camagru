@@ -13,8 +13,9 @@
 		<div class="navbar-start">
 			<?if (isset($_SESSION['logged'])): ?>
 				<div class="navbar-item">
-					<form action="index.php?url=editor" method="POST">
-						<input class="button is-light" type="submit" name="editor" value="Editeur"/>
+					<form action="index.php" method="GET">
+						<input type="hidden" name="url" value="editor">
+						<input class="button is-light" type="submit" value="Editeur"/>
 					</form>
 				</div>
 			<?endif;?>
@@ -22,19 +23,22 @@
 		<div class="navbar-end">
 			<?if (isset($_SESSION['logged'])): ?>
 				<div class="navbar-item">
-					<form action="index.php?url=auth" method="POST">
-						<input class="button is-light" type="submit" name="logout" value="Déconnexion"/>
+					<form action="index.php" method="GET">
+						<input type="hidden" name="url" value="logout">
+						<input class="button is-light" type="submit" value="Déconnexion"/>
 					</form>
 				</div>
 			<?else:?>
 				<div class="navbar-item">
-					<form action="index.php?url=account" method="POST">
-						<input class="button is-light" type="submit" name="login" value="Connexion"/>
+					<form action="index.php" method="GET">
+						<input type="hidden" name="url" value="login">
+						<input class="button is-light" type="submit" value="Connexion"/>
 					</form>
 				</div>
 				<div class="navbar-item">
-					<form action="index.php?url=account" method="POST">
-						<input class="button is-light" type="submit" name="create" value="Créer un compte"/>
+					<form action="index.php?url=account" method="GET">
+						<input type="hidden" name="url" value="create">
+						<input class="button is-light" type="submit" value="Créer un compte"/>
 					</form>
 				</div>
 			<?endif;?>

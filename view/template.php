@@ -4,6 +4,7 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="public/bulma.css">
+        <link rel="icon" href="public/tabicon.ico">
         <title><?= $title ?></title>
     </head>
     <body>

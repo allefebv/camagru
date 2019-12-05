@@ -1,5 +1,5 @@
 <?php $this->_title = 'Connexion'; ?>
-<form action="index.php?url=auth" method="POST">
+<form action="index.php?url=login" method="POST">
 	<div class="field">
 		<label class="label">Identifiant</label>
 		<div class="control">

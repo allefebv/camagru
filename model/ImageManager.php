@@ -20,6 +20,12 @@ class ImageManager extends Model {
 	public function update(Image $image) {
 
 	}
+
+	public function getBiggestId() {
+		$req = $this->getDb()->prepare('SELECT MAX(id) FROM `image`');
+		$req->execute();
+		return $req->fetch();
+	}
 }
 
 ?>
