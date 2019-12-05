@@ -4,15 +4,16 @@
 		<video autoplay="true" id="videoElement"></video>
 		<button type="button" id="save" class="button">Sauvegarder</button>
 	</div>
-	<div class="column is-one-third is-pulled-right has-background-primary overflow-y:scroll">
+	<div id="previews" class="column is-one-third is-pulled-right has-background-primary overflow-y:scroll">
 		<canvas id="canvas"></canvas>
 	</div>
 </div>
 <script>
 	var video = document.getElementById('videoElement');
 	var canvas = document.getElementById('canvas');
-	var context = canvas.getContext('2d');
 	var httpRequest;
+	var id = 1;
+	var img;
 
 	if (navigator.mediaDevices.getUserMedia) {
 		navigator.mediaDevices.getUserMedia({ video: true })
@@ -24,10 +25,21 @@
 			});
 	}
 
-	document.getElementById("save").addEventListener("click", function() {
+	function createCanvas(img) {
+		var canv = document.createElement('canvas');
+		var context = canv.getContext('2d');
+
+		canv.setAttribute('id', 'canvas' + id++);
+		document.getElementById("previews").appendChild(canv);
 		context.drawImage(video, 0, 0, 200, 200);
-		var img = canvas.toDataURL("image/png");
+
+		img = canv.toDataURL("image/png");
+		return img;
+	}
+
+	document.getElementById("save").addEventListener("click", function() {
 		httpRequest = new XMLHttpRequest();
+		img = createCanvas(img);
 
 		if (!httpRequest) {
 			alert('Impossible de creer une instance XMLHTTP');
