@@ -6,37 +6,53 @@ class ControllerEditor {
 
 	private $_view;
 	private $_imageManager;
-	private $_post;
+	private $_layerManager;
+	private $_json;
 
 	public function __construct($url) {
 		if (isset($url) && count($url) > 1)
 			throw new Exception('Page Introuvable');
 		else if (!isset($_SESSION['logged']))
 			throw new Exception('Section Autorisée aux utilisateurs connectés');
-		else if ($this->_post = file_get_contents('php://input'))
+		else if ($this->_json = file_get_contents('php://input'))
 		// else if (isset($_POST['img']))
 			$this->saveImg();
 		$this->editor();
 	}
 
 	private function editor() {
+		$this->_layerManager = new LayerManager;
 		$this->_view = new View('Editor');
-		$this->_view->generate(array());
+		$this->_view->generate(array('layers' => $this->_layerManager->getLayers()));
 	}
 
 	private function saveImg() {
 		$this->_imageManager = new ImageManager;
-		$imgUrl = json_decode($this->_post, TRUE);
-		$imgUrl = explode(',', $imgUrl['img']);
+		$this->_json = json_decode($this->_json, TRUE);
+
+		$imgUrl = explode(',', $this->_json['img']);
+
 		$imgUrl = base64_decode($imgUrl[1]);
 		$imgId = (int)current($this->_imageManager->getBiggestId()) + 1;
 		$imgName = 'image_' . $imgId . '.png';
 		$imgPath = '/public/userImages/'.$imgName;
 		$img = new Image(array('pathToImage' => $imgPath));
-		// $img = new Image(array('pathToImage' => $imgUrl));
 		$this->_imageManager->add($img);
 		file_put_contents($_SERVER['DOCUMENT_ROOT'].$imgPath, $imgUrl);
-		// file_put_contents($_SERVER['DOCUMENT_ROOT'].$imgPath, $this->_post);
+
+
+		$layerManager = new LayerManager;
+		$layer = $layerManager->getLayerById($this->_json['layer']);
+		$layerPath = $layer->pathToLayer();
+
+		$image1 = imagecreatefrompng($_SERVER['DOCUMENT_ROOT'].$imgPath);
+		$image2 = imagecreatefrompng($_SERVER['DOCUMENT_ROOT'].$layerPath);
+		var_dump($_SERVER['DOCUMENT_ROOT'].$layerPath);
+		var_dump($_SERVER['DOCUMENT_ROOT'].$imgPath);
+		imagealphablending($image1, true);
+		imagesavealpha($image1, true);
+		imagecopy($image1, $image2, 0, 0, 0, 0, 200, 200);
+		imagepng($image1, $_SERVER['DOCUMENT_ROOT'].$imgPath);
 	}
 
 	//Page d'accueil = header (connexion etc) + gallerie + footer

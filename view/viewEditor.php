@@ -1,18 +1,31 @@
 <?php $this->_title = 'Editeur';?>
-<div class="columns">
-	<div class="column is-two-thirds has-background-danger" id="container">
-		<video autoplay="true" id="videoElement"></video>
+<div class="columns is-desktop is-centered">
+	<div class="column is-8 has-background-dark" id="container">
+		<div class="card">
+			<video autoplay="true" id="webcam"></video>
+			<div class="card-content is-overlay">
+				<img src="" id="overlay" width=200>
+			</div>
+		</div>
+		<div class="level has-background-black" id="layers">
+			<div class="container has-text-centered">
+			<?php foreach ($layers as $layer): ?>
+				<img src="..<?= $layer->pathToLayer(); ?>" id="<?= $layer->id(); ?>" onclick="focusFilter(this)" width=50px height=50px>
+			<?php endforeach; ?>
+			</div>
+		</div>
 		<button type="button" id="save" class="button">Sauvegarder</button>
 	</div>
-	<div id="previews" class="column is-one-third is-pulled-right has-background-primary overflow-y:scroll">
-		<canvas id="canvas"></canvas>
+	<div class="column is-3 has-background-black overflow:auto">
+		<div class="container has-text-centered" id="previews">
+		</div>
 	</div>
 </div>
 <script>
-	var video = document.getElementById('videoElement');
-	var canvas = document.getElementById('canvas');
-	var httpRequest;
-	var id = 1;
+	var video = document.getElementById('webcam');
+	var layer = document.getElementById('layer');
+	var overlay = document.getElementById('overlay');
+	var activeLayerId;
 	var img;
 
 	if (navigator.mediaDevices.getUserMedia) {
@@ -25,20 +38,25 @@
 			});
 	}
 
+	function focusFilter(element) {
+		console.log(video.getAttribute('width'));
+		overlay.setAttribute('src', element.getAttribute('src'));
+		activeLayerId = element.getAttribute('id');
+	}
+
 	function createCanvas(img) {
 		var canv = document.createElement('canvas');
 		var context = canv.getContext('2d');
 
-		canv.setAttribute('id', 'canvas' + id++);
 		document.getElementById("previews").appendChild(canv);
 		context.drawImage(video, 0, 0, 200, 200);
-
 		img = canv.toDataURL("image/png");
+		context.drawImage(overlay, 0, 0, 100, 100);
 		return img;
 	}
 
 	document.getElementById("save").addEventListener("click", function() {
-		httpRequest = new XMLHttpRequest();
+		var httpRequest = new XMLHttpRequest();
 		img = createCanvas(img);
 
 		if (!httpRequest) {
@@ -56,6 +74,6 @@
 
 		httpRequest.open('POST', 'index.php?url=editor', true);
 		httpRequest.setRequestHeader('Content-Type', 'multipart/form-data');
-		httpRequest.send(JSON.stringify({img:img}));
+		httpRequest.send(JSON.stringify({ img:img, layer:activeLayerId }));
 	});
 </script>

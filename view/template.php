@@ -7,17 +7,15 @@
         <link rel="icon" href="public/tabicon.ico">
         <title><?= $title ?></title>
     </head>
-    <body>
-        <div class="hero is-fullheight has-background-dark has-text-white-ter">
-            <div class="hero-head">
-                <?= $header ?>
-            </div>
-            <div class="hero-body has-background-grey">
-                <?= $content ?>
-            </div>
-            <div class="hero-foot">
+    <body class="hero is-fullheight has-background-black">
+        <?= $header ?>
+        <section class="section has-text-centered has-background-dark">
+            <?= $content ?>
+        </section>
+        <footer class="footer has-background-black">
+            <div class="content has-text-centered is-size-2 has-text-primary is-uppercase">
                 Made by allefebv
             </div>
-        </div>
+        </footer>
     </body>
 </html>

@@ -48,7 +48,8 @@ $db->query("CREATE TABLE like (
 
 $db->query("CREATE TABLE layer (
     id                      INTEGER PRIMARY KEY,
-    path                    TEXT NOT NULL
+    pathToLayer             TEXT NOT NULL,
+    UNIQUE(pathToLayer)
 );");
 
 ?>
