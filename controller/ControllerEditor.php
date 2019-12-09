@@ -45,14 +45,16 @@ class ControllerEditor {
 		$layer = $layerManager->getLayerById($this->_json['layer']);
 		$layerPath = $layer->pathToLayer();
 
-		$image1 = imagecreatefrompng($_SERVER['DOCUMENT_ROOT'].$imgPath);
-		$image2 = imagecreatefrompng($_SERVER['DOCUMENT_ROOT'].$layerPath);
+		$userImage = imagecreatefrompng($_SERVER['DOCUMENT_ROOT'].$imgPath);
+		$layerImage = imagecreatefrompng($_SERVER['DOCUMENT_ROOT'].$layerPath);
+		$layerWidth = imagesx($layerImage);
+		$layerHeight = imagesy($layerImage);
 		var_dump($_SERVER['DOCUMENT_ROOT'].$layerPath);
 		var_dump($_SERVER['DOCUMENT_ROOT'].$imgPath);
-		imagealphablending($image1, true);
-		imagesavealpha($image1, true);
-		imagecopy($image1, $image2, 0, 0, 0, 0, 200, 200);
-		imagepng($image1, $_SERVER['DOCUMENT_ROOT'].$imgPath);
+		imagealphablending($userImage, true);
+		imagesavealpha($userImage, true);
+		imagecopyresampled($userImage, $layerImage, 0, 0, 0, 0, 320, 240, $layerWidth, $layerHeight);
+		imagepng($userImage, $_SERVER['DOCUMENT_ROOT'].$imgPath);
 	}
 
 	//Page d'accueil = header (connexion etc) + gallerie + footer

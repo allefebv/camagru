@@ -26,7 +26,7 @@ class ControllerLogin {
 		$this->_view = new View('Login');
 		if (!isset($_POST['username']) && !isset($_POST['password']))
 			$this->_view->generate(array());
-		if (empty($this->_user))
+		else if (empty($this->_user))
 			$this->_view->generate(array('error' => 'username'));
 		else
 			$this->_view->generate(array('error' => 'password'));
@@ -42,11 +42,6 @@ class ControllerLogin {
 		else {
 			$this->generateLoginView();
 		}
-	}
-
-	private function logoutUser() {
-		unset($_SESSION['logged']);
-		header('Location: index.php');
 	}
 }
 

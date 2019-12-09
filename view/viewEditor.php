@@ -1,11 +1,16 @@
 <?php $this->_title = 'Editeur';?>
 <div class="columns is-desktop is-centered">
-	<div class="column is-8 has-background-dark" id="container">
-		<div class="card">
-			<video autoplay="true" id="webcam"></video>
+	<div class="column is-narrow has-background-dark" id="container">
+		<label for="import" class="button import-file">Importer Une Image</label>
+		<input type="file" id="import" class="input-file" accept="image/*" onchange="fileImport(this)">
+		<button type="button" id="selectcam" class="button">Retour sur la cam</button>
+		<div id="background-container" class="card has-background-dark ">
+			<video autoplay="true" class="background-content" id="webcam"></video>
+			<img src="" class="background-content" id="uploaded-img" style="display:none;">
 			<div class="card-content is-overlay">
-				<img src="" id="overlay" width=200>
+				<img src="" id="overlay">
 			</div>
+			<canvas style="display:none;" id="to_send" width="320" height="240">
 		</div>
 		<div class="level has-background-black" id="layers">
 			<div class="container has-text-centered">
@@ -14,24 +19,31 @@
 			<?php endforeach; ?>
 			</div>
 		</div>
-		<button type="button" id="save" class="button">Sauvegarder</button>
+		<span class="tooltip">
+			<button type="button" id="save" class="button" disabled>Sauvegarder</button>
+			<div id="savetooltip" class="tooltiptext">Vous devez choisir un filtre</div>
+		</span>
 	</div>
-	<div class="column is-3 has-background-black overflow:auto">
-		<div class="container has-text-centered" id="previews">
+	<div class="column is-4"></div>
+	<div class="column is-4 has-background-black">
+		<div class="container" id="previews">
 		</div>
 	</div>
 </div>
 <script>
-	var video = document.getElementById('webcam');
+	var background = document.getElementById('webcam');
 	var layer = document.getElementById('layer');
 	var overlay = document.getElementById('overlay');
+	var toSend = document.getElementById('to_send');
+	var saveButton = document.getElementById('save');
+	var toSendContext = toSend.getContext('2d');
 	var activeLayerId;
 	var img;
 
 	if (navigator.mediaDevices.getUserMedia) {
 		navigator.mediaDevices.getUserMedia({ video: true })
 			.then(function (stream) {
-				video.srcObject = stream;
+				background.srcObject = stream;
 			})
 			.catch(function (error) {
 				console.log("Something went wrong!");
@@ -39,25 +51,45 @@
 	}
 
 	function focusFilter(element) {
-		console.log(video.getAttribute('width'));
-		overlay.setAttribute('src', element.getAttribute('src'));
 		activeLayerId = element.getAttribute('id');
+		overlay.setAttribute('src', element.getAttribute('src'));
+		var saveToolTip = document.getElementById('savetooltip');
+		saveToolTip.parentNode.removeChild(saveToolTip);
+		save.disabled = false;
 	}
 
-	function createCanvas(img) {
+	function createCanvas() {
 		var canv = document.createElement('canvas');
+		canv.width = 160;
+		canv.height = 120;
 		var context = canv.getContext('2d');
-
 		document.getElementById("previews").appendChild(canv);
-		context.drawImage(video, 0, 0, 200, 200);
-		img = canv.toDataURL("image/png");
-		context.drawImage(overlay, 0, 0, 100, 100);
-		return img;
+		context.drawImage(background, 0, 0, 160, 120);
+		context.drawImage(overlay, 40, 5, 80, 120);
 	}
 
-	document.getElementById("save").addEventListener("click", function() {
+	document.getElementById('selectcam').addEventListener("click", function() {
+		background.style.display = 'none';
+		background = document.getElementById('webcam');
+		background.style.display = '';
+	});
+
+	function fileImport(element) {
+		var reader = new FileReader();
+		background.style.display = 'none';
+		background = document.getElementById('uploaded-img');
+		reader.onload = function (e) {
+			background.setAttribute('src', e.target.result);
+		};
+		reader.readAsDataURL(element.files[0]);
+		background.style.display = '';
+	}
+
+	save.addEventListener("click", function() {
 		var httpRequest = new XMLHttpRequest();
-		img = createCanvas(img);
+		createCanvas();
+		toSendContext.drawImage(background, 0, 0, 320, 240);
+		img = toSend.toDataURL("image/png");
 
 		if (!httpRequest) {
 			alert('Impossible de creer une instance XMLHTTP');
