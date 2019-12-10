@@ -109,15 +109,15 @@ class User {
 		return FALSE;
 	}
 
-	public function postComment(array $data) {
-		$this->_commentManager = new CommentManager;
-		$this->_commentManager->add(new Comment($data));
-	}
+	// public function postComment(array $data) {
+	// 	$this->_commentManager = new CommentManager;
+	// 	$this->_commentManager->add(new Comment($data));
+	// }
 
-	public function like(array $data) {
-		$this->_likeManager = new LikeManager;
-		$this->_likeManager->add(new Like($data));
-	}
+	// public function like(array $data) {
+	// 	$this->_likeManager = new LikeManager;
+	// 	$this->_likeManager->add(new Like($data));
+	// }
 
 	public function __toString() {
 		if ($this->username())

@@ -8,8 +8,8 @@ class CommentManager extends Model {
 		return $this->getAll('comment', 'Comment');
 	}
 
-	public function getComment($id) {
-
+	public function getImageComments($imageId) {
+		return $this->getByKey('comment', 'Comment', 'imageId', $imageId);
 	}
 
 	public function add(Comment $comment) {

@@ -9,9 +9,10 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/autoloader.php');
 class Comment {
 
 	private $_id;
-	private $_text;
-	private $_author;
 	private $_publicationDate;
+	private $_userId;
+	private $_imageId;
+	private $_commentText;
 
 	public function __construct(array $data) {
 		$this->hydrate($data);
@@ -27,24 +28,29 @@ class Comment {
 	}
 
 	//SETTERS
-	public function setText($text) {
-		if (is_string($text))
-			$this->_text = $text;
-	}
-
-	public function setAuthor($author) {
-		if (is_string($author))
-			$this->_author = $author;
-	}
-
-	public function setPublicationDate($publicationDate) {
-		$this->_publicationDate = $publicationDate;
-	}
-
 	private function setId($id) {
 		$id = (int) $id;
 		if ($id > 0)
 			$this->_id = $id;
+	}
+
+	private function setPublicationDate($publicationDate) {
+		$this->_publicationDate = $publicationDate;
+	}
+
+	public function setUserId($userId) {
+		if (is_string($userId))
+			$this->_userId = $userId;
+	}
+
+	public function setImageId($imageId) {
+		if (is_string($imageId))
+			$this->_imageId = $imageId;
+	}
+
+	public function setCommentText($commentText) {
+		if (is_string($commentText))
+			$this->_commentText = $commentText;
 	}
 
 	//GETTERS
@@ -52,16 +58,20 @@ class Comment {
 		return $this->_id;
 	}
 
-	public function text() {
-		return $this->_text;
-	}
-
-	public function author() {
-		return $this->_author;
-	}
-
 	public function publicationDate() {
 		return $this->_publicationDate;
+	}
+
+	public function userId() {
+		return $this->_userId;
+	}
+
+	public function imageId() {
+		return $this->_imageId;
+	}
+
+	public function commentText() {
+		return $this->_commentText;
 	}
 
 }

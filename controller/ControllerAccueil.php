@@ -7,6 +7,7 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/view/View.php');
 class ControllerAccueil {
 
 	private $_imageManager;
+	private $_commentManager;
 	private $_view;
 
 	public function __construct($url) {

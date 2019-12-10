@@ -15,7 +15,6 @@ class ControllerEditor {
 		else if (!isset($_SESSION['logged']))
 			throw new Exception('Section Autorisée aux utilisateurs connectés');
 		else if ($this->_json = file_get_contents('php://input'))
-		// else if (isset($_POST['img']))
 			$this->saveImg();
 		$this->editor();
 	}
@@ -42,7 +41,7 @@ class ControllerEditor {
 
 
 		$layerManager = new LayerManager;
-		$layer = $layerManager->getLayerById($this->_json['layer']);
+		$layer = ($layerManager->getLayerById($this->_json['layer']))[0];
 		$layerPath = $layer->pathToLayer();
 
 		$userImage = imagecreatefrompng($_SERVER['DOCUMENT_ROOT'].$imgPath);

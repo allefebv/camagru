@@ -29,13 +29,11 @@ abstract class Model {
 		$req->closeCursor();
 	}
 
-	protected function getOneBy($table, $obj, $key, $value) {
-		$req = $this->getDb()->prepare('SELECT * FROM ' . $table . ' WHERE ' . $key . ' = \'' . $value . '\' ORDER BY id desc');
+	protected function getByKey($table, $obj, $key, $value) {
+		$req = $this->getDb()->prepare('SELECT * FROM ' . $table . ' WHERE ' . $key . ' = \'' . $value . '\'');
 		$req->execute();
-		$data = $req->fetch();
-		if ($data === FALSE)
-			return NULL;
-		$var = new $obj($data);
+		while ($data = $req->fetch())
+			$var[] = new $obj($data);
 		return $var;
 		$req->closeCursor();
 	}

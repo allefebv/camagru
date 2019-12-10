@@ -5,7 +5,7 @@
 		<input type="file" id="import" class="input-file" accept="image/*" onchange="fileImport(this)">
 		<button type="button" id="selectcam" class="button">Retour sur la cam</button>
 		<div id="background-container" class="card has-background-dark ">
-			<video autoplay="true" class="background-content" id="webcam"></video>
+			<video autoplay="true" class="background-content" id="webcam" poster="../public/peepoodo.png"></video>
 			<img src="" class="background-content" id="uploaded-img" style="display:none;">
 			<div class="card-content is-overlay">
 				<img src="" id="overlay">
@@ -88,6 +88,7 @@
 	save.addEventListener("click", function() {
 		var httpRequest = new XMLHttpRequest();
 		createCanvas();
+		toSendContext.clearRect(0, 0, toSend.width, toSend.height);
 		toSendContext.drawImage(background, 0, 0, 320, 240);
 		img = toSend.toDataURL("image/png");
 

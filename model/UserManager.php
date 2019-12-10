@@ -9,7 +9,7 @@ class UserManager extends Model {
 	}
 
 	public function getUserByName($username) {
-		return $this->getOneBy('user', 'User', 'username', $username);
+		return $this->getByKey('user', 'User', 'username', $username);
 	}
 
 	public function getUserByEmail($email) {

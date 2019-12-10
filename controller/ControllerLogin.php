@@ -35,7 +35,7 @@ class ControllerLogin {
 
 	private function authUser() {
 		$this->_userManager = new UserManager;
-		$this->_user = $this->_userManager->getUserByName(htmlspecialchars($_POST['username']));
+		$this->_user = ($this->_userManager->getUserByName(htmlspecialchars($_POST['username'])))[0];
 		if (!empty($this->_user) && $this->_user->login(htmlspecialchars($_POST['password']))) {
 			header('Location: index.php');
 		}

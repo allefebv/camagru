@@ -21,29 +21,29 @@ $db->query("CREATE TABLE user (
 
 $db->query("CREATE TABLE image (
     id                      INTEGER PRIMARY KEY,
-    user_id                 INTEGER,
+    userId                  INTEGER,
     pathToImage             TEXT NOT NULL,
     publicationDate         TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    FOREIGN KEY (user_id)   REFERENCES user(id)
+    FOREIGN KEY (userId)    REFERENCES user(id)
 );");
 
 $db->query("CREATE TABLE comment (
     id                      INTEGER PRIMARY KEY,
-    user_id                 INTEGER,
-    image_id                INTEGER,
+    userId                  INTEGER,
+    imageId                 INTEGER,
     publicationDate         TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     commentText             TEXT NOT NULL,
-    FOREIGN KEY (user_id)   REFERENCES user(id),
-    FOREIGN KEY (image_id)  REFERENCES image(id)
+    FOREIGN KEY (userId)    REFERENCES user(id),
+    FOREIGN KEY (imageId)   REFERENCES image(id)
 );");
 
 $db->query("CREATE TABLE like (
-    id                      INTEGER PRIMARY KEY,
-    user_id                 INTEGER,
-    image_id                INTEGER,
+    userId                  INTEGER,
+    imageId                 INTEGER,
     likeDate                TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    FOREIGN KEY (user_id)   REFERENCES user (id),
-    FOREIGN KEY (image_id)  REFERENCES image (id)
+    FOREIGN KEY (userId)    REFERENCES user (id),
+    FOREIGN KEY (imageId)   REFERENCES image (id),
+    PRIMARY KEY (userId, imageId)
 );");
 
 $db->query("CREATE TABLE layer (

@@ -22,7 +22,7 @@ class LayerManager extends Model {
 	}
 
 	public function getLayerById($id) {
-		return $this->getOneBy('layer', 'Layer', 'id', $id);
+		return $this->getByKey('layer', 'Layer', 'id', $id);
 	}
 }
 
