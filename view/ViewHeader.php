@@ -11,24 +11,24 @@
   	</div>
 	<div id="navMenu" class="navbar-menu">
 		<div class="navbar-start">
-			<?if (isset($_SESSION['logged'])): ?>
+			<?php if (isset($_SESSION['logged'])): ?>
 				<div class="navbar-item">
 					<form action="index.php" method="GET">
 						<input type="hidden" name="url" value="editor">
 						<input class="button is-light" type="submit" value="Editeur"/>
 					</form>
 				</div>
-			<?endif;?>
+			<?php endif;?>
 		</div>
 		<div class="navbar-end">
-			<?if (isset($_SESSION['logged'])): ?>
+			<?php if (isset($_SESSION['logged'])): ?>
 				<div class="navbar-item">
 					<form action="index.php" method="GET">
 						<input type="hidden" name="url" value="logout">
 						<input class="button is-light" type="submit" value="Déconnexion"/>
 					</form>
 				</div>
-			<?else:?>
+			<?php else:?>
 				<div class="navbar-item">
 					<form action="index.php" method="GET">
 						<input type="hidden" name="url" value="login">
@@ -41,7 +41,7 @@
 						<input class="button is-light" type="submit" value="Créer un compte"/>
 					</form>
 				</div>
-			<?endif;?>
+			<?php endif;?>
 		</div>
 	</div>
 </nav>

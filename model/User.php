@@ -114,10 +114,16 @@ class User {
 	// 	$this->_commentManager->add(new Comment($data));
 	// }
 
-	// public function like(array $data) {
-	// 	$this->_likeManager = new LikeManager;
-	// 	$this->_likeManager->add(new Like($data));
-	// }
+	public function like($imageId) {
+		$this->_likeManager = new LikeManager;
+		$pair = ['userId' => $this->id(), 'imageId' => $imageId];
+		if ($this->_likeManager->likeStatus($pair) === 1) {
+			$this->_likeManager->delete(new Like($pair));
+		}
+		else {
+			$this->_likeManager->add(new Like($pair));
+		}
+	}
 
 	public function __toString() {
 		if ($this->username())

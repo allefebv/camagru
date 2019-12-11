@@ -1,7 +1,7 @@
 <?php
 require_once($_SERVER['DOCUMENT_ROOT'].'/autoloader.php');
 
-class Comment {
+class Like {
 
 	private $_likeDate;
 	private $_userId;

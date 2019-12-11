@@ -30,6 +30,7 @@ abstract class Model {
 	}
 
 	protected function getByKey($table, $obj, $key, $value) {
+		$var = NULL;
 		$req = $this->getDb()->prepare('SELECT * FROM ' . $table . ' WHERE ' . $key . ' = \'' . $value . '\'');
 		$req->execute();
 		while ($data = $req->fetch())

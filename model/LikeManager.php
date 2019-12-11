@@ -13,12 +13,16 @@ class LikeManager extends Model {
 	}
 
 	public function add(Like $like) {
-		$req = $this->getDb()->prepare('INSERT IGNORE INTO like(userId, imageId) VALUES(:userId, :imageId)');
+		$req = $this->getDb()->prepare('INSERT INTO like(userId, imageId) VALUES(:userId, :imageId)');
 		$req->execute(array('userId' => $like->userId(), 'imageId' => $like->imageId()));
 	}
 
 	public function delete(Like $like) {
 
+	}
+
+	public function likeStatus($array) {
+		return 0;
 	}
 
 }

@@ -18,7 +18,7 @@ class Router {
 				if (file_exists($controllerFile))
 				{
 					require_once($controllerFile);
-					$this->$_controller = new $controllerClass($url);
+					$this->_controller = new $controllerClass($url);
 				}
 				else
 					throw new Exception('Page Introuvable');
@@ -26,7 +26,7 @@ class Router {
 			else
 			{
 				require_once('ControllerAccueil.php');
-				$this->$_controller = new ControllerAccueil($url);
+				$this->_controller = new ControllerAccueil($url);
 			}
 		}
 		catch(Exception $e) {

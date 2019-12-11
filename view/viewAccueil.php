@@ -3,7 +3,7 @@
 	<?php foreach($images as $image): ?>
 		<img src="<?= $image->pathToImage() ?>"/>
 		<?php if (isset($_SESSION['logged'])): ?>
-			<button class="button" id="<?= $image->id() ?>" onclick="like()">Like</button>
+			<button class="button likeButton" id="<?= $image->id() ?>" onclick="likeImage(this)">Like</button>
 			<textarea name="comment"></textarea>
 		<!-- Integrer ici les commentaires + possibilité de commenter -->
 		<?php endif; ?>
@@ -11,9 +11,9 @@
 </div>
 
 <script>
-	var like = document.getElementByClassName('like');
+	var likeButtons = document.getElementsByClassName('likeButton');
 
-	like.addEventListener('click', function {
+	function likeImage(likeButton) {
 		var httpRequest = new XMLHttpRequest();
 
 		httpRequest.onreadystatechange = function() {
@@ -23,9 +23,14 @@
 				return false;
 			}
 		}
-
+		imgId = likeButton.getAttribute('id');
+		console.log(imgId);
 		httpRequest.open('POST', 'index.php?url=accueil', true);
 		httpRequest.setRequestHeader('Content-Type', 'multipart/form-data');
-		httpRequest.send(JSON.stringify({ img:img }));
-	});
+		httpRequest.send(JSON.stringify({ imageIdLike:imgId }));
+	};
+
+	// Array.prototype.forEach.call(likeButtons, function(likeButton) {
+	// 	likeButton.addEventListener('click', likeImage(likeButton.getAttribute('id')));
+	// });
 </script>

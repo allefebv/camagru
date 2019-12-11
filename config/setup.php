@@ -38,8 +38,8 @@ $db->query("CREATE TABLE comment (
 );");
 
 $db->query("CREATE TABLE like (
-    userId                  INTEGER,
-    imageId                 INTEGER,
+    userId                  INTEGER NOT NULL,
+    imageId                 INTEGER NOT NULL,
     likeDate                TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     FOREIGN KEY (userId)    REFERENCES user (id),
     FOREIGN KEY (imageId)   REFERENCES image (id),
