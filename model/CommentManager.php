@@ -13,7 +13,10 @@ class CommentManager extends Model {
 	}
 
 	public function add(Comment $comment) {
-
+		if (!empty($comment->commentText())) {
+			$req = $this->getDb()->prepare('INSERT INTO `comment`(userId, imageId, commentText) VALUES(:userId, :imageId, :commentText)');
+			$req->execute(array('userId' => $comment->userId(), 'imageId' => $comment->imageId(), 'commentText' => $comment->commentText()));
+		}
 	}
 
 	public function delete(Comment $comment) {

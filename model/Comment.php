@@ -39,13 +39,11 @@ class Comment {
 	}
 
 	public function setUserId($userId) {
-		if (is_string($userId))
-			$this->_userId = $userId;
+			$this->_userId = (int)$userId;
 	}
 
 	public function setImageId($imageId) {
-		if (is_string($imageId))
-			$this->_imageId = $imageId;
+			$this->_imageId = (int)$imageId;
 	}
 
 	public function setCommentText($commentText) {

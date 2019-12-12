@@ -8,7 +8,7 @@ class Image {
 	private $_pathToImage;
 	private $_publicationDate;
 	private $_comments=array();
-	// private $_likes;
+	private $_likes;
 
 	public function __construct(array $data) {
 		$this->hydrate($data);
@@ -54,7 +54,7 @@ class Image {
 
 	public function setLikes() {
 		$likeManager = new LikeManager;
-		$this->_likes = $likeManager->getImageLikes($this->id());
+		$this->_likes = (int)$likeManager->countImageLikes($this->id())['COUNT(*)'];
 	}
 
 	//GETTERS
@@ -78,7 +78,7 @@ class Image {
 		return $this->_comments;
 	}
 
-	// public function likes() {
-	// 	return $this->_likes;
-	// }
+	public function likes() {
+		return $this->_likes;
+	}
 }

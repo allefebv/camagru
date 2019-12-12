@@ -8,6 +8,10 @@ class ImageManager extends Model {
 		return $this->getAll('image', 'Image');
 	}
 
+	public function getImageById($id) {
+		return $this->getByKey('image', 'Image', 'id', $id);
+	}
+
 	public function add(Image $image) {
 		$req = $this->getDb()->prepare('INSERT INTO image(pathToImage) VALUES(:pathToImage)');
 		$req->execute(array('pathToImage' => $image->pathToImage()));

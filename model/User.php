@@ -51,7 +51,7 @@ class User {
 	}
 
 	private function setId($id) {
-		$id = (int) $id;
+		$id = (int)$id;
 		if ($id > 0)
 			$this->_id = $id;
 	}
@@ -75,8 +75,8 @@ class User {
 		return $this->_password;
 	}
 
-	public function inscriptionDate() {
-		return $this->_inscriptionDate;
+	public function registrationDate() {
+		return $this->_registrationDate;
 	}
 
 	public function email() {
@@ -109,14 +109,17 @@ class User {
 		return FALSE;
 	}
 
-	// public function postComment(array $data) {
-	// 	$this->_commentManager = new CommentManager;
-	// 	$this->_commentManager->add(new Comment($data));
-	// }
+	public function postComment(array $data) {
+		$this->_commentManager = new CommentManager;
+		$this->_commentManager->add(
+			new Comment(array(	'commentText' => $data['commentText'],
+								'imageId' => $data['imageId'],
+								'userId' => $this->id())));
+	}
 
-	public function like($imageId) {
+	public function likeImage(array $data) {
 		$this->_likeManager = new LikeManager;
-		$pair = ['userId' => $this->id(), 'imageId' => $imageId];
+		$pair = ['userId' => $this->id(), 'imageId' => $data['imageId']];
 		if ($this->_likeManager->likeStatus($pair) === 1) {
 			$this->_likeManager->delete(new Like($pair));
 		}

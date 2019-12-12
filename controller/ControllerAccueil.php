@@ -17,18 +17,22 @@ class ControllerAccueil {
 			throw new Exception('Page Introuvable');
 		else if ($this->_json = file_get_contents('php://input'))
 			$this->likeComment();
-		$this->gallery();
+		else
+			$this->gallery();
 	}
 
 	private function likeComment() {
 		$this->_json = json_decode($this->_json, TRUE);
 		$this->_userManager = new UserManager;
 		$this->_user = ($this->_userManager->getUserByName($_SESSION['logged']))[0];
-		if (isset($this->_json['imageIdLike'])) {
-			$this->_user->like($this->_json['imageIdLike']);
+		if (isset($this->_json['like'])) {
+			$this->_user->likeImage($this->_json);
+			$this->_imageManager = new ImageManager;
+			$image = $this->_imageManager->getImageById($this->_json['imageId'])[0];
+			echo json_encode(array('like' => 1, 'likes' => $image->likes()));
 		}
-		else if (isset($this->_json['imageIdComment'])) {
-			$this->_user->comment($this->_json['imageIdComment']);
+		else if (isset($this->_json['comment'])) {
+			$this->_user->postComment($this->_json);
 		}
 	}
 

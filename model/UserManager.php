@@ -12,8 +12,8 @@ class UserManager extends Model {
 		return $this->getByKey('user', 'User', 'username', $username);
 	}
 
-	public function getUserByEmail($email) {
-
+	public function getUserById($id) {
+		return $this->getByKey('user', 'User', 'id', $id);
 	}
 
 	public function add(User $user) {

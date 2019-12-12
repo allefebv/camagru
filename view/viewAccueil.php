@@ -1,36 +1,107 @@
-<?php $this->_title = 'Accueil';?>
-<div class="container has-text-centered has-background-primary">
-	<?php foreach($images as $image): ?>
-		<img src="<?= $image->pathToImage() ?>"/>
-		<?php if (isset($_SESSION['logged'])): ?>
-			<button class="button likeButton" id="<?= $image->id() ?>" onclick="likeImage(this)">Like</button>
-			<textarea name="comment"></textarea>
-		<!-- Integrer ici les commentaires + possibilité de commenter -->
-		<?php endif; ?>
-	<?php endforeach; ?>
+<?php
+	$userManager = new UserManager;
+	$this->_title = 'Accueil';
+?>
+<div class="container has-text-centered">
+	<?php if (isset($images)): ?>
+		<?php foreach($images as $image): ?>
+			<div class="columns is-centered">
+				<div class="column is-one-third">
+					<p class="image is-4by3">
+						<img src="<?= $image->pathToImage() ?>"/>
+					</p>
+					<p id="likes<?= $image->id() ?>" class="is-size-4 has-text-danger has-text-centered has-text-weight-bold">
+						<?= $image->likes() ?>
+					</p>
+					<?php if (isset($_SESSION['logged'])): ?>
+						<button class="button" id="like<?= $image->id() ?>" onclick="likeImage(this)">Like</button>
+					<?php endif; ?>
+				</div>
+				<div class="column is-half">
+					<?php $comments = $image->comments(); foreach($comments as $comment): ?>
+						<article class="media has-background-primary" id="image<?= $image->id() ?>comment<?= $comment->id() ?>">
+							<div class="media-content">
+								<div class="content">
+									<p>
+										<strong>
+											<?php
+												$user = $userManager->getUserById($comment->userId())[0];
+												echo $user->username();
+											?>
+										</strong>
+										<br/>
+										<?= $comment->commentText() ?>
+									</p>
+								</div>
+							</div>
+						</article>
+					<?php endforeach; ?>
+					<article class="media">
+						<div class="media-content">
+							<div class="field">
+								<p class="control">
+									<textarea class="textarea is-small" id="text<?= $image->id() ?>" placeholder="Raconte ta vie..."></textarea>
+								</p>
+							</div>
+							<div class="field">
+								<p class="control">
+									<button class="button" id="comment<?= $image->id() ?>" onclick="postComment(this)">Post comment</button>
+								</p>
+							</div>
+						</div>
+					</article>
+				</div>
+			</div>
+		<?php endforeach; ?>
+	<?php else: ?>
+		<div>La Gallerie est vide</div>
+	<?php endif; ?>
 </div>
 
 <script>
-	var likeButtons = document.getElementsByClassName('likeButton');
-
-	function likeImage(likeButton) {
+	function ajaxify(jsonString) {
 		var httpRequest = new XMLHttpRequest();
-
 		httpRequest.onreadystatechange = function() {
 			if (httpRequest.readyState === 4 && httpRequest.status !== 200) {
 				console.log('error return requete serveur');
 				document.write(httpRequest.status);
 				return false;
 			}
+			else if (httpRequest.readyState === 4 && httpRequest.status === 200) {
+				var httpResponse = httpRequest.response;
+				if (httpResponse) {
+					var obj = JSON.parse(httpRequest.response);
+				}
+				if (obj && 'like' in obj) {
+					likeResponse(jsonString, obj);
+				}
+			}
 		}
-		imgId = likeButton.getAttribute('id');
-		console.log(imgId);
 		httpRequest.open('POST', 'index.php?url=accueil', true);
 		httpRequest.setRequestHeader('Content-Type', 'multipart/form-data');
-		httpRequest.send(JSON.stringify({ imageIdLike:imgId }));
-	};
+		httpRequest.send(jsonString);
+	}
 
-	// Array.prototype.forEach.call(likeButtons, function(likeButton) {
-	// 	likeButton.addEventListener('click', likeImage(likeButton.getAttribute('id')));
-	// });
+	function likeImage(likeButton) {
+		buttonId = likeButton.getAttribute('id');
+		imgId = buttonId.match(/\d+/)[0];
+		ajaxify(JSON.stringify({ like:1, imageId:imgId }));
+	}
+
+	function likeResponse(sentData, responseData) {
+		json = JSON.parse(sentData);
+		likesNb = document.getElementById('likes' + json['imageId']);
+		likesNb.innerHTML = responseData['likes'];
+	}
+
+	function addCommentNode(commentText, imgId) {
+
+	}
+
+	function postComment(commentButton) {
+		buttonId = commentButton.getAttribute('id');
+		imgId = buttonId.match(/\d+/)[0];
+		commentText = document.getElementById('text' + imgId).value;
+		ajaxify(JSON.stringify({ comment:1, imageId:imgId, commentText:commentText }));
+	}
 </script>

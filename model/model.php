@@ -21,6 +21,7 @@ abstract class Model {
 	}
 
 	protected function getAll($table, $obj) {
+		$var = NULL;
 		$req = $this->getDb()->prepare('SELECT * FROM ' . $table . ' ORDER BY id desc');
 		$req->execute();
 		while ($data = $req->fetch())
@@ -36,6 +37,15 @@ abstract class Model {
 		while ($data = $req->fetch())
 			$var[] = new $obj($data);
 		return $var;
+		$req->closeCursor();
+	}
+
+	protected function countByKey($table, $obj, $key, $value) {
+		$var = NULL;
+		$req = $this->getDb()->prepare('SELECT COUNT(*) FROM ' . $table . ' WHERE ' . $key . ' = \'' . $value . '\'');
+		$req->execute();
+		$data = $req->fetch();
+		return $data;
 		$req->closeCursor();
 	}
 
