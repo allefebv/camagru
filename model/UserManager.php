@@ -28,8 +28,8 @@ class UserManager extends Model {
 
 	}
 
-	public function update(User $user) {
-
+	public function update(User $user, $updateFieldKey, $updateFieldValue) {
+		return $this->updateEntry('user', $updateFieldKey, $updateFieldValue, 'id', $user->id());
 	}
 }
 

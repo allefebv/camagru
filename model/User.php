@@ -98,6 +98,15 @@ class User {
 			return FALSE;
 	}
 
+	public function verifyPassword($password) {
+		if (hash('whirlpool', $password) === $this->password()) {
+			return TRUE;
+		}
+		else {
+			return FALSE;
+		}
+	}
+
 	public function logout() {
 		unset($_SESSION['logged']);
 		session_destroy();

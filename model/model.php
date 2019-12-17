@@ -59,16 +59,14 @@ abstract class Model {
 		$req->closeCursor();
 	}
 
-/*	protected function convertKey() {
-
+	protected function updateEntry($table, $updateFieldKey, $updateFieldValue, $idKeyField, $idKeyValue) {
+		$req = $this->getDb()->prepare('UPDATE '.$table.
+										' SET '.$updateFieldKey.
+										'=:updateFieldValue WHERE '.
+										$idKeyField.'=:idFieldValue');
+		return $req->execute(array('updateFieldValue' => $updateFieldValue,
+							'idFieldValue' => $idKeyValue));
 	}
-
-	protected function snakeToCamel($string, $capitalizeFirstChar = false) {
-		$str = str_replace('-', '', ucwords($string, '-'));
-		if (!$capitalizeFirstChar)
-			$str = lcfirst($str);
-		return $str;
-	} */
 }
 
 ?>
