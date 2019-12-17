@@ -8,6 +8,10 @@ class ImageManager extends Model {
 		return $this->getAll('image', 'Image');
 	}
 
+	public function getImagesByPublicationDate() {
+		return $this->getAllOrderByKeyDesc('image', 'Image', 'publicationDate');
+	}
+
 	public function getImageById($id) {
 		return $this->getByKey('image', 'Image', 'id', $id);
 	}

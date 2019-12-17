@@ -38,7 +38,7 @@ class ControllerAccueil {
 
 	private function gallery() {
 		$this->_imageManager = new ImageManager;
-		$images = $this->_imageManager->getImages();
+		$images = $this->_imageManager->getImagesByPublicationDate();
 		$this->_view = new View('Accueil');
 		$this->_view->generate(array('images' => $images));
 	}

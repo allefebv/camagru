@@ -30,6 +30,16 @@ abstract class Model {
 		$req->closeCursor();
 	}
 
+	protected function getAllOrderByKeyDesc($table, $obj, $key) {
+		$var = NULL;
+		$req = $this->getDb()->prepare('SELECT * FROM ' . $table . ' ORDER BY ' . $key . ' desc');
+		$req->execute();
+		while ($data = $req->fetch())
+			$var[] = new $obj($data);
+		return $var;
+		$req->closeCursor();
+	}
+
 	protected function getByKey($table, $obj, $key, $value) {
 		$var = NULL;
 		$req = $this->getDb()->prepare('SELECT * FROM ' . $table . ' WHERE ' . $key . ' = \'' . $value . '\'');

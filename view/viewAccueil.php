@@ -36,20 +36,22 @@
 							</div>
 						</article>
 					<?php endforeach; ?>
-					<article class="media">
-						<div class="media-content">
-							<div class="field">
-								<p class="control">
-									<textarea class="textarea is-small" id="text<?= $image->id() ?>" placeholder="Raconte ta vie..."></textarea>
-								</p>
+					<?php if (isset($_SESSION['logged'])): ?>
+						<article class="media">
+							<div class="media-content">
+								<div class="field">
+									<p class="control">
+										<textarea class="textarea is-small" id="text<?= $image->id() ?>" placeholder="Raconte ta vie..."></textarea>
+									</p>
+								</div>
+								<div class="field">
+									<p class="control">
+										<button class="button" id="comment<?= $image->id() ?>" onclick="postComment(this)">Post comment</button>
+									</p>
+								</div>
 							</div>
-							<div class="field">
-								<p class="control">
-									<button class="button" id="comment<?= $image->id() ?>" onclick="postComment(this)">Post comment</button>
-								</p>
-							</div>
-						</div>
-					</article>
+						</article>
+					<?php endif; ?>
 				</div>
 			</div>
 		<?php endforeach; ?>

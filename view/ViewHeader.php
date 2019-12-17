@@ -24,6 +24,12 @@
 			<?php if (isset($_SESSION['logged'])): ?>
 				<div class="navbar-item">
 					<form action="index.php" method="GET">
+						<input type="hidden" name="url" value="modify">
+						<input class="button is-light" type="submit" value="Modifier mon compte"/>
+					</form>
+				</div>
+				<div class="navbar-item">
+					<form action="index.php" method="GET">
 						<input type="hidden" name="url" value="logout">
 						<input class="button is-light" type="submit" value="Déconnexion"/>
 					</form>

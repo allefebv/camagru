@@ -39,7 +39,7 @@
     </head>
     <body class="hero is-fullheight has-background-black">
         <?= $header ?>
-        <section class="section has-text-centered has-background-dark">
+        <section class="section has-text-centered has-background-dark has-text-white">
             <?= $content ?>
         </section>
         <footer class="footer has-background-black">
