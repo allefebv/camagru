@@ -18,24 +18,28 @@
 					<?php endif; ?>
 				</div>
 				<div class="column is-half">
-					<?php $comments = $image->comments(); foreach($comments as $comment): ?>
-						<article class="media has-background-primary" id="image<?= $image->id() ?>comment<?= $comment->id() ?>">
-							<div class="media-content">
-								<div class="content">
-									<p>
-										<strong>
-											<?php
-												$user = $userManager->getUserById($comment->userId())[0];
-												echo $user->username();
-											?>
-										</strong>
-										<br/>
-										<?= $comment->commentText() ?>
-									</p>
-								</div>
-							</div>
-						</article>
-					<?php endforeach; ?>
+					<?php
+						$comments = $image->comments();
+						if ($comments):
+							foreach($comments as $comment): ?>
+								<article class="media has-background-primary" id="image<?= $image->id() ?>comment<?= $comment->id() ?>">
+									<div class="media-content">
+										<div class="content">
+											<p>
+												<strong>
+													<?php
+														$user = $userManager->getUserById($comment->userId())[0];
+														echo $user->username();
+													?>
+												</strong>
+												<br/>
+												<?= $comment->commentText() ?>
+											</p>
+										</div>
+									</div>
+								</article>
+							<?php endforeach;
+						endif; ?>
 					<?php if (isset($_SESSION['logged'])): ?>
 						<article class="media">
 							<div class="media-content">

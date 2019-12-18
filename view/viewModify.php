@@ -155,7 +155,7 @@
 		ajaxify(JSON.stringify({ username:1, newUsername:newUsername, passwordUsername:password }));
 	}
 
-	function usernameResponse() {
+	function usernameResponse(jsonRequest, arrayResponse) {
 		document.getElementById('newUsername').value = "";
 		document.getElementById('usernamePassword').value = "";
 		removeResponseElement();
@@ -168,7 +168,7 @@
 			futureParent.appendChild(errorParagraph);
 		}
 		else if (arrayResponse['success']) {
-			emailForm.style.display = 'none';
+			usernameForm.style.display = 'none';
 			successParagraph = document.createElement("div");
 			successParagraph.className = "container has-background-black has-text-white";
 			successParagraph.id = "ResponseElement";

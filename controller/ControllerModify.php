@@ -49,7 +49,7 @@ class ControllerModify {
 	private function actionDispatch() {
 		$this->_json = json_decode($this->_json, TRUE);
 		$this->_userManager = new UserManager;
-		$this->_user = ($this->_userManager->getUserByName($_SESSION['logged']))[0];
+		$this->_user = ($this->_userManager->getUserById($_SESSION['logged']))[0];
 		if (isset($this->_json['email'])) {
 			$this->email();
 		}

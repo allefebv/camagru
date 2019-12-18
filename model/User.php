@@ -89,13 +89,13 @@ class User {
 
 	//SPECIFIC METHODS
 	public function login($password) {
-		if (hash('whirlpool', $password) === $this->password())
-		{
-			$_SESSION['logged'] = $_POST['username'];
+		if (hash('whirlpool', $password) === $this->password()) {
+			$_SESSION['logged'] = $this->id();
 			return TRUE;
 		}
-		else
+		else {
 			return FALSE;
+		}
 	}
 
 	public function verifyPassword($password) {
