@@ -52,7 +52,7 @@ abstract class Model {
 
 	protected function countByKey($table, $obj, $key, $value) {
 		$var = NULL;
-		$req = $this->getDb()->prepare('SELECT COUNT(*) FROM ' . $table . ' WHERE ' . $key . ' = \'' . $value . '\'');
+		$req = $this->getDb()->prepare('SELECT COUNT(*) FROM ' . $table . ' WHERE ' . $key . '=' . $value);
 		$req->execute();
 		$data = $req->fetch();
 		return $data;
@@ -66,6 +66,11 @@ abstract class Model {
 										$idKeyField.'=:idFieldValue');
 		return $req->execute(array('updateFieldValue' => $updateFieldValue,
 							'idFieldValue' => $idKeyValue));
+	}
+
+	protected function deleteEntry($table, $key, $value) {
+		$req = $this->getDb()->prepare('DELETE from ' . $table . ' WHERE ' . $key . '=' . $value);
+		return $req->execute();
 	}
 }
 

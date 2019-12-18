@@ -1,5 +1,5 @@
 <?php $this->_title = 'Modif Compte'; ?>
-<div class="container has-background-primary">
+<div id="account_options" class="container has-background-primary">
 	<div class="columns is-centered">
 		<div class="column is-5">
 			<div style="container">
@@ -123,6 +123,9 @@
 						}
 						else if ('password' in obj) {
 							passwordResponse(jsonString, obj);
+						}
+						else if ('delete' in obj) {
+							deleteResponse(jsonString, obj);
 						}
 					}
 				}
@@ -254,6 +257,43 @@
 			futureParent.appendChild(successParagraph);
 		}
 	}
+
+
+
+
+
+	function deleteRequest() {
+		password = document.getElementById('deletePassword').value;
+		ajaxify(JSON.stringify({ delete:1, passwordDelete:password }));
+	}
+
+	function deleteResponse(jsonRequest, arrayResponse) {
+		document.getElementById('deletePassword').value = "";
+		removeResponseElement();
+		if (arrayResponse['errorPassword']) {
+			errorParagraph = document.createElement("p");
+			errorParagraph.id = "ResponseElement";
+			errorMessage = document.createTextNode("Mot de passe erroné");
+			errorParagraph.appendChild(errorMessage);
+			futureParent = document.getElementById('deletePasswordField');
+			futureParent.appendChild(errorParagraph);
+		}
+		else if (arrayResponse['success']) {
+			deleteForm.style.display = 'none';
+			document.getElementById('account_options').style.display = 'none';
+			successParagraph = document.createElement("div");
+			successParagraph.className = "container has-background-black has-text-white";
+			successParagraph.id = "ResponseElement";
+			successMessage = document.createTextNode("Votre compte a bien ete supprime");
+			successParagraph.appendChild(successMessage);
+			futureParent = document.getElementById('content');
+			futureParent.appendChild(successParagraph);
+			setTimeout(function() {
+				document.location.reload(true);
+			}, 2000);
+		}
+	}
+
 
 
 

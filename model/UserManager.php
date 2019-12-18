@@ -25,7 +25,7 @@ class UserManager extends Model {
 	}
 
 	public function delete(User $user) {
-
+		return $this->deleteEntry('user', 'id', $user->id());
 	}
 
 	public function update(User $user, $updateFieldKey, $updateFieldValue) {

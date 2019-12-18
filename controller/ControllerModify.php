@@ -12,6 +12,9 @@ class ControllerModify {
 	public function __construct($url) {
 		if (isset($url) && count($url) > 1)
 			throw new Exception('Page Introuvable');
+		else if (!isset($_SESSION['logged'])) {
+			header('Location: index.php');
+		}
 		else if ($this->_json = file_get_contents('php://input'))
 			$this->actionDispatch();
 		else
@@ -32,6 +35,20 @@ class ControllerModify {
 			echo json_encode(array('password' => 1, 'success' => 1));
 		}
 	}
+
+	private function delete() {
+		if (!$this->_user->verifyPassword($this->_json['passwordDelete'])) {
+			echo json_encode(array('delete' => 1, 'errorPassword' => 1));
+		}
+		else if (!$this->_userManager->delete($this->_user)) {
+			echo json_encode(array('delete' => 1, 'errorDB' => 1));
+		}
+		else {
+			echo json_encode(array('delete' => 1, 'success' => 1));
+			$this->_user->logout();
+		}
+	}
+
 
 	private function email() {
 		if (!$this->_user->verifyPassword($this->_json['passwordEmail'])) {
@@ -69,6 +86,9 @@ class ControllerModify {
 		}
 		else if (isset($this->_json['username'])) {
 			$this->username();
+		}
+		else if (isset($this->_json['delete'])) {
+			$this->delete();
 		}
 	}
 
