@@ -18,31 +18,42 @@ class ControllerModify {
 			$this->generateModifyView();
 	}
 
-	private function email() {
-		if (!($test = $this->_user->verifyPassword($this->_json['passwordEmail']))) {
-			echo json_encode(array('email' => 1, 'errorPassword' => 1));
+	private function password() {
+		if (!$this->_user->verifyPassword($this->_json['currentPassword'])) {
+			echo json_encode(array('password' => 1, 'errorCurrentPassword' => 1));
+		}
+		else if ($this->_json['newPassword1'] !== $this->_json['newPassword2']) {
+			echo json_encode(array('password' => 1, 'errorNewPassword' => 1));
+		}
+		else if (!$this->_userManager->update($this->_user, 'password', $this->_json['newPassword1'])){
+			echo json_encode(array('password' => 1, 'errorDB' => 1));
 		}
 		else {
-			if ($this->_userManager->update($this->_user, 'email', $this->_json['newEmail'])) {
-				echo json_encode(array('email' => 1, 'success' => 1));
-			}
-			else {
-				echo json_encode(array('email' => 1, 'errorDB' => 1));
-			}
+			echo json_encode(array('password' => 1, 'success' => 1));
+		}
+	}
+
+	private function email() {
+		if (!$this->_user->verifyPassword($this->_json['passwordEmail'])) {
+			echo json_encode(array('email' => 1, 'errorPassword' => 1));
+		}
+		else if (!$this->_userManager->update($this->_user, 'email', $this->_json['newEmail'])) {
+			echo json_encode(array('email' => 1, 'errorDB' => 1));
+		}
+		else {
+			echo json_encode(array('email' => 1, 'success' => 1));
 		}
 	}
 
 	private function username() {
-		if (!($test = $this->_user->verifyPassword($this->_json['passwordUsername']))) {
+		if (!$this->_user->verifyPassword($this->_json['passwordUsername'])) {
 			echo json_encode(array('username' => 1, 'errorPassword' => 1));
 		}
+		else if (!$this->_userManager->update($this->_user, 'username', $this->_json['newUsername'])) {
+			echo json_encode(array('username' => 1, 'errorDB' => 1));
+		}
 		else {
-			if ($this->_userManager->update($this->_user, 'username', $this->_json['newUsername'])) {
-				echo json_encode(array('username' => 1, 'success' => 1));
-			}
-			else {
-				echo json_encode(array('username' => 1, 'errorDB' => 1));
-			}
+			echo json_encode(array('username' => 1, 'success' => 1));
 		}
 	}
 
@@ -54,7 +65,7 @@ class ControllerModify {
 			$this->email();
 		}
 		else if (isset($this->_json['password'])) {
-
+			$this->password();
 		}
 		else if (isset($this->_json['username'])) {
 			$this->username();

@@ -29,7 +29,12 @@ class UserManager extends Model {
 	}
 
 	public function update(User $user, $updateFieldKey, $updateFieldValue) {
-		return $this->updateEntry('user', $updateFieldKey, $updateFieldValue, 'id', $user->id());
+		if ($updateFieldKey === 'password') {
+			return $this->updateEntry('user', $updateFieldKey, hash('whirlpool', $updateFieldValue), 'id', $user->id());
+		}
+		else {
+			return $this->updateEntry('user', $updateFieldKey, $updateFieldValue, 'id', $user->id());
+		}
 	}
 }
 
