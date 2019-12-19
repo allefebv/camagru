@@ -43,8 +43,6 @@ class ControllerAccueil {
 		$this->_view->generate(array('images' => $images));
 	}
 
-	//Page d'accueil = header (connexion etc) + gallerie + footer
-
 }
 
 ?>

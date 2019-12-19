@@ -17,8 +17,8 @@ class ImageManager extends Model {
 	}
 
 	public function add(Image $image) {
-		$req = $this->getDb()->prepare('INSERT INTO image(pathToImage) VALUES(:pathToImage)');
-		$req->execute(array('pathToImage' => $image->pathToImage()));
+		$req = $this->getDb()->prepare('INSERT INTO image(pathToImage, userId) VALUES(:pathToImage, :userId)');
+		$req->execute(array('pathToImage' => $image->pathToImage(), 'userId' => $image->userId()));
 	}
 
 	public function delete(Image $image) {

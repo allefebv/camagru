@@ -10,15 +10,18 @@ class ControllerModify {
 	private $_userManager;
 
 	public function __construct($url) {
-		if (isset($url) && count($url) > 1)
+		if (isset($url) && count($url) > 1) {
 			throw new Exception('Page Introuvable');
+		}
 		else if (!isset($_SESSION['logged'])) {
 			header('Location: index.php');
 		}
-		else if ($this->_json = file_get_contents('php://input'))
+		else if ($this->_json = file_get_contents('php://input')) {
 			$this->actionDispatch();
-		else
+		}
+		else {
 			$this->generateModifyView();
+		}
 	}
 
 	private function password() {

@@ -12,8 +12,10 @@ class Image {
 
 	public function __construct(array $data) {
 		$this->hydrate($data);
-		$this->setComments();
-		$this->setLikes();
+		if ($this->id()) {
+			$this->setComments();
+			$this->setLikes();
+		}
 	}
 
 	private function hydrate(array $data) {

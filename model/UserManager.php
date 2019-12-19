@@ -16,6 +16,10 @@ class UserManager extends Model {
 		return $this->getByKey('user', 'User', 'id', $id);
 	}
 
+	public function getUserByEmail($email) {
+		return $this->getByKey('user', 'User', 'email', $email);
+	}
+
 	public function add(User $user) {
 		$req = $this->getDb()->prepare('INSERT INTO user(username, `password`, email) VALUES(:username, :password, :email)');
 		$req->execute(array(

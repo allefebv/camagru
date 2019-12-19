@@ -35,7 +35,7 @@ class ControllerEditor {
 		$imgId = (int)current($this->_imageManager->getBiggestId()) + 1;
 		$imgName = 'image_' . $imgId . '.png';
 		$imgPath = '/public/userImages/'.$imgName;
-		$img = new Image(array('pathToImage' => $imgPath));
+		$img = new Image(array('pathToImage' => $imgPath, 'userId' => $_SESSION['logged']));
 		$this->_imageManager->add($img);
 		file_put_contents($_SERVER['DOCUMENT_ROOT'].$imgPath, $imgUrl);
 

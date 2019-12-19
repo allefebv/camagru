@@ -24,7 +24,7 @@ $db->query("CREATE TABLE image (
     userId                  INTEGER,
     pathToImage             TEXT NOT NULL,
     publicationDate         TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    FOREIGN KEY (userId)    REFERENCES user(id)
+    FOREIGN KEY (userId)    REFERENCES user(id) ON DELETE CASCADE
 );");
 
 $db->query("CREATE TABLE comment (
@@ -33,16 +33,16 @@ $db->query("CREATE TABLE comment (
     imageId                 INTEGER,
     publicationDate         TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     commentText             TEXT NOT NULL,
-    FOREIGN KEY (userId)    REFERENCES user(id),
-    FOREIGN KEY (imageId)   REFERENCES image(id)
+    FOREIGN KEY (userId)    REFERENCES user(id) ON DELETE CASCADE,
+    FOREIGN KEY (imageId)   REFERENCES image(id) ON DELETE CASCADE
 );");
 
 $db->query("CREATE TABLE like (
     userId                  INTEGER NOT NULL,
     imageId                 INTEGER NOT NULL,
     likeDate                TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    FOREIGN KEY (userId)    REFERENCES user (id),
-    FOREIGN KEY (imageId)   REFERENCES image (id),
+    FOREIGN KEY (userId)    REFERENCES user (id) ON DELETE CASCADE,
+    FOREIGN KEY (imageId)   REFERENCES image (id) ON DELETE CASCADE,
     PRIMARY KEY (userId, imageId)
 );");
 
