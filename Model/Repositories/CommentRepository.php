@@ -1,16 +1,18 @@
 <?php
 
-namespace \Camagru\Model\Repositories;
+namespace Camagru\Model\Repositories;
+
+use \Camagru\Model\Entities\Comment;
 
 class CommentRepository extends BaseRepository {
 
 	//table DB 'comments' et classe
 	public function getComments() {
-		return $this->getAll('comment', Comment);
+		return $this->getAll('comment', Comment::class);
 	}
 
 	public function getImageComments($imageId) {
-		return $this->getByKey('comment', Comment, 'imageId', $imageId);
+		return $this->getByKey('comment', Comment::class, 'imageId', $imageId);
 	}
 
 	public function add(Comment $comment) {

@@ -1,16 +1,18 @@
 <?php
 
-namespace \Camagru\Model\Repositories;
+namespace Camagru\Model\Repositories;
+
+use \Camagru\Model\Entities\Like;
 
 class LikeRepository extends BaseRepository {
 
 	//table DB 'comments' et classe
 	public function getLikes() {
-		return $this->getAll('like', 'Like');
+		return $this->getAll('like', Like::class);
 	}
 
 	public function countImageLikes($imageId) {
-		return $this->countByKey('like', 'Like', 'imageId', $imageId);
+		return $this->countByKey('like', Like::class, 'imageId', $imageId);
 	}
 
 	public function add(Like $like) {

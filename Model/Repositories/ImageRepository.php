@@ -2,7 +2,7 @@
 
 namespace Camagru\Model\Repositories;
 
-use Camagru\Model\Entities\Image;
+use \Camagru\Model\Entities\Image;
 
 class ImageRepository extends BaseRepository {
 
@@ -12,11 +12,11 @@ class ImageRepository extends BaseRepository {
 	}
 
 	public function getImagesByPublicationDate() {
-		return $this->getAllOrderByKeyDesc('image', Image, 'publicationDate');
+		return $this->getAllOrderByKeyDesc('image', Image::class, 'publicationDate');
 	}
 
 	public function getImageById($id) {
-		return $this->getByKey('image', Image, 'id', $id);
+		return $this->getByKey('image', Image::class, 'id', $id);
 	}
 
 	public function add(Image $image) {

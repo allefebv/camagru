@@ -1,6 +1,6 @@
 <?php
 
-	use \Camagru\Model\Repository\UserRepository;
+	use \Camagru\Model\Repositories\UserRepository;
 
 	$userManager = new UserRepository;
 	$this->_title = 'Accueil';

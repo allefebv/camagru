@@ -13,7 +13,6 @@ class Autoloader {
 	static function autoload($class) {
 		$class = str_replace('Camagru\\', '', $class);
 		$class = str_replace('\\', DIRECTORY_SEPARATOR, $class);
-		var_dump($class);
 		require self::$dirRoot . $class . '.php';
 	}
 

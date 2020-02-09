@@ -1,6 +1,6 @@
 <?php
 
-namespace \Camagru\Model\Repositories;
+namespace Camagru\Model\Repositories;
 
 class LayerRepository extends BaseRepository {
 

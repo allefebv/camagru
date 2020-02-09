@@ -2,12 +2,6 @@
 
 namespace Camagru\Model\Repositories;
 
-use \Camagru\Model\Entities\Comment;
-use \Camagru\Model\Entities\Image;
-use \Camagru\Model\Entities\Layer;
-use \Camagru\Model\Entities\Like;
-use \Camagru\Model\Entities\User;
-
 abstract class BaseRepository {
 
 	private static $_db;

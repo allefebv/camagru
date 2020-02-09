@@ -1,24 +1,26 @@
 <?php
 
-namespace \Camagru\Model\Repositories;
+namespace Camagru\Model\Repositories;
+
+use \Camagru\Model\Entities\User;
 
 class UserRepository extends BaseRepository {
 
 	//table DB 'users' et classe 'User'
 	public function getUsers() {
-		return $this->getAll('user', 'User');
+		return $this->getAll('user', User::class);
 	}
 
 	public function getUserByName($username) {
-		return $this->getByKey('user', 'User', 'username', $username);
+		return $this->getByKey('user', User::class, 'username', $username);
 	}
 
 	public function getUserById($id) {
-		return $this->getByKey('user', 'User', 'id', $id);
+		return $this->getByKey('user', User::class, 'id', $id);
 	}
 
 	public function getUserByEmail($email) {
-		return $this->getByKey('user', 'User', 'email', $email);
+		return $this->getByKey('user', User::class, 'email', $email);
 	}
 
 	public function add(User $user) {

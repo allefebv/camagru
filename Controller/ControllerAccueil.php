@@ -2,8 +2,9 @@
 
 namespace Camagru\Controller;
 
-use \Camagru\Model\Repositories\UserRepository;
 use \Camagru\Model\Repositories\ImageRepository;
+use \Camagru\Model\Repositories\UserRepository;
+use \Camagru\View\View;
 
 class ControllerAccueil {
 
