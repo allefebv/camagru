@@ -1,7 +1,8 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'].'/autoloader.php');
 
-class LikeManager extends Model {
+namespace \Camagru\Model\Repositories;
+
+class LikeRepository extends BaseRepository {
 
 	//table DB 'comments' et classe
 	public function getLikes() {

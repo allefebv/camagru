@@ -1,7 +1,6 @@
 <?php
 
-require_once($_SERVER['DOCUMENT_ROOT'].'/autoloader.php');
-require_once($_SERVER['DOCUMENT_ROOT'].'/view/View.php');
+namespace Camagru\Controller;
 
 class ControllerLogout {
 
@@ -9,7 +8,7 @@ class ControllerLogout {
 
 	public function __construct($url) {
 		if (isset($url) && count($url) > 1)
-			throw new Exception('Page Introuvable');
+			throw new \Exception('Page Introuvable');
 		$this->logoutUser();
 	}
 

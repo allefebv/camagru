@@ -1,8 +1,9 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'].'/autoloader.php');
-require_once($_SERVER['DOCUMENT_ROOT'].'/model/Comment.php');
-require_once($_SERVER['DOCUMENT_ROOT'].'/model/Image.php');
-require_once($_SERVER['DOCUMENT_ROOT'].'/view/View.php');
+
+namespace Camagru\Controller;
+
+use \Camagru\Model\Repositories\UserRepository;
+use \Camagru\Model\Repositories\ImageRepository;
 
 class ControllerAccueil {
 
@@ -13,8 +14,9 @@ class ControllerAccueil {
 	private $_json;
 
 	public function __construct($url) {
-		if (!empty($url) && count($url) > 1)
-			throw new Exception('Page Introuvable');
+		if (((is_array($url) || $url instanceof countable)
+			&& count($url)) && count($url) > 1)
+			throw new \Exception('Page Introuvable');
 		else if ($this->_json = file_get_contents('php://input'))
 			$this->likeComment();
 		else
@@ -23,11 +25,11 @@ class ControllerAccueil {
 
 	private function likeComment() {
 		$this->_json = json_decode($this->_json, TRUE);
-		$this->_userManager = new UserManager;
+		$this->_userManager = new UserRepository;
 		$this->_user = ($this->_userManager->getUserById($_SESSION['logged']))[0];
 		if (isset($this->_json['like'])) {
 			$this->_user->likeImage($this->_json);
-			$this->_imageManager = new ImageManager;
+			$this->_imageManager = new ImageRepository;
 			$image = $this->_imageManager->getImageById($this->_json['imageId'])[0];
 			echo json_encode(array('like' => 1, 'likes' => $image->likes()));
 		}
@@ -37,7 +39,7 @@ class ControllerAccueil {
 	}
 
 	private function gallery() {
-		$this->_imageManager = new ImageManager;
+		$this->_imageManager = new ImageRepository;
 		$images = $this->_imageManager->getImagesByPublicationDate();
 		$this->_view = new View('Accueil');
 		$this->_view->generate(array('images' => $images));

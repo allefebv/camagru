@@ -1,5 +1,7 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'].'/autoloader.php');
+
+namespace Camagru\Model\Entities;
+
 /*
 ** The purpose of this class is to represent Comments
 ** Comments caracteristics and comments functionnalities

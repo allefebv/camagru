@@ -1,6 +1,9 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'].'/autoloader.php');
-require_once($_SERVER['DOCUMENT_ROOT'].'/view/View.php');
+
+namespace Camagru\Controller;
+
+use \Camagru\Model\Repositories\LayerRepository;
+use \Camagru\Model\Repositories\ImageRepository;
 
 class ControllerEditor {
 
@@ -11,22 +14,22 @@ class ControllerEditor {
 
 	public function __construct($url) {
 		if (isset($url) && count($url) > 1)
-			throw new Exception('Page Introuvable');
+			throw new \Exception('Page Introuvable');
 		else if (!isset($_SESSION['logged']))
-			throw new Exception('Section Autorisée aux utilisateurs connectés');
+			throw new \Exception('Section Autorisée aux utilisateurs connectés');
 		else if ($this->_json = file_get_contents('php://input'))
 			$this->saveImg();
 		$this->editor();
 	}
 
 	private function editor() {
-		$this->_layerManager = new LayerManager;
+		$this->_layerManager = new LayerRepository;
 		$this->_view = new View('Editor');
 		$this->_view->generate(array('layers' => $this->_layerManager->getLayers()));
 	}
 
 	private function saveImg() {
-		$this->_imageManager = new ImageManager;
+		$this->_imageManager = new ImageRepository;
 		$this->_json = json_decode($this->_json, TRUE);
 
 		$imgUrl = explode(',', $this->_json['img']);
@@ -40,7 +43,7 @@ class ControllerEditor {
 		file_put_contents($_SERVER['DOCUMENT_ROOT'].$imgPath, $imgUrl);
 
 
-		$layerManager = new LayerManager;
+		$layerManager = new LayerRepository;
 		$layer = ($layerManager->getLayerById($this->_json['layer']))[0];
 		$layerPath = $layer->pathToLayer();
 
@@ -48,8 +51,6 @@ class ControllerEditor {
 		$layerImage = imagecreatefrompng($_SERVER['DOCUMENT_ROOT'].$layerPath);
 		$layerWidth = imagesx($layerImage);
 		$layerHeight = imagesy($layerImage);
-		var_dump($_SERVER['DOCUMENT_ROOT'].$layerPath);
-		var_dump($_SERVER['DOCUMENT_ROOT'].$imgPath);
 		imagealphablending($userImage, true);
 		imagesavealpha($userImage, true);
 		imagecopyresampled($userImage, $layerImage, 0, 0, 0, 0, 320, 240, $layerWidth, $layerHeight);

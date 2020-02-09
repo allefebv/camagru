@@ -1,5 +1,9 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'].'/autoloader.php');
+
+namespace Camagru\Model\Entities;
+
+use \Camagru\Model\Repositories\LikeRepository;
+use \Camagru\Model\Repositories\CommentRepository;
 
 class Image {
 
@@ -50,12 +54,12 @@ class Image {
 	}
 
 	public function setComments() {
-		$commentManager = new CommentManager;
+		$commentManager = new CommentRepository;
 		$this->_comments = $commentManager->getImageComments($this->id());
 	}
 
 	public function setLikes() {
-		$likeManager = new LikeManager;
+		$likeManager = new LikeRepository;
 		$this->_likes = (int)$likeManager->countImageLikes($this->id())['COUNT(*)'];
 	}
 

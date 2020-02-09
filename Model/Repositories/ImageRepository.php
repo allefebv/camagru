@@ -1,7 +1,10 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'].'/autoloader.php');
 
-class ImageManager extends Model {
+namespace Camagru\Model\Repositories;
+
+use Camagru\Model\Entities\Image;
+
+class ImageRepository extends BaseRepository {
 
 	//table DB 'image' et classe 'Image'
 	public function getImages() {
@@ -9,11 +12,11 @@ class ImageManager extends Model {
 	}
 
 	public function getImagesByPublicationDate() {
-		return $this->getAllOrderByKeyDesc('image', 'Image', 'publicationDate');
+		return $this->getAllOrderByKeyDesc('image', Image, 'publicationDate');
 	}
 
 	public function getImageById($id) {
-		return $this->getByKey('image', 'Image', 'id', $id);
+		return $this->getByKey('image', Image, 'id', $id);
 	}
 
 	public function add(Image $image) {

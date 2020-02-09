@@ -1,5 +1,8 @@
 <?php
-	$userManager = new UserManager;
+
+	use \Camagru\Model\Repository\UserRepository;
+
+	$userManager = new UserRepository;
 	$this->_title = 'Accueil';
 ?>
 <div class="container has-text-centered">

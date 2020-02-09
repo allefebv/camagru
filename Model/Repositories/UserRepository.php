@@ -1,7 +1,8 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'].'/autoloader.php');
 
-class UserManager extends Model {
+namespace \Camagru\Model\Repositories;
+
+class UserRepository extends BaseRepository {
 
 	//table DB 'users' et classe 'User'
 	public function getUsers() {

@@ -6,7 +6,7 @@ try {
     $db = new PDO($DB_DSN.$DB_NAME);
     $db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch(Exception $e) {
+} catch(\Exception $e) {
     echo "Impossible d'accéder à la base de données SQLite : ".$e->getMessage();
     die();
 }

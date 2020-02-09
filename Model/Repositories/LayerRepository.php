@@ -1,7 +1,8 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'].'/autoloader.php');
 
-class LayerManager extends Model {
+namespace \Camagru\Model\Repositories;
+
+class LayerRepository extends BaseRepository {
 
 	//table DB 'layer' et classe 'Layer'
 	public function __construct() {

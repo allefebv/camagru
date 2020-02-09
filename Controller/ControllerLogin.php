@@ -1,8 +1,8 @@
 <?php
 
-require_once($_SERVER['DOCUMENT_ROOT'].'/autoloader.php');
-require_once($_SERVER['DOCUMENT_ROOT'].'/view/View.php');
-require_once($_SERVER['DOCUMENT_ROOT'].'/controller/ControllerAccueil.php');
+namespace Camagru\Controller;
+
+use \Camagru\Model\Repositories\UserRepository;
 
 class ControllerLogin {
 
@@ -12,7 +12,7 @@ class ControllerLogin {
 
 	public function __construct($url) {
 		if (isset($url) && count($url) > 1) {
-			throw new Exception('Page Introuvable');
+			throw new \Exception('Page Introuvable');
 		}
 		else if (isset($_SESSION['logged'])) {
 			header('Location: index.php');
@@ -26,7 +26,7 @@ class ControllerLogin {
 	}
 	private function authUser() {
 		$this->_json = json_decode($this->_json, TRUE);
-		$this->_userManager = new UserManager;
+		$this->_userManager = new UserRepository;
 		$this->_user = ($this->_userManager->getUserByEmail(htmlspecialchars($this->_json['email'])))[0];
 		if (!$this->_user) {
 			echo json_encode(array('emailError' => 1));

@@ -1,6 +1,8 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'].'/autoloader.php');
-require_once($_SERVER['DOCUMENT_ROOT'].'/view/View.php');
+
+namespace Camagru\Controller;
+
+use \Camagru\View\View;
 
 class Router {
 	private $_controller;
@@ -21,7 +23,7 @@ class Router {
 					$this->_controller = new $controllerClass($url);
 				}
 				else
-					throw new Exception('Page Introuvable');
+					throw new \Exception('Page Introuvable');
 			}
 			else
 			{
@@ -29,7 +31,7 @@ class Router {
 				$this->_controller = new ControllerAccueil($url);
 			}
 		}
-		catch(Exception $e) {
+		catch(\Exception $e) {
 			$errorMsg = $e->getMessage();
 			$this->_view = new View('Error');
 			$this->_view->generate(array('errorMsg' => $errorMsg));

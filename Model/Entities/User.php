@@ -1,5 +1,9 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'].'/autoloader.php');
+
+namespace Camagru\Model\Entities;
+
+use \Camagru\Model\Repositories\LikeRepository;
+use \Camagru\Model\Repositories\CommentRepository;
 
 class User {
 

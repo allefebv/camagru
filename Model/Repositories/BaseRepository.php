@@ -1,17 +1,23 @@
 <?php
 
-require_once($_SERVER['DOCUMENT_ROOT'].'/autoloader.php');
+namespace Camagru\Model\Repositories;
 
-abstract class Model {
+use \Camagru\Model\Entities\Comment;
+use \Camagru\Model\Entities\Image;
+use \Camagru\Model\Entities\Layer;
+use \Camagru\Model\Entities\Like;
+use \Camagru\Model\Entities\User;
+
+abstract class BaseRepository {
 
 	private static $_db;
 	private static $_dbDsn = "sqlite:db/";
 	private static $_dbName = "camagru";
 
 	private static function setDb() {
-		self::$_db = new PDO(self::$_dbDsn.self::$_dbName);
-		self::$_db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-		self::$_db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		self::$_db = new \PDO(self::$_dbDsn.self::$_dbName);
+		self::$_db->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
+		self::$_db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 	}
 
 	protected function getDb() {

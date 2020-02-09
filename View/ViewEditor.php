@@ -14,9 +14,11 @@
 		</div>
 		<div class="level has-background-black" id="layers">
 			<div class="container has-text-centered">
-			<?php foreach ($layers as $layer): ?>
-				<img src="..<?= $layer->pathToLayer(); ?>" id="<?= $layer->id(); ?>" onclick="focusFilter(this)" width=50px height=50px>
-			<?php endforeach; ?>
+			<?php if (isset($layers)): ?>
+				<?php foreach ($layers as $layer): ?>
+					<img src="..<?= $layer->pathToLayer(); ?>" id="<?= $layer->id(); ?>" onclick="focusFilter(this)" width=50px height=50px>
+				<?php endforeach; ?>
+			<?php endif; ?>
 			</div>
 		</div>
 		<span class="tooltip">

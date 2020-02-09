@@ -1,8 +1,8 @@
 <?php
 
-require_once($_SERVER['DOCUMENT_ROOT'].'/autoloader.php');
-require_once($_SERVER['DOCUMENT_ROOT'].'/view/View.php');
-require_once($_SERVER['DOCUMENT_ROOT'].'/controller/ControllerAccueil.php');
+namespace Camagru\Controller;
+
+use \Camagru\Model\Repositories\UserRepository;
 
 class ControllerCreate {
 
@@ -12,9 +12,9 @@ class ControllerCreate {
 
 	public function __construct($url) {
 		if (isset($url) && count($url) > 1)
-			throw new Exception('Page Introuvable');
+			throw new \Exception('Page Introuvable');
 		else if (isset($_SESSION['logged']))
-			throw new Exception('Vous êtes deja connecteé');
+			throw new \Exception('Vous êtes deja connecteé');
 		else if (!isset($_POST['username'])
 			&& !isset($_POST['password'])
 			&& !isset($_POST['email']))
@@ -36,7 +36,7 @@ class ControllerCreate {
 			//handle incorrectness (username ? Password ? email ?) (better to handle in the JS ?)
 		}
 		else {
-			$this->_userManager = new UserManager;
+			$this->_userManager = new UserRepository;
 			$this->_userManager->add($this->_user);
 			header('Location: index.php');
 		}

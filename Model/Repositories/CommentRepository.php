@@ -1,15 +1,16 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'].'/autoloader.php');
 
-class CommentManager extends Model {
+namespace \Camagru\Model\Repositories;
+
+class CommentRepository extends BaseRepository {
 
 	//table DB 'comments' et classe
 	public function getComments() {
-		return $this->getAll('comment', 'Comment');
+		return $this->getAll('comment', Comment);
 	}
 
 	public function getImageComments($imageId) {
-		return $this->getByKey('comment', 'Comment', 'imageId', $imageId);
+		return $this->getByKey('comment', Comment, 'imageId', $imageId);
 	}
 
 	public function add(Comment $comment) {
