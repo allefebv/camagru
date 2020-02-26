@@ -4,6 +4,7 @@ namespace Camagru\Controller;
 
 use \Camagru\Model\Repositories\LayerRepository;
 use \Camagru\Model\Repositories\ImageRepository;
+use \Exception;
 
 class ControllerEditor {
 
@@ -14,9 +15,9 @@ class ControllerEditor {
 
 	public function __construct($url) {
 		if (isset($url) && count($url) > 1)
-			throw new \Exception('Page Introuvable');
+			throw new Exception('Page Introuvable');
 		else if (!isset($_SESSION['logged']))
-			throw new \Exception('Section Autorisée aux utilisateurs connectés');
+			throw new Exception('Section Autorisée aux utilisateurs connectés');
 		else if ($this->_json = file_get_contents('php://input'))
 			$this->saveImg();
 		$this->editor();

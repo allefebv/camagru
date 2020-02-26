@@ -5,6 +5,7 @@ namespace Camagru\Controller;
 use \Camagru\Model\Repositories\ImageRepository;
 use \Camagru\Model\Repositories\UserRepository;
 use \Camagru\View\View;
+use \Exception;
 
 class ControllerAccueil {
 
@@ -17,7 +18,7 @@ class ControllerAccueil {
 	public function __construct($url) {
 		if (((is_array($url) || $url instanceof countable)
 			&& count($url)) && count($url) > 1)
-			throw new \Exception('Page Introuvable');
+			throw new Exception('Page Introuvable');
 		else if ($this->_json = file_get_contents('php://input'))
 			$this->likeComment();
 		else

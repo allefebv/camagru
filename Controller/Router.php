@@ -3,6 +3,7 @@
 namespace Camagru\Controller;
 
 use \Camagru\View\View;
+use \Exception;
 
 class Router {
 	private $_controller;
@@ -16,14 +17,13 @@ class Router {
 				$url = explode('/', filter_var($_GET['url'], FILTER_SANITIZE_URL));
 				$controller = ucfirst(strtolower($url[0]));
 				$controllerClass = 'Controller' . $controller;
-				$controllerFile = 'controller/' . $controllerClass . '.php';
+				$controllerFile = 'Controller/' . $controllerClass . '.php';
 				if (file_exists($controllerFile))
 				{
-					require_once($controllerFile);
 					$this->_controller = new $controllerClass($url);
 				}
 				else
-					throw new \Exception('Page Introuvable');
+					throw new Exception('Page Introuvable');
 			}
 			else
 			{
@@ -31,8 +31,9 @@ class Router {
 				$this->_controller = new ControllerAccueil($url);
 			}
 		}
-		catch(\Exception $e) {
-			$errorMsg = $e->getMessage();
+		catch(Exception $e) {
+			// $errorMsg = $e->getMessage();
+			$errorMsg = $controllerFile;
 			$this->_view = new View('Error');
 			$this->_view->generate(array('errorMsg' => $errorMsg));
 		}

@@ -5,7 +5,7 @@ namespace Camagru\Model\Entities;
 use \Camagru\Model\Repositories\LikeRepository;
 use \Camagru\Model\Repositories\CommentRepository;
 
-class User {
+class User extends AbstractEntity {
 
 	private $_id;
 	private $_username;
@@ -14,19 +14,6 @@ class User {
 	private $_email;
 	private $_commentManager;
 	private $_errors=array();
-
-	public function __construct(array $data) {
-		$this->hydrate($data);
-	}
-
-	private function hydrate(array $data) {
-		foreach ($data as $key => $value)
-		{
-			$setter = 'set' . ucfirst($key);
-			if (method_exists($this, $setter))
-				$this->$setter($value);
-		}
-	}
 
 	//SETTERS
 	public function setUsername($username) {

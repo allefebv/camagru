@@ -8,34 +8,14 @@ namespace Camagru\Model\Entities;
 ** hydratation with array of the private attributes
 */
 
-class Comment {
+class Comment extends AbstractEntity {
 
-	private $_id;
 	private $_publicationDate;
 	private $_userId;
 	private $_imageId;
 	private $_commentText;
 
-	public function __construct(array $data) {
-		$this->hydrate($data);
-	}
-
-	private function hydrate(array $data) {
-		foreach ($data as $key => $value)
-		{
-			$setter = 'set' . ucfirst($key);
-			if (method_exists($this, $setter))
-				$this->$setter($value);
-		}
-	}
-
 	//SETTERS
-	private function setId($id) {
-		$id = (int) $id;
-		if ($id > 0)
-			$this->_id = $id;
-	}
-
 	private function setPublicationDate($publicationDate) {
 		$this->_publicationDate = $publicationDate;
 	}
@@ -54,10 +34,6 @@ class Comment {
 	}
 
 	//GETTERS
-	public function id() {
-		return $this->_id;
-	}
-
 	public function publicationDate() {
 		return $this->_publicationDate;
 	}

@@ -5,7 +5,7 @@ namespace Camagru\Model\Entities;
 use \Camagru\Model\Repositories\LikeRepository;
 use \Camagru\Model\Repositories\CommentRepository;
 
-class Image {
+class Image extends AbstractEntity {
 
 	private $_id;
 	private $_userId;
@@ -15,25 +15,16 @@ class Image {
 	private $_likes;
 
 	public function __construct(array $data) {
-		$this->hydrate($data);
+		parent::__construct($data);
 		if ($this->id()) {
 			$this->setComments();
 			$this->setLikes();
 		}
 	}
 
-	private function hydrate(array $data) {
-		foreach ($data as $key => $value)
-		{
-			$setter = 'set' . ucfirst($key);
-			if (method_exists($this, $setter))
-				$this->$setter($value);
-		}
-	}
-
 	//SETTERS
 	private function setId($id) {
-		$id = (int) $id;
+		$id = (int)$id;
 		if ($id > 0)
 			$this->_id = $id;
 	}
@@ -64,12 +55,12 @@ class Image {
 	}
 
 	//GETTERS
-	public function pathToImage() {
-		return $this->_pathToImage;
-	}
-
 	public function id() {
 		return $this->_id;
+	}
+
+	public function pathToImage() {
+		return $this->_pathToImage;
 	}
 
 	public function userId() {

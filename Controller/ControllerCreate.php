@@ -3,6 +3,7 @@
 namespace Camagru\Controller;
 
 use \Camagru\Model\Repositories\UserRepository;
+use \Exception;
 
 class ControllerCreate {
 
@@ -12,9 +13,9 @@ class ControllerCreate {
 
 	public function __construct($url) {
 		if (isset($url) && count($url) > 1)
-			throw new \Exception('Page Introuvable');
+			throw new Exception('Page Introuvable');
 		else if (isset($_SESSION['logged']))
-			throw new \Exception('Vous êtes deja connecteé');
+			throw new Exception('Vous êtes deja connecteé');
 		else if (!isset($_POST['username'])
 			&& !isset($_POST['password'])
 			&& !isset($_POST['email']))

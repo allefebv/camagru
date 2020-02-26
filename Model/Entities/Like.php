@@ -2,24 +2,11 @@
 
 namespace Camagru\Model\Entities;
 
-class Like {
+class Like extends AbstractEntity{
 
 	private $_likeDate;
 	private $_userId;
 	private $_imageId;
-
-	public function __construct(array $data) {
-		$this->hydrate($data);
-	}
-
-	private function hydrate(array $data) {
-		foreach ($data as $key => $value)
-		{
-			$setter = 'set' . ucfirst($key);
-			if (method_exists($this, $setter))
-				$this->$setter($value);
-		}
-	}
 
 	//SETTERS
 	private function setLikeDate($likeDate) {
