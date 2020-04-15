@@ -1,6 +1,6 @@
-FROM php:7.4-alpine
+FROM php:7.2-fpm
 
 COPY . /var/www/html
 WORKDIR /var/www/html
 
-CMD tail -f /dev/null
+ENTRYPOINT /bin/sh tail -f
