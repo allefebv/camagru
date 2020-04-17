@@ -4,6 +4,8 @@ namespace Camagru\Controller;
 
 use \Camagru\Model\Repositories\LayerRepository;
 use \Camagru\Model\Repositories\ImageRepository;
+use \Camagru\Model\Entities\Image;
+use \Camagru\View\View;
 use \Exception;
 
 class ControllerEditor {

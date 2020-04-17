@@ -3,6 +3,8 @@
 namespace Camagru\Controller;
 
 use \Camagru\Model\Repositories\UserRepository;
+use \Camagru\Model\Entities\User;
+use \Camagru\View\View;
 use \Exception;
 
 class ControllerCreate {

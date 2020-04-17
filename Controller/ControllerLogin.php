@@ -3,6 +3,7 @@
 namespace Camagru\Controller;
 
 use \Camagru\Model\Repositories\UserRepository;
+use \Camagru\View\View;
 use \Exception;
 
 class ControllerLogin {

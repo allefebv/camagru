@@ -2,22 +2,26 @@
 
 namespace Camagru\Model\Entities;
 
-class Like extends AbstractEntity{
+final class Like extends AbstractEntity{
 
 	private $_likeDate;
 	private $_userId;
 	private $_imageId;
 
+	public function __construct(array $data) {
+		parent::__construct($data);
+	}
+
 	//SETTERS
-	private function setLikeDate($likeDate) {
+	protected function setLikeDate($likeDate) {
 		$this->_likeDate = $likeDate;
 	}
 
-	public function setUserId($userId) {
+	protected function setUserId($userId) {
 		$this->_userId = (int)$userId;
 	}
 
-	public function setImageId($imageId) {
+	protected function setImageId($imageId) {
 		$this->_imageId = (int)$imageId;
 	}
 

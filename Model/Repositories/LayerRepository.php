@@ -2,6 +2,8 @@
 
 namespace Camagru\Model\Repositories;
 
+use \Camagru\Model\Entities\Layer;
+
 class LayerRepository extends BaseRepository {
 
 	//table DB 'layer' et classe 'Layer'

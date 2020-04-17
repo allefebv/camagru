@@ -2,19 +2,23 @@
 
 namespace Camagru\Model\Entities;
 
-class Layer extends AbstractEntity {
+final class Layer extends AbstractEntity {
 
 	private $_id;
 	private $_pathToLayer;
 
+	public function __construct(array $data) {
+		parent::__construct($data);
+	}
+
 	//SETTERS
-	private function setId($id) {
+	protected function setId($id) {
 		$id = (int)$id;
 		if ($id > 0)
 			$this->_id = $id;
 	}
 
-	public function setPathToLayer($pathToLayer) {
+	protected function setPathToLayer($pathToLayer) {
 		if (is_string($pathToLayer))
 			$this->_pathToLayer = $pathToLayer;
 	}

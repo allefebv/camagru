@@ -5,7 +5,7 @@ namespace Camagru\Model\Entities;
 use \Camagru\Model\Repositories\LikeRepository;
 use \Camagru\Model\Repositories\CommentRepository;
 
-class Image extends AbstractEntity {
+final class Image extends AbstractEntity {
 
 	private $_id;
 	private $_userId;
@@ -21,35 +21,35 @@ class Image extends AbstractEntity {
 			$this->setLikes();
 		}
 	}
-
+	
 	//SETTERS
-	private function setId($id) {
+	protected function setId($id) {
 		$id = (int)$id;
 		if ($id > 0)
 			$this->_id = $id;
 	}
 
-	private function setPublicationDate($publicationDate) {
+	protected function setPublicationDate($publicationDate) {
 		$this->_publicationDate = $publicationDate;
 	}
 
-	public function setPathToImage($pathToImage) {
+	protected function setPathToImage($pathToImage) {
 		if (is_string($pathToImage))
 			$this->_pathToImage = $pathToImage;
 	}
 
-	public function setUserId($userId) {
+	protected function setUserId($userId) {
 		$userId = (int) $userId;
 		if ($userId > 0)
 			$this->_userId = $userId;
 	}
 
-	public function setComments() {
+	protected function setComments() {
 		$commentManager = new CommentRepository;
 		$this->_comments = $commentManager->getImageComments($this->id());
 	}
 
-	public function setLikes() {
+	protected function setLikes() {
 		$likeManager = new LikeRepository;
 		$this->_likes = (int)$likeManager->countImageLikes($this->id())['COUNT(*)'];
 	}

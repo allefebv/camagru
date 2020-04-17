@@ -6,7 +6,11 @@ use \Camagru\Controller\Router;
 session_start();
 require_once('Autoloader.php');
 
-Autoloader::register();
+try {
+    Autoloader::register();
+} catch (\Exception $e) {
+    echo 'fail to autoload : ' . $e->getMessage();
+}
 
 $router = new Router();
 $router->route();

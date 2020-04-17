@@ -5,7 +5,7 @@ namespace Camagru\Model\Entities;
 use \Camagru\Model\Repositories\LikeRepository;
 use \Camagru\Model\Repositories\CommentRepository;
 
-class User extends AbstractEntity {
+final class User extends AbstractEntity {
 
 	private $_id;
 	private $_username;
@@ -15,19 +15,23 @@ class User extends AbstractEntity {
 	private $_commentManager;
 	private $_errors=array();
 
+	public function __construct(array $data) {
+		parent::__construct($data);
+	}
+
 	//SETTERS
-	public function setUsername($username) {
+	protected function setUsername($username) {
 		if (!empty($username) && is_string($username))
 			$this->_username = $username;
 		else
 			$this->setErrors('username');
 	}
 
-	public function setPassword($password) {
+	protected function setPassword($password) {
 		$this->_password = $password;
 	}
 
-	public function setEmail($email) {
+	protected function setEmail($email) {
 		if (!empty($email) && is_string($email))
 			$this->_email = $email;
 		else
@@ -35,20 +39,20 @@ class User extends AbstractEntity {
 	}
 
 	//specific setters for DB retrieving
-	private function setInscriptionDate($inscriptionDate) {
+	protected function setInscriptionDate($inscriptionDate) {
 		$inscriptionDate = (int) $inscriptionDate;
 		if ($inscriptionDate > 0)
 			$this->_inscriptionDate = $inscriptionDate;
 	}
 
-	private function setId($id) {
+	protected function setId($id) {
 		$id = (int)$id;
 		if ($id > 0)
 			$this->_id = $id;
 	}
 
 	//setter for errors
-	private function setErrors($error) {
+	protected function setErrors($error) {
 		echo $error;
 		$this->_errors[$error] = $error;
 	}
