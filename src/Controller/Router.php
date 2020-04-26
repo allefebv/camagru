@@ -16,7 +16,7 @@ class Router {
 				$url = explode('/', filter_var($_GET['url'], FILTER_SANITIZE_URL));
 				$controller = ucfirst(strtolower($url[0]));
 				$controllerClass = 'Controller' . $controller;
-				$controllerFile = 'Controller/' . $controllerClass . '.php';
+				$controllerFile = __DIR__ . '/' . $controllerClass . '.php';
 				
 				if (file_exists($controllerFile)) {
 					$controllerNamespace = '\Camagru\Controller\\';

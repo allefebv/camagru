@@ -27,3 +27,14 @@ services:
     ports:
       - '3306:3306'
     working_dir: /var/lib/mysql
+
+  dbadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: on-failure
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+    depends_on:
+      - db
+    ports:
+      - 8081:80

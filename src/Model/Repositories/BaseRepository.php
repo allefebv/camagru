@@ -2,16 +2,22 @@
 
 namespace Camagru\Model\Repositories;
 
+use \PDO;
+use \Camagru\Config;
+
 abstract class BaseRepository {
 
 	private static $_db;
-	private static $_dbDsn = "sqlite:db/";
-	private static $_dbName = "camagru";
 
 	private static function setDb() {
-		self::$_db = new \PDO(self::$_dbDsn.self::$_dbName);
-		self::$_db->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
-		self::$_db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+		$config = Config::getInstance();
+		self::$_db = new PDO(
+			$config->get('db_dsn_exists'),
+			$config->get('db_user'),
+			$config->get('db_password')
+		);
+		self::$_db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+		self::$_db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	}
 
 	protected function getDb() {

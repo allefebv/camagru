@@ -4,6 +4,8 @@ namespace Camagru\Model\Repositories;
 
 use \Camagru\Model\Entities\Layer;
 
+require("config/database.php");
+
 class LayerRepository extends BaseRepository {
 
 	//table DB 'layer' et classe 'Layer'

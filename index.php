@@ -4,7 +4,7 @@ use \Camagru\Autoloader;
 use \Camagru\Controller\Router;
 
 session_start();
-require_once('Autoloader.php');
+require_once('src/Autoloader.php');
 
 try {
     Autoloader::register();
@@ -14,5 +14,3 @@ try {
 
 $router = new Router();
 $router->route();
-
-?>

@@ -4,6 +4,8 @@ namespace Camagru\Model\Repositories;
 
 use \Camagru\Model\Entities\User;
 
+require("config/database.php");
+
 class UserRepository extends BaseRepository {
 
 	//table DB 'users' et classe 'User'

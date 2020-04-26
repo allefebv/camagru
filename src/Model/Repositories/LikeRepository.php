@@ -4,6 +4,8 @@ namespace Camagru\Model\Repositories;
 
 use \Camagru\Model\Entities\Like;
 
+require("config/database.php");
+
 class LikeRepository extends BaseRepository {
 
 	//table DB 'comments' et classe

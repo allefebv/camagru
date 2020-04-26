@@ -8,7 +8,7 @@ class View {
 	private $_title;
 
 	public function __construct($action) {
-		$this->_file = 'View/View' . $action . '.php';
+		$this->_file = 'src/View/View' . $action . '.php';
 	}
 
 	public function generate($data) {
@@ -17,7 +17,7 @@ class View {
 		$content = $this->generateFile($this->_file, $data);
 		$header = $this->generateHeader();
 		//Template qui reutilise le corps ($content + $title)
-		$view = $this->generateFile('View/template.php',
+		$view = $this->generateFile('src/View/template.php',
 			array('title' => $this->_title,
 				'content' => $content,
 				'header' => $header));

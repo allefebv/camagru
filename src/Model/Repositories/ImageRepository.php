@@ -4,6 +4,8 @@ namespace Camagru\Model\Repositories;
 
 use \Camagru\Model\Entities\Image;
 
+require("config/database.php");
+
 class ImageRepository extends BaseRepository {
 
 	//table DB 'image' et classe 'Image'

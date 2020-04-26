@@ -4,6 +4,8 @@ namespace Camagru\Model\Repositories;
 
 use \Camagru\Model\Entities\Comment;
 
+require("config/database.php");
+
 class CommentRepository extends BaseRepository {
 
 	//table DB 'comments' et classe
