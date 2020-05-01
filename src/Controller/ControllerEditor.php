@@ -11,8 +11,8 @@ use \Exception;
 class ControllerEditor {
 
 	private $_view;
-	private $_imageManager;
-	private $_layerManager;
+	private $_imageRepository;
+	private $_layerRepository;
 	private $_json;
 
 	public function __construct($url) {
@@ -26,23 +26,23 @@ class ControllerEditor {
 	}
 
 	private function editor() {
-		$this->_layerManager = new LayerRepository;
+		$this->_layerRepository = new LayerRepository;
 		$this->_view = new View('Editor');
-		$this->_view->generate(array('layers' => $this->_layerManager->getLayers()));
+		$this->_view->generate(array('layers' => $this->_layerRepository->getLayers()));
 	}
 
 	private function saveImg() {
-		$this->_imageManager = new ImageRepository;
-		$this->_json = json_decode($this->_json, TRUE);
+		$this->_imageRepository = new ImageRepository;
+		$this->_json = \json_decode($this->_json, TRUE);
 
 		$imgUrl = explode(',', $this->_json['img']);
 
 		$imgUrl = base64_decode($imgUrl[1]);
-		$imgId = (int)current($this->_imageManager->getBiggestId()) + 1;
+		$imgId = (int)current($this->_imageRepository->getBiggestId()) + 1;
 		$imgName = 'image_' . $imgId . '.png';
-		$imgPath = '/public/userImages/'.$imgName;
+		$imgPath = '/data/userImages/'.$imgName;
 		$img = new Image(array('pathToImage' => $imgPath, 'userId' => $_SESSION['logged']));
-		$this->_imageManager->add($img);
+		$this->_imageRepository->add($img);
 		file_put_contents($_SERVER['DOCUMENT_ROOT'].$imgPath, $imgUrl);
 
 
@@ -50,8 +50,8 @@ class ControllerEditor {
 		$layer = ($layerManager->getLayerById($this->_json['layer']))[0];
 		$layerPath = $layer->pathToLayer();
 
-		$userImage = imagecreatefrompng($_SERVER['DOCUMENT_ROOT'].$imgPath);
-		$layerImage = imagecreatefrompng($_SERVER['DOCUMENT_ROOT'].$layerPath);
+		$userImage = \imagecreatefrompng($_SERVER['DOCUMENT_ROOT'].$imgPath);
+		$layerImage = \imagecreatefrompng($_SERVER['DOCUMENT_ROOT'].$layerPath);
 		$layerWidth = imagesx($layerImage);
 		$layerHeight = imagesy($layerImage);
 		imagealphablending($userImage, true);

@@ -57,7 +57,7 @@
 		overlay.setAttribute('src', element.getAttribute('src'));
 		var saveToolTip = document.getElementById('savetooltip');
 		saveToolTip.parentNode.removeChild(saveToolTip);
-		save.disabled = false;
+		saveButton.disabled = false;
 	}
 
 	function createCanvas() {
@@ -87,7 +87,7 @@
 		background.style.display = '';
 	}
 
-	save.addEventListener("click", function() {
+	saveButton.addEventListener("click", function() {
 		var httpRequest = new XMLHttpRequest();
 		createCanvas();
 		toSendContext.clearRect(0, 0, toSend.width, toSend.height);

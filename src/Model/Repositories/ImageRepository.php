@@ -8,9 +8,8 @@ require("config/database.php");
 
 class ImageRepository extends BaseRepository {
 
-	//table DB 'image' et classe 'Image'
 	public function getImages() {
-		return $this->getAll('image', 'Image');
+		return $this->getAll('image', Image::class);
 	}
 
 	public function getImagesByPublicationDate() {

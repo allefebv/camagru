@@ -4,6 +4,8 @@ namespace Camagru\Model\Entities;
 
 use \Camagru\Model\Repositories\LikeRepository;
 use \Camagru\Model\Repositories\CommentRepository;
+use \Camagru\Model\Entities\Comment;
+use \Camagru\Model\Entities\Like;
 
 final class User extends AbstractEntity {
 
@@ -53,7 +55,6 @@ final class User extends AbstractEntity {
 
 	//setter for errors
 	protected function setErrors($error) {
-		echo $error;
 		$this->_errors[$error] = $error;
 	}
 
@@ -114,7 +115,7 @@ final class User extends AbstractEntity {
 	}
 
 	public function postComment(array $data) {
-		$this->_commentManager = new CommentManager;
+		$this->_commentManager = new CommentRepository;
 		$this->_commentManager->add(
 			new Comment(array(	'commentText' => $data['commentText'],
 								'imageId' => $data['imageId'],
@@ -122,7 +123,7 @@ final class User extends AbstractEntity {
 	}
 
 	public function likeImage(array $data) {
-		$this->_likeManager = new LikeManager;
+		$this->_likeManager = new LikeRepository;
 		$pair = ['userId' => $this->id(), 'imageId' => $data['imageId']];
 		if ($this->_likeManager->likeStatus($pair) === 1) {
 			$this->_likeManager->delete(new Like($pair));

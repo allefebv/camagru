@@ -8,26 +8,17 @@ require("config/database.php");
 
 class LayerRepository extends BaseRepository {
 
-	//table DB 'layer' et classe 'Layer'
-	public function __construct() {
-		$layers = scandir($_SERVER['DOCUMENT_ROOT'].'/public/layers/');
-		foreach($layers as $layer) {
-			if (strpos($layer, '.png') !== FALSE)
-				$this->add(new Layer(array('pathToLayer' => '/public/layers/' . $layer)));
-		}
-	}
-
 	private function add(Layer $layer) {
-		$req = $this->getDb()->prepare('INSERT OR IGNORE INTO layer(pathToLayer) VALUES(:pathToLayer)');
+		$req = $this->getDb()->prepare('INSERT IGNORE INTO layer(pathToLayer) VALUES(:pathToLayer)');
 		$req->execute(array('pathToLayer' => $layer->pathToLayer()));
 	}
 
 	public function getLayers() {
-		return $this->getAll('layer', 'Layer');
+		return $this->getAll('layer', Layer::class);
 	}
 
 	public function getLayerById($id) {
-		return $this->getByKey('layer', 'Layer', 'id', $id);
+		return $this->getByKey('layer', Layer::class, 'id', $id);
 	}
 }
 
