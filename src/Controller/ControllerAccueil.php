@@ -2,9 +2,9 @@
 
 namespace Camagru\Controller;
 
-use \Camagru\Model\Repositories\ImageRepository;
-use \Camagru\Model\Repositories\UserRepository;
-use \Camagru\View\View;
+use Camagru\Model\Repositories\ImageRepository;
+use Camagru\Model\Repositories\UserRepository;
+use Camagru\Service\ViewGenerator;
 use \Exception;
 
 class ControllerAccueil {
@@ -12,7 +12,7 @@ class ControllerAccueil {
 	private $_imageManager;
 	private $_userManager;
 	private $_user;
-	private $_view;
+	private $_viewGenerator;
 	private $_json;
 
 	public function __construct($url) {
@@ -43,8 +43,8 @@ class ControllerAccueil {
 	private function gallery() {
 		$this->_imageManager = new ImageRepository;
 		$images = $this->_imageManager->getImagesByPublicationDate();
-		$this->_view = new View('Accueil');
-		$this->_view->generate(array('images' => $images));
+		$this->_viewGenerator = new ViewGenerator('Accueil');
+		$this->_viewGenerator->generate(array('images' => $images));
 	}
 
 }

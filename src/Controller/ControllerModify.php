@@ -2,13 +2,13 @@
 
 namespace Camagru\Controller;
 
-use \Camagru\Model\Repositories\UserRepository;
-use \Camagru\View\View;
+use Camagru\Model\Repositories\UserRepository;
+use Camagru\Service\ViewGenerator;
 use \Exception;
 
 class ControllerModify {
 
-	private $_view;
+	private $_viewGenerator;
 	private $_json;
 	private $_userManager;
 
@@ -99,8 +99,8 @@ class ControllerModify {
 	}
 
 	private function generateModifyView() {
-		$this->_view = new View('Modify');
-		$this->_view->generate(array());
+		$this->_viewGenerator = new ViewGenerator('Modify');
+		$this->_viewGenerator->generate(array());
 	}
 }
 

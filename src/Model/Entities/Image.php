@@ -2,8 +2,8 @@
 
 namespace Camagru\Model\Entities;
 
-use \Camagru\Model\Repositories\LikeRepository;
-use \Camagru\Model\Repositories\CommentRepository;
+use Camagru\Model\Repositories\LikeRepository;
+use Camagru\Model\Repositories\CommentRepository;
 
 final class Image extends AbstractEntity {
 

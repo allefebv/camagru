@@ -22,7 +22,9 @@ $db->query("CREATE TABLE `user` (
     username                TEXT NOT NULL,
     email                   TEXT NOT NULL,
     password                TEXT NOT NULL,
-    registrationDate        TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+    registrationDate        TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    activated               BOOLEAN DEFAULT 0 NOT NULL,
+    `key`                   CHAR(32) NOT NULL
 );");
 
 $db->query("CREATE TABLE `image` (

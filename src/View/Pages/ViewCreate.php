@@ -28,4 +28,8 @@
 		<?php endif; ?>
 	</div>
 	<input type="submit" class="button is-link" value="Valider">
+	<p class="content is-medium has-text-warning">
+		Vous allez recevoir un email de confirmation pour activer votre compte.<br/>
+		Il vous faudra l'activer pour pouvoir vous connecter.
+	</p>
 </form>

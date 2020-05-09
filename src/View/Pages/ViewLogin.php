@@ -1,4 +1,15 @@
 <?php $this->_title = 'Connexion'; ?>
+
+<? if (isset($activated) && $activated === 1): ?>
+	<div class="alert">
+		Votre compte a bien été activé
+	</div>
+<? elseif (isset($linkError)): ?>
+	<div class="alert">
+		Lien d'activation périmé
+	</div>
+<? endif; ?>
+
 <div id="loginForm">
 	<div id="emailField" class="field">
 		<label class="label has-text-danger">Email</label>
@@ -13,6 +24,10 @@
 		</div>
 	</div>
 	<button class="button is-success" onclick="loginRequest()">Connexion</button>
+	<form action="index.php" method="GET">
+		<input type="hidden" name="url" value="password">
+		<input class="button is-light" type="submit" value="Mot de passe oublié"/>
+	</form>
 </div>
 
 <script>
@@ -47,7 +62,6 @@
 		password = document.getElementById('password').value;
 		ajaxify(JSON.stringify({ email:email, password:password }));
 	}
-
 
 	function createParagraph(parentNode, message) {
 		errorParagraph = document.createElement("p");

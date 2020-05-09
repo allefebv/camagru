@@ -3,12 +3,12 @@
 namespace Camagru\Model\Repositories;
 
 use \PDO;
-use \Camagru\Config;
-use \Camagru\Model\Entities\Comment;
-use \Camagru\Model\Entities\Image;
-use \Camagru\Model\Entities\Layer;
-use \Camagru\Model\Entities\Like;
-use \Camagru\Model\Entities\User;
+use Camagru\Config;
+use Camagru\Model\Entities\Comment;
+use Camagru\Model\Entities\Image;
+use Camagru\Model\Entities\Layer;
+use Camagru\Model\Entities\Like;
+use Camagru\Model\Entities\User;
 
 abstract class BaseRepository {
 
@@ -53,7 +53,7 @@ abstract class BaseRepository {
 
 	protected function getByKey($table, $obj, $key, $value) {
 		$var = NULL;
-		$req = $this->getDb()->prepare('SELECT * FROM ' . $table . ' WHERE ' . $key . ' = \'' . $value . '\'');
+		$req = $this->getDb()->prepare('SELECT * FROM ' . $table . ' WHERE `' . $key . '` = \'' . $value . '\'');
 		$req->execute();
 		while ($data = $req->fetch())
 			$var[] = new $obj($data);

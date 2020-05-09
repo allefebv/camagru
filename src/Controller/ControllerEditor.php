@@ -2,15 +2,15 @@
 
 namespace Camagru\Controller;
 
-use \Camagru\Model\Repositories\LayerRepository;
-use \Camagru\Model\Repositories\ImageRepository;
-use \Camagru\Model\Entities\Image;
-use \Camagru\View\View;
+use Camagru\Model\Repositories\LayerRepository;
+use Camagru\Model\Repositories\ImageRepository;
+use Camagru\Model\Entities\Image;
+use Camagru\Service\ViewGenerator;
 use \Exception;
 
 class ControllerEditor {
 
-	private $_view;
+	private $_viewGenerator;
 	private $_imageRepository;
 	private $_layerRepository;
 	private $_json;
@@ -27,8 +27,8 @@ class ControllerEditor {
 
 	private function editor() {
 		$this->_layerRepository = new LayerRepository;
-		$this->_view = new View('Editor');
-		$this->_view->generate(array('layers' => $this->_layerRepository->getLayers()));
+		$this->_viewGenerator = new ViewGenerator('Editor');
+		$this->_viewGenerator->generate(array('layers' => $this->_layerRepository->getLayers()));
 	}
 
 	private function saveImg() {

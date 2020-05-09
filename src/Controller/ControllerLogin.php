@@ -2,17 +2,19 @@
 
 namespace Camagru\Controller;
 
-use \Camagru\Model\Repositories\UserRepository;
-use \Camagru\View\View;
+use Camagru\Model\Repositories\UserRepository;
+use Camagru\Service\ViewGenerator;
 use \Exception;
 
 class ControllerLogin {
 
-	private $_view;
-	private $_userManager;
+	private $_viewGenerator;
+	private $_userRepository;
 	private $_user;
 
-	public function __construct($url) {
+	public function __construct($url) 
+	{
+		$this->_userRepository = new UserRepository;
 		if (isset($url) && count($url) > 1) {
 			throw new Exception('Page Introuvable');
 		}
@@ -26,10 +28,11 @@ class ControllerLogin {
 			$this->generateLoginView();
 		}
 	}
-	private function authUser() {
+
+	private function authUser()
+	{
 		$this->_json = json_decode($this->_json, TRUE);
-		$this->_userManager = new UserRepository;
-		$this->_user = ($this->_userManager->getUserByEmail(htmlspecialchars($this->_json['email'])))[0];
+		$this->_user = ($this->_userRepository->getUserByEmail(htmlspecialchars($this->_json['email'])))[0];
 		if (!$this->_user) {
 			echo json_encode(array('emailError' => 1));
 		}
@@ -41,11 +44,22 @@ class ControllerLogin {
 		}
 	}
 
-	private function generateLoginView() {
-		$this->_view = new View('Login');
-		$this->_view->generate(array());
-	}
+	private function generateLoginView()
+	{
+		$this->_viewGenerator = new ViewGenerator('Login');
 
+		if (isset($_GET['user'])) {
+			$user = $this->_userRepository->getUserByKey($_GET['user'])[0];
+			if ($user) {
+				$activated = $user->activated();
+				$this->_viewGenerator->generate(array('activated' => $activated));
+			} else {
+				$this->_viewGenerator->generate(array('linkError' => 1));
+			}
+		} else {
+			$this->_viewGenerator->generate(array());
+		}
+	}
 
 }
 

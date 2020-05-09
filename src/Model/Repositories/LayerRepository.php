@@ -2,7 +2,7 @@
 
 namespace Camagru\Model\Repositories;
 
-use \Camagru\Model\Entities\Layer;
+use Camagru\Model\Entities\Layer;
 
 require("config/database.php");
 

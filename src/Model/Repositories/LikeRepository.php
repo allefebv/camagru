@@ -2,7 +2,7 @@
 
 namespace Camagru\Model\Repositories;
 
-use \Camagru\Model\Entities\Like;
+use Camagru\Model\Entities\Like;
 
 require("config/database.php");
 

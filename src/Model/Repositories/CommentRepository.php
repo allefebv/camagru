@@ -2,7 +2,7 @@
 
 namespace Camagru\Model\Repositories;
 
-use \Camagru\Model\Entities\Comment;
+use Camagru\Model\Entities\Comment;
 
 require("config/database.php");
 
