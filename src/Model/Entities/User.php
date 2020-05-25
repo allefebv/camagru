@@ -9,69 +9,43 @@ use Camagru\Model\Entities\Like;
 
 final class User extends AbstractEntity {
 
-	private $_id;
-	private $_username;
-	private $_password;
-	private $_registrationDate;
-	private $_email;
-	private $_commentManager;
-	private $_key;
-	private $_activated;
-	private $_errors=array();
+	private $id;
+	private $username;
+	private $password;
+	private $registrationDate;
+	private $email;
+	private $commentRepository;
+	private $key;
+	private $activated;
 
 	public function __construct(array $data)
 	{
 		parent::__construct($data);
 	}
 
-	//SPECIFIC METHODS
-	public function login($password)
+	public function __toString()
 	{
-		if (hash('whirlpool', $password) === $this->password()) {
-			$_SESSION['logged'] = $this->id();
-			return TRUE;
+		if ($this->username()) {
+			return $this->username();
 		} else {
-			return FALSE;
+			return 'Invalid User';
 		}
-	}
-
-	public function verifyPassword($password)
-	{
-		if (hash('whirlpool', $password) === $this->password()) {
-			return TRUE;
-		} else {
-			return FALSE;
-		}
-	}
-
-	public function logout()
-	{
-		unset($_SESSION['logged']);
-		session_destroy();
-	}
-
-	public function isValid()
-	{
-		if (empty($this->errors())) {
-			return TRUE;
-		}
-		return FALSE;
 	}
 
 	public function activate()
 	{
-		$this->setActivated(true);
+		$this->setActivated(1);
 	}
 
 	public function deactivate()
 	{
-		$this->setActivated(false);
+		$this->setActivated(0);
 	}
 
 	public function postComment(array $data)
 	{
-		$this->_commentManager = new CommentRepository;
-		$this->_commentManager->add(
+		$this->commentRepository = new CommentRepository;
+		$this->commentRepository->add(
 			new Comment(array(	'commentText' => $data['commentText'],
 								'imageId' => $data['imageId'],
 								'userId' => $this->id())));
@@ -88,121 +62,88 @@ final class User extends AbstractEntity {
 		}
 	}
 
-	public function __toString()
-	{
-		if ($this->username()) {
-			return $this->username();
-		} else {
-			return 'Invalid User';
-		}
-	}
-
 	//SETTERS
 	protected function setUsername($username)
 	{
-		if (!empty($username) && is_string($username)) {
-			$this->_username = $username;
-		}
-		else {
-			$this->setErrors('username');
-		}
+		$this->username = $username;
 	}
 
 	protected function setPassword($password)
 	{
-		$this->_password = $password;
+		$this->password = $password;
 	}
 
 	protected function setEmail($email)
 	{
-		if (!empty($email) && is_string($email)) {
-			$this->_email = $email;
-		} else {
-			$this->setErrors('email');
-		}
+		$this->email = $email;
 	}
 
-	//specific setters for DB retrieving
 	protected function setRegistrationDate($registrationDate)
 	{
 		$registrationDate = (int) $registrationDate;
 		if ($registrationDate > 0) {
-			$this->_inscriptionDate = $registrationDate;
+			$this->registrationDate = $registrationDate;
 		}
 	}
 
 	protected function setId($id)
 	{
-		$id = (int)$id;
-		if ($id > 0) {
-			$this->_id = $id;
-		}
+		$this->id = $id;
 	}
 
 	protected function setKey($key)
 	{
-		$this->_key = $key;
+		$this->key = $key;
 	}
 
-	protected function setActivated(bool $bool)
+	protected function setActivated(int $bool)
 	{
-		if ($bool === true) {
-			$this->_activated = 1;
+		if ($bool === 1) {
+			$this->activated = 1;
 		} else {
-			$this->_activated = 0;
+			$this->activated = 0;
 		}
-	}
-
-	//setter for errors
-	protected function setErrors($error)
-	{
-		$this->_errors[$error] = $error;
 	}
 
 	//GETTERS
 	public function id()
 	{
-		return $this->_id;
+		return $this->id;
 	}
 
 	public function key()
 	{
-		return $this->_key;
+		return $this->key;
 	}
 
 	public function activated()
 	{
-		return $this->_activated;
+		return $this->activated;
 	}
 
 	public function status()
 	{
-		return $this->_key;
+		return $this->key;
 	}
 
 	public function username()
 	{
-		return $this->_username;
+		return $this->username;
 	}
 
 	public function password()
 	{
-		return $this->_password;
+		return $this->password;
 	}
 
 	public function registrationDate()
 	{
-		return $this->_registrationDate;
+		return $this->registrationDate;
 	}
 
 	public function email()
 	{
-		return $this->_email;
-	}
-
-	public function errors()
-	{
-		return $this->_errors;
+		return $this->email;
 	}
 }
 

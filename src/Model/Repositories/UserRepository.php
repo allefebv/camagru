@@ -33,7 +33,7 @@ class UserRepository extends BaseRepository {
 		$req = $this->getDb()->prepare('INSERT INTO user(username, `password`, email, `key`) VALUES(:username, :password, :email, :key)');
 		$req->execute(array(
 			'username'	=> $user->username(),
-			'password'	=> hash('whirlpool', $user->password()),
+			'password'	=> $user->password(),
 			'email' 	=> $user->email(),
 			'key'		=> $user->key()));
 	}

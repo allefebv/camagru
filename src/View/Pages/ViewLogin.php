@@ -14,13 +14,13 @@
 	<div id="emailField" class="field">
 		<label class="label has-text-danger">Email</label>
 		<div class="control">
-			<input id="email" class="input" type="text" placeholder="exemple : peepoodo@forest.com">
+			<input id="email" class="input" type="text" placeholder="peepoodo@forest.com">
 		</div>
 	</div>
 	<div id="passwordField" class="field">
 		<label class="label has-text-danger">Mot de passe</label>
 		<div class="control">
-			<input id="password" class="input" type="password" placeholder="exemple : C4rty%5$">
+			<input id="password" class="input" type="password" placeholder="@MyStrong?Password1">
 		</div>
 	</div>
 	<button class="button is-success" onclick="loginRequest()">Connexion</button>
@@ -28,6 +28,9 @@
 		<input type="hidden" name="url" value="password">
 		<input class="button is-light" type="submit" value="Mot de passe oublié"/>
 	</form>
+
+	<div id="inactiveField">
+	</div>
 </div>
 
 <script>
@@ -81,13 +84,13 @@
 	function loginResponse(jsonString, arrayResponse) {
 		document.getElementById('password').value = "";
 		deleteParagraph();
-		if (arrayResponse['passwordError']) {
+		if (arrayResponse['incorrect_pwd']) {
 			createParagraph('passwordField', 'Mot de passe erroné');
-		}
-		else if (arrayResponse['emailError']) {
+		} else if (arrayResponse['inactive_account']) {
+			createParagraph('inactiveField', 'Vous devez Activer votre compte');
+		} else if (arrayResponse['incorrect_email']) {
 			createParagraph('emailField', 'Email inconnu');
-		}
-		else if (arrayResponse['success']) {
+		} else if (arrayResponse['success']) {
 			loginForm.style.display = 'none';
 			createParagraph('content', 'Vous etes connecté');
 			setTimeout(function() {

@@ -4,17 +4,20 @@ namespace Camagru\Controller;
 
 use Camagru\Model\Repositories\UserRepository;
 use Camagru\Service\ViewGenerator;
+use Camagru\Service\Authenticator;
 use \Exception;
 
 class ControllerLogin {
 
-	private $_viewGenerator;
-	private $_userRepository;
-	private $_user;
+	private $viewGenerator;
+	private $userRepository;
+	private $user;
+	private $authenticator;
 
 	public function __construct($url) 
 	{
-		$this->_userRepository = new UserRepository;
+		$this->userRepository = new UserRepository();
+		$this->authenticator = new Authenticator();
 		if (isset($url) && count($url) > 1) {
 			throw new Exception('Page Introuvable');
 		}
@@ -32,12 +35,16 @@ class ControllerLogin {
 	private function authUser()
 	{
 		$this->_json = json_decode($this->_json, TRUE);
-		$this->_user = ($this->_userRepository->getUserByEmail(htmlspecialchars($this->_json['email'])))[0];
-		if (!$this->_user) {
-			echo json_encode(array('emailError' => 1));
+		$this->user = ($this->userRepository->getUserByEmail(htmlspecialchars($this->_json['email'])))[0];
+		$this->authenticator->setUser($this->user);
+		if (!$this->user) {
+			echo json_encode(array('incorrect_email' => 1));
 		}
-		else if (!$this->_user->login(htmlspecialchars($this->_json['password']))) {
-			echo json_encode(array('passwordError' => 1));
+		else if (!$this->authenticator->isUserActivated()) {
+			echo json_encode(array('inactive_account' => 1));
+		}
+		else if (!$this->authenticator->login(htmlspecialchars($this->_json['password']))) {
+			echo json_encode(array('incorrect_pwd' => 1));
 		}
 		else {
 			echo json_encode(array('success' => 1));
@@ -46,18 +53,18 @@ class ControllerLogin {
 
 	private function generateLoginView()
 	{
-		$this->_viewGenerator = new ViewGenerator('Login');
+		$this->viewGenerator = new ViewGenerator('Login');
 
 		if (isset($_GET['user'])) {
-			$user = $this->_userRepository->getUserByKey($_GET['user'])[0];
+			$user = $this->userRepository->getUserByKey($_GET['user'])[0];
 			if ($user) {
 				$activated = $user->activated();
-				$this->_viewGenerator->generate(array('activated' => $activated));
+				$this->viewGenerator->generate(array('activated' => $activated));
 			} else {
-				$this->_viewGenerator->generate(array('linkError' => 1));
+				$this->viewGenerator->generate(array('linkError' => 1));
 			}
 		} else {
-			$this->_viewGenerator->generate(array());
+			$this->viewGenerator->generate(array());
 		}
 	}
 

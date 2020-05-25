@@ -23,9 +23,11 @@ class ControllerValidate {
         $userRepository = new UserRepository();
         $user = $userRepository->getUserByKey($_GET['user'])[0];
         if ($user) {
+            $newKey = md5(uniqid());
             $user->activate();
             $userRepository->update($user, 'activated', $user->activated());
-            $userRepository->update($user, '`key`', md5(uniqid()));
+            $userRepository->update($user, '`key`', $newKey);
+            $_GET['user'] = $newKey;
         }
     } 
 
