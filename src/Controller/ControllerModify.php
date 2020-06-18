@@ -35,13 +35,13 @@ class ControllerModify {
 		$this->json = json_decode($this->json, TRUE);
 		$this->userRepository = new UserRepository;
 		$this->user = ($this->userRepository->getUserById($_SESSION['logged']))[0];
-		if (isset($this->json['email'])) {
+		if (isset($this->json['new_email'])) {
 			$this->email();
 		}
-		else if (isset($this->json['password'])) {
+		else if (isset($this->json['new_password1'])) {
 			$this->password();
 		}
-		else if (isset($this->json['username'])) {
+		else if (isset($this->json['new_username'])) {
 			$this->username();
 		}
 		else if (isset($this->json['delete'])) {
@@ -52,8 +52,8 @@ class ControllerModify {
 	private function username() {
 		$response = $this->userRegisterer->updateUserUsername(
 			$this->user,
-			$this->json['password'],
-			$this->json['new_username']
+			$this->json['new_username'],
+			$this->json['password']
 		);
 		echo \json_encode($response);
 	}

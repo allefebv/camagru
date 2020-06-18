@@ -53,7 +53,7 @@ abstract class BaseRepository {
 
 	protected function getByKey($table, $obj, $key, $value) {
 		$var = NULL;
-		$req = $this->getDb()->prepare('SELECT * FROM ' . $table . ' WHERE `' . $key . '` = \'' . $value . '\'');
+		$req = $this->getDb()->prepare('SELECT * FROM ' . $table . ' WHERE `' . $key . '` = \'' . \htmlspecialchars($value) . '\'');
 		$req->execute();
 		while ($data = $req->fetch())
 			$var[] = new $obj($data);
@@ -63,7 +63,7 @@ abstract class BaseRepository {
 
 	protected function countByKey($table, $obj, $key, $value) {
 		$var = NULL;
-		$req = $this->getDb()->prepare('SELECT COUNT(*) FROM `' . $table . '` WHERE ' . $key . '=' . $value);
+		$req = $this->getDb()->prepare('SELECT COUNT(*) FROM `' . $table . '` WHERE ' . $key . '=' . \htmlspecialchars($value));
 		$req->execute();
 		$data = $req->fetch();
 		return $data;
@@ -75,12 +75,12 @@ abstract class BaseRepository {
 										' SET '.$updateFieldKey.
 										'=:updateFieldValue WHERE '.
 										$idKeyField.'=:idFieldValue');
-		return $req->execute(array('updateFieldValue' => $updateFieldValue,
+		return $req->execute(array('updateFieldValue' => \htmlspecialchars($updateFieldValue),
 							'idFieldValue' => $idKeyValue));
 	}
 
 	protected function deleteEntry($table, $key, $value) {
-		$req = $this->getDb()->prepare('DELETE from ' . $table . ' WHERE ' . $key . '=' . $value);
+		$req = $this->getDb()->prepare('DELETE from ' . $table . ' WHERE ' . $key . '=' . \htmlspecialchars($value));
 		return $req->execute();
 	}
 }

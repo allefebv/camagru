@@ -52,16 +52,4 @@
 	</div>
 </nav>
 
-<script>
-
-	document.addEventListener('DOMContentLoaded', () => {
-		$navbarBurger = document.getElementById('myBurger');
-		$navbarBurger.addEventListener('click', () => {
-			const target = $navbarBurger.dataset.target;
-			const $target = document.getElementById($navbarBurger.dataset.target);
-			$navbarBurger.classList.toggle('is-active');
-			$target.classList.toggle('is-active');
-			});
-	});
-
-</script>
+<script type="text/javascript" src="/src/View/scripts/header.js"></script>

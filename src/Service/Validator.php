@@ -18,7 +18,7 @@ class Validator {
 
     public function isValidUsername(string $username)
     {
-        if (!isset($_POST['username']) || empty($_POST['username'])) {
+        if (!isset($username) || empty($username)) {
             return false;
         }
 

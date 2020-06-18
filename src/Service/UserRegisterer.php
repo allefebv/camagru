@@ -29,7 +29,7 @@ class UserRegisterer {
             $response['error_pwd'] = 1;
         } else if (!$this->validator->isValidUsername($username)) {
             $response['error_format_username'] = 1;
-        } else if (!$this->userRepository->update($this->user, 'username', $this->json['newEmail'])){
+        } else if (!$this->userRepository->update($user, 'username', $username)){
 			$response['error_db'] = 1;
 		} else {
 			$response['success'] = 1;
@@ -45,7 +45,7 @@ class UserRegisterer {
             $response['error_pwd'] = 1;
         } else if (!$this->validator->isValidEmail($email)) {
             $response['error_format_email'] = 1;
-        } else if (!$this->userRepository->update($this->user, 'email', $this->json['newEmail'])){
+        } else if (!$this->userRepository->update($user, 'email', $this->json['newEmail'])){
 			$response['error_db'] = 1;
 		} else {
 			$response['success'] = 1;
@@ -63,7 +63,7 @@ class UserRegisterer {
 			$response['error_format_new_pwd'] = 1;
 		} else if ($newPassword[0] !== $newPassword[1]) {
 			$response['error_diff_new_pwd'] = 1;
-		} else if (!$this->userRepository->update($this->user, 'pwd', $this->json['newPassword1'])){
+		} else if (!$this->userRepository->update($user, 'pwd', $this->json['newPassword1'])){
 			$response['error_db'] = 1;
 		} else {
 			$response['success'] = 1;
@@ -94,7 +94,7 @@ class UserRegisterer {
         $key = md5(uniqid());
         $this->user = new User([
             'username' => $_POST['username'],
-            'password' => hash('whirlpool', \htmlspecialchars($_POST['password'])),
+            'password' => hash('whirlpool', $_POST['password']),
             'email' => $_POST['email'],
             'key'	=> $key,
         ]);

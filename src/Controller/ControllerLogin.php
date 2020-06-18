@@ -35,7 +35,7 @@ class ControllerLogin {
 	private function authUser()
 	{
 		$this->_json = json_decode($this->_json, TRUE);
-		$this->user = ($this->userRepository->getUserByEmail(htmlspecialchars($this->_json['email'])))[0];
+		$this->user = ($this->userRepository->getUserByEmail($this->_json['email']))[0];
 		$this->authenticator->setUser($this->user);
 		if (!$this->user) {
 			echo json_encode(array('incorrect_email' => 1));
@@ -43,7 +43,7 @@ class ControllerLogin {
 		else if (!$this->authenticator->isUserActivated()) {
 			echo json_encode(array('inactive_account' => 1));
 		}
-		else if (!$this->authenticator->login(htmlspecialchars($this->_json['password']))) {
+		else if (!$this->authenticator->login($this->_json['password'])) {
 			echo json_encode(array('incorrect_pwd' => 1));
 		}
 		else {
