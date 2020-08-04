@@ -1,40 +1,24 @@
-function ajaxify(jsonString) {
-    var httpRequest = new XMLHttpRequest();
-    httpRequest.onreadystatechange = function() {
-        if (httpRequest.readyState === 4 && httpRequest.status !== 200) {
-            console.log('error return requete serveur');
-            document.write(httpRequest.status);
-            return false;
-        }
-        else if (httpRequest.readyState === 4 && httpRequest.status === 200) {
-            var httpResponse = httpRequest.response;
-            if (httpResponse) {
-                var obj = JSON.parse(httpRequest.response);
-            }
-            if (obj && 'like' in obj) {
-                likeResponse(jsonString, obj);
-            }
-        }
-    }
-    httpRequest.open('POST', 'index.php?url=accueil', true);
-    httpRequest.setRequestHeader('Content-Type', 'multipart/form-data');
-    httpRequest.send(jsonString);
+import * as utils from './utils.js'
+
+
+const like_request_buttons = document.getElementsByClassName('select-choice')
+Array.prototype.forEach.call(like_request_buttons, function(item) {
+    
 }
 
 function likeImage(likeButton) {
     buttonId = likeButton.getAttribute('id');
     imgId = buttonId.match(/\d+/)[0];
-    ajaxify(JSON.stringify({ like:1, imageId:imgId }));
+    utils.ajaxify(
+        JSON.stringify({ like:1, imageId:imgId }),
+        likeResponse,
+        'index.php?url=accueil'
+    );
 }
 
-function likeResponse(sentData, responseData) {
-    json = JSON.parse(sentData);
-    likesNb = document.getElementById('likes' + json['imageId']);
+const likeResponse = (responseData) => {
+    likesNb = document.getElementById('likes' + responseData['imageId']);
     likesNb.innerHTML = responseData['likes'];
-}
-
-function addCommentNode(commentText, imgId) {
-
 }
 
 function postComment(commentButton) {

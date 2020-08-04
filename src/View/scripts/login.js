@@ -1,32 +1,16 @@
+import * as utils from './utils.js'
+
 var loginForm = document.getElementById('loginForm');
 
-function ajaxify(jsonString) {
-    var httpRequest = new XMLHttpRequest();
-    httpRequest.onreadystatechange = function() {
-        if (httpRequest.readyState === 4 && httpRequest.status !== 200) {
-            console.log('error return requete serveur');
-            document.write(httpRequest.status);
-            return false;
-        }
-        else if (httpRequest.readyState === 4 && httpRequest.status === 200) {
-            var httpResponse = httpRequest.response;
-            if (httpResponse) {
-                var obj = JSON.parse(httpRequest.response);
-                if (obj) {
-                    loginResponse(jsonString, obj);
-                }
-            }
-        }
-    }
-    httpRequest.open('POST', 'index.php?url=login', true);
-    httpRequest.setRequestHeader('Content-Type', 'multipart/form-data');
-    httpRequest.send(jsonString);
-}
-
-function loginRequest() {
-    email = document.getElementById('email').value;
-    password = document.getElementById('password').value;
-    ajaxify(JSON.stringify({ email:email, password:password }));
+const login_request_button = document.getElementById('login_request')
+login_request_button.onclick = () => {
+    let email = document.getElementById('email').value;
+    let password = document.getElementById('password').value;
+    utils.ajaxify(
+        JSON.stringify({ email:email, password:password }),
+        loginResponse,
+        'index.php?url=login'
+    );
 }
 
 function createParagraph(parentNode, message) {
@@ -44,7 +28,7 @@ function deleteParagraph () {
     }
 }
 
-function loginResponse(jsonString, arrayResponse) {
+const loginResponse = arrayResponse => {
     document.getElementById('password').value = "";
     deleteParagraph();
     if (arrayResponse['incorrect_pwd']) {

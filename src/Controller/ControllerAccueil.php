@@ -33,7 +33,7 @@ class ControllerAccueil {
 			$this->_user->likeImage($this->_json);
 			$this->_imageManager = new ImageRepository;
 			$image = $this->_imageManager->getImageById($this->_json['imageId'])[0];
-			echo json_encode(array('like' => 1, 'likes' => $image->likes()));
+			echo json_encode(array('like' => 1, 'likes' => $image->likes(), 'imageId' => $this->_json['imageId']));
 		}
 		else if (isset($this->_json['comment'])) {
 			$this->_user->postComment($this->_json);

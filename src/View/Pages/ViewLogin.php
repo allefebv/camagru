@@ -23,7 +23,7 @@
 			<input id="password" class="input" type="password" placeholder="@MyStrong?Password1">
 		</div>
 	</div>
-	<button class="button is-success" onclick="loginRequest()">Connexion</button>
+	<button class="button is-success" id="login_request">Connexion</button>
 	<form action="index.php" method="GET">
 		<input type="hidden" name="url" value="password">
 		<input class="button is-light" type="submit" value="Mot de passe oublié"/>
@@ -33,4 +33,4 @@
 	</div>
 </div>
 
-<script type="text/javascript" src="/src/View/scripts/login.js"></script>
+<script type="module" src="/src/View/scripts/login.js"></script>

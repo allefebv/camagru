@@ -38,11 +38,11 @@ class Validator {
 
     public function isValidPassword(string $password)
     {
-        if (!isset($_POST['password'])
-        || empty($_POST['password'])
-        || !preg_match(self::PASSWORD_REGEX, $_POST['password'])) {
-            return false;
-        }
+        // if (!isset($_POST['password'])
+        // || empty($_POST['password'])
+        // || !preg_match(self::PASSWORD_REGEX, $_POST['password'])) {
+        //     return false;
+        // }
 
         return true;
     }

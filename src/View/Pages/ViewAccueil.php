@@ -17,7 +17,7 @@
 						<?= $image->likes() ?>
 					</p>
 					<?php if (isset($_SESSION['logged'])): ?>
-						<button class="button" id="like<?= $image->id() ?>" onclick="likeImage(this)">Like</button>
+						<button class="button like_request" id="like<?= $image->id() ?>">Like</button>
 					<?php endif; ?>
 				</div>
 				<div class="column is-half">
@@ -62,4 +62,4 @@
 	<?php endif; ?>
 </div>
 
-<script type="text/javascript" src="/src/View/scripts/accueil.js"></script>
+<script type="module" src="/src/View/scripts/accueil.js"></script>

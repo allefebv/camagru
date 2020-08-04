@@ -6,16 +6,16 @@
 				<h1 class="title has-text-white">Gestion du compte</h1>
 				<nav class="level">
 					<div class="level-item">
-						<button id="mdp_button" class="button">Mot de passe</button>
+						<button id="mdp_button" class="button select-choice">Mot de passe</button>
 					</div>
 					<div class="level-item">
-						<button id="email_button" class="button">Email</button>
+						<button id="email_button" class="button select-choice">Email</button>
 					</div>
 					<div class="level-item">
-						<button id="username_button" class="button">Username</button>
+						<button id="username_button" class="button select-choice">Username</button>
 					</div>
 					<div class="level-item">
-						<button id="delete_account_button" class="button is-danger">Supprimer mon compte</button>
+						<button id="delete_account_button" class="button is-danger select-choice">Supprimer mon compte</button>
 					</div>
 				</nav>
 			</div>
@@ -44,7 +44,7 @@
 				<input name="new_password2" id="new_password2" class="input" type="text">
 			</div>
 		</div>
-		<button class="button is-light" onclick="passwordRequest()">Modifier</button>
+		<button class="button is-light" id="password_request">Modifier</button>
 	</div>
 
 	<div id="username_form" style="display:none;">
@@ -78,7 +78,7 @@
 				<input name="password" id="email_password" class="input" type="text">
 			</div>
 		</div>
-		<button class="button is-light" onclick="emailRequest()">Modifier</button>
+		<button class="button is-light" id="email_request">Modifier</button>
 	</div>
 
 	<div id="delete_form" style="display:none;">
@@ -88,7 +88,7 @@
 				<input name="password" id="delete_password" class="input" type="text">
 			</div>
 		</div>
-		<button class="button is-light" onclick="deleteRequest()">Confirmer</button>
+		<button class="button is-light" id="delete_request">Confirmer</button>
 	</div>
 
 
