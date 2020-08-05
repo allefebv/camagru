@@ -4,7 +4,7 @@ import * as utils from './utils.js'
 const like_request_buttons = document.getElementsByClassName('select-choice')
 Array.prototype.forEach.call(like_request_buttons, function(item) {
     
-}
+})
 
 function likeImage(likeButton) {
     buttonId = likeButton.getAttribute('id');

@@ -94,4 +94,4 @@
 
 </div>
 
-<script type="module" src="/src/View/scripts/modify.js"></script>
+<script type="module" src="/public/scripts/modify.js"></script>

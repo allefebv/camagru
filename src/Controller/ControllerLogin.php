@@ -27,9 +27,6 @@ class ControllerLogin {
 		else if ($this->_json = file_get_contents('php://input')) {
 			$this->authUser();
 		}
-		else {
-			$this->generateLoginView();
-		}
 	}
 
 	private function authUser()
@@ -50,24 +47,6 @@ class ControllerLogin {
 			echo json_encode(array('success' => 1));
 		}
 	}
-
-	private function generateLoginView()
-	{
-		$this->viewGenerator = new ViewGenerator('Login');
-
-		if (isset($_GET['user'])) {
-			$user = $this->userRepository->getUserByKey($_GET['user'])[0];
-			if ($user) {
-				$activated = $user->activated();
-				$this->viewGenerator->generate(array('activated' => $activated));
-			} else {
-				$this->viewGenerator->generate(array('linkError' => 1));
-			}
-		} else {
-			$this->viewGenerator->generate(array());
-		}
-	}
-
 }
 
 ?>

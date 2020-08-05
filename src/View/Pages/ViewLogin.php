@@ -32,5 +32,3 @@
 	<div id="inactiveField">
 	</div>
 </div>
-
-<script type="module" src="/src/View/scripts/login.js"></script>

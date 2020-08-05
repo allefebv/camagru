@@ -62,4 +62,4 @@
 	<?php endif; ?>
 </div>
 
-<script type="module" src="/src/View/scripts/accueil.js"></script>
+<script type="module" src="/public/scripts/accueil.js"></script>

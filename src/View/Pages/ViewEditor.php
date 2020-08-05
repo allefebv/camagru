@@ -33,4 +33,4 @@
 	</div>
 </div>
 
-<script type="text/javascript" src="/src/View/scripts/editor.js"></script>
+<script type="text/javascript" src="/public/scripts/editor.js"></script>

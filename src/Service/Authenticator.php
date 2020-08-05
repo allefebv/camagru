@@ -28,6 +28,7 @@ class Authenticator {
 	{
 		if (hash('whirlpool', $password) === $this->user->password()) {
 			$_SESSION['logged'] = $this->user->id();
+			$_SESSION['username'] = $this->user->username();
 			return TRUE;
 		}
 		
@@ -46,6 +47,7 @@ class Authenticator {
 	public function logout()
 	{
 		unset($_SESSION['logged']);
+		unset($_SESSION['username']);
 		session_destroy();
     }
     
