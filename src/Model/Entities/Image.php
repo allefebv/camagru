@@ -21,6 +21,10 @@ final class Image extends AbstractEntity {
 			$this->setLikes();
 		}
 	}
+
+	public function expose() {
+		return get_object_vars($this);
+	}
 	
 	//SETTERS
 	protected function setId($id) {
@@ -45,13 +49,13 @@ final class Image extends AbstractEntity {
 	}
 
 	protected function setComments() {
-		$commentManager = new CommentRepository;
-		$this->_comments = $commentManager->getImageComments($this->id());
+		$commentRepository = new CommentRepository;
+		$this->_comments = $commentRepository->getImageComments($this->id());
 	}
 
 	protected function setLikes() {
-		$likeManager = new LikeRepository;
-		$this->_likes = (int)$likeManager->countImageLikes($this->id())['COUNT(*)'];
+		$likeRepository = new LikeRepository;
+		$this->_likes = (int)$likeRepository->countImageLikes($this->id())['COUNT(*)'];
 	}
 
 	//GETTERS

@@ -46,8 +46,8 @@ class ControllerEditor {
 		file_put_contents($_SERVER['DOCUMENT_ROOT'].$imgPath, $imgUrl);
 
 
-		$layerManager = new LayerRepository;
-		$layer = ($layerManager->getLayerById($this->_json['layer']))[0];
+		$layerRepository = new LayerRepository;
+		$layer = ($layerRepository->getLayerById($this->_json['layer']))[0];
 		$layerPath = $layer->pathToLayer();
 
 		$userImage = \imagecreatefrompng($_SERVER['DOCUMENT_ROOT'].$imgPath);

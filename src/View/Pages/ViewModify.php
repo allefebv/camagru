@@ -17,6 +17,10 @@
 					<div class="level-item">
 						<button id="delete_account_button" class="button is-danger select-choice">Supprimer mon compte</button>
 					</div>
+					<label class="checkbox">
+						<input id="email-comment" type="checkbox" checked>
+						Email de notification lorsque mes images sont commentées
+					</label>
 				</nav>
 			</div>
 		</div>

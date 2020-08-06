@@ -3,8 +3,6 @@
 namespace Camagru\Model\Entities;
 
 use Camagru\Model\Repositories\LikeRepository;
-use Camagru\Model\Repositories\CommentRepository;
-use Camagru\Model\Entities\Comment;
 use Camagru\Model\Entities\Like;
 
 final class User extends AbstractEntity {
@@ -14,7 +12,6 @@ final class User extends AbstractEntity {
 	private $password;
 	private $registrationDate;
 	private $email;
-	private $commentRepository;
 	private $key;
 	private $activated;
 
@@ -42,23 +39,14 @@ final class User extends AbstractEntity {
 		$this->setActivated(0);
 	}
 
-	public function postComment(array $data)
-	{
-		$this->commentRepository = new CommentRepository;
-		$this->commentRepository->add(
-			new Comment(array(	'commentText' => $data['commentText'],
-								'imageId' => $data['imageId'],
-								'userId' => $this->id())));
-	}
-
 	public function likeImage(array $data)
 	{
-		$this->_likeManager = new LikeRepository;
+		$this->_likeRepository = new LikeRepository;
 		$pair = ['userId' => $this->id(), 'imageId' => $data['imageId']];
-		if ($this->_likeManager->likeStatus($pair) === 1) {
-			$this->_likeManager->delete(new Like($pair));
+		if ($this->_likeRepository->likeStatus($pair) === 1) {
+			$this->_likeRepository->delete(new Like($pair));
 		} else {
-			$this->_likeManager->add(new Like($pair));
+			$this->_likeRepository->add(new Like($pair));
 		}
 	}
 

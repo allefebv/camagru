@@ -4,6 +4,9 @@ export const errorMessages = {
     "non_matching_pwds": "The two password you typed are not identical",
     "duplicate_username": "Sorry, this username is already in use",
     "duplicate_email": "Sorry, there is already an account registered with this email",
+    "incorrect_email": "Sorry, there is no account linked to this email",
+    "inactive_account": "Your account is inactive, please click the link in your inbox",
+    "incorrect_pwd": "Incorrect Password"
 }
 
 export function ajaxify(jsonString, callback, route) {
@@ -48,19 +51,62 @@ export function notifyUser(status, message) {
     }, 6000);
 }
 
-export function openModal(modalName) {
-    var button = document.getElementById("button-" + modalName)
+function openModal(modalName) {
+    var buttons = document.querySelectorAll('[data-bulma-modal-open=' + modalName + ']')
     var modal = document.getElementById("modal-" + modalName)
 
-    button.onclick = () => {
-        modal.classList.add('is-active')
+    for (var button of buttons) {
+        button.onclick = () => {
+            modal.classList.add('is-active')
+        }
+    }
+}
+
+export function initOpenModals() {
+    let modals = document.getElementsByClassName('modal')
+    for (let modal of modals) {
+        let strpos = modal.id.indexOf('-') + 1
+        openModal(modal.id.slice(strpos))
+    }
+}
+
+export function initCloseModals() {
+    let modalCloseList = document.querySelectorAll("[data-bulma-modal='close']")
+    for (var button of modalCloseList) {
+        button.addEventListener('click', function() {
+            let modals = document.getElementsByClassName('modal')
+            for (let modal of modals) {
+                modal.classList.remove('is-active')
+                if (modal.id === 'modal-image') {
+                    modal.innerHTML = ''
+                }
+            }
+        })
     }
 }
 
 export function closeModal(modalName) {
     document.getElementById("modal-" + modalName).classList.remove('is-active')
 }
+    
 
 export function goToHome() {
     document.location.href = '/index.php'
 }
+
+function successConnexionStatus(response) {
+    if (response.logged === true) {
+        sessionStorage.setItem('logged', true)
+    } else {
+        sessionStorage.setItem('logged', false)
+    }
+}
+
+export function getConnexionStatus() {
+    ajaxify(
+        JSON.stringify({ connexionStatus:1 }),
+        successConnexionStatus,
+        'index.php'
+    )
+}
+

@@ -108,6 +108,18 @@ class UserRegisterer {
 		$emailer->generateEmail(array('user' => $this->user));
 		$emailer->setRecipient($this->user->email());
 		$emailer->send();
-	}
+    }
+    
+    private function resendConfirmationEmail(User $user)
+    {
+        $this->user = $user;
+        $key = md5(uniqid());
+        $this->userRepository->update($user, 'key', $key);
+        $emailer = new Emailer();
+		$emailer->setEmailTemplate('AccountConfirmation');
+		$emailer->generateEmail(array('user' => $this->user));
+		$emailer->setRecipient($this->user->email());
+		$emailer->send();
+    }
 
 }
