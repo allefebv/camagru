@@ -6,9 +6,10 @@ use Camagru\Service\ViewGenerator;
 use Camagru\Service\UserRegisterer;
 use \Exception;
 
-class ControllerCreate {
+class ControllerSignup {
 
 	private $userRegisterer;
+	private $json;
 
 	public function __construct($url)
 	{
@@ -18,32 +19,21 @@ class ControllerCreate {
 			throw new Exception('Page Introuvable');
 		else if (isset($_SESSION['logged'])) {
 			throw new Exception('Vous êtes deja connecté');
-		} else {
+		} else if ($this->json = file_get_contents('php://input')) {
 			$this->createUser();
 		}
 	}
 
 	private function createUser()
 	{
-		if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-			$errors = $this->userRegisterer->registerUser();
-			if ($errors) {
-				$this->generateCreateView($errors);
-			} else {
-				header('Location: index.php');
-			}
-			$_POST = [];
+		$this->json = json_decode($this->json, TRUE);
+		$errors = $this->userRegisterer->registerUser($this->json);
+		if ($errors) {
+			echo json_encode($errors);
 		} else {
-			$this->generateCreateView([]);
+			echo json_encode(array('success' => 1));
 		}
 	}
-
-	private function generateCreateView($array)
-	{
-		$viewGenerator = new ViewGenerator('Create');
-		$viewGenerator->generate($array);
-	}
-
 }
 
 ?>

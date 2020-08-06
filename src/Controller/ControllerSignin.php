@@ -7,12 +7,12 @@ use Camagru\Service\ViewGenerator;
 use Camagru\Service\Authenticator;
 use \Exception;
 
-class ControllerLogin {
+class ControllerSignin {
 
-	private $viewGenerator;
 	private $userRepository;
 	private $user;
 	private $authenticator;
+	private $json;
 
 	public function __construct($url) 
 	{
@@ -24,15 +24,15 @@ class ControllerLogin {
 		else if (isset($_SESSION['logged'])) {
 			header('Location: index.php');
 		}
-		else if ($this->_json = file_get_contents('php://input')) {
+		else if ($this->json = file_get_contents('php://input')) {
 			$this->authUser();
 		}
 	}
 
 	private function authUser()
 	{
-		$this->_json = json_decode($this->_json, TRUE);
-		$this->user = ($this->userRepository->getUserByEmail($this->_json['email']))[0];
+		$this->json = json_decode($this->json, TRUE);
+		$this->user = ($this->userRepository->getUserByEmail($this->json['email']))[0];
 		$this->authenticator->setUser($this->user);
 		if (!$this->user) {
 			echo json_encode(array('incorrect_email' => 1));
@@ -40,7 +40,7 @@ class ControllerLogin {
 		else if (!$this->authenticator->isUserActivated()) {
 			echo json_encode(array('inactive_account' => 1));
 		}
-		else if (!$this->authenticator->login($this->_json['password'])) {
+		else if (!$this->authenticator->signin($this->json['password'])) {
 			echo json_encode(array('incorrect_pwd' => 1));
 		}
 		else {

@@ -36,34 +36,31 @@
 				</div>
 			<?php else:?>
 				<div class="navbar-item">
-					<button class="button is-light" id="button-login">Sign In</button>
+					<button class="button is-light" id="button-signin">Sign In</button>
 				</div>
 				<div class="navbar-item">
-					<form action="index.php?url=account" method="GET">
-						<input type="hidden" name="url" value="create">
-						<input class="button is-light" type="submit" value="Créer un compte"/>
-					</form>
+					<button class="button is-light" id="button-signup">Sign Up</button>
 				</div>
 			<?php endif;?>
 		</div>
 	</div>
 </nav>
 
-<div class="modal" id="modal-login">
+<div class="modal" id="modal-signin">
 	<div class="modal-background" data-bulma-modal="close"></div>
-	<div class="modal-content" id="modal-login-content">
+	<div class="modal-content" id="modal-signin-content">
     	<div class="modal-card">
 			<header class="modal-card-head">
 				<p class="modal-card-title">Sign In</p>
 				<button class="delete" aria-label="close" data-bulma-modal="close"></button>
 			</header>
-			<div id="login-form">
+			<div id="signin-form">
 				<section class="mocal-card-body">
-					<input id="email" class="input" type="text" placeholder="Email">
-					<input id="password" class="input" type="password" placeholder="Password">
+					<input id="signin-email" class="input" type="text" placeholder="Email">
+					<input id="signin-password" class="input" type="password" placeholder="Password">
 				</section>
 				<footer class="modal-card-foot">
-					<button class="button is-success" id="login_request">Sign in</button>
+					<button class="button is-success" id="signin_request">Sign in</button>
 					<form action="index.php" method="GET">
 						<input type="hidden" name="url" value="password">
 						<input class="button" type="submit" value="Forgot Password"/>
@@ -74,5 +71,29 @@
 	</div>
 </div>
 
+<div class="modal" id="modal-signup">
+	<div class="modal-background" data-bulma-modal="close"></div>
+	<div class="modal-content" id="modal-signup-content">
+    	<div class="modal-card">
+			<header class="modal-card-head">
+				<p class="modal-card-title">Sign Up</p>
+				<button class="delete" aria-label="close" data-bulma-modal="close"></button>
+			</header>
+			<div id="signup-form">
+				<section class="mocal-card-body">
+					<input id="signup-username" class="input" type="text" placeholder="Username">
+					<input id="signup-email" class="input" type="text" placeholder="Email">
+					<input id="signup-password" class="input" type="password" placeholder="Password">
+					<input id="signup-password-confirm" class="input" type="password" placeholder="Confirm Password">
+				</section>
+				<footer class="modal-card-foot">
+					<button class="button is-success" id="signup_request">Sign up</button>
+				</footer>
+			</div>
+		</div>
+	</div>
+</div>
+
 <script type="module" src="/public/scripts/header.js"></script>
-<script type="module" src="/public/scripts/login.js"></script>
+<script type="module" src="/public/scripts/signin.js"></script>
+<script type="module" src="/public/scripts/signup.js"></script>

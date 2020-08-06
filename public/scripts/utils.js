@@ -1,3 +1,11 @@
+export const errorMessages = {
+    "invalid_pwd" : "Password must contain 8 characters, one uppercase, one lowercase, one symbol of @?!* and one digit",
+    "invalid_email": "Your Email in invalid",
+    "non_matching_pwds": "The two password you typed are not identical",
+    "duplicate_username": "Sorry, this username is already in use",
+    "duplicate_email": "Sorry, there is already an account registered with this email",
+}
+
 export function ajaxify(jsonString, callback, route) {
     var httpRequest = new XMLHttpRequest();
     httpRequest.onreadystatechange = function() {
@@ -37,7 +45,7 @@ export function notifyUser(status, message) {
     notificationList.appendChild(notification)
     setTimeout(() => {
         notification.remove()
-    }, 3000);
+    }, 6000);
 }
 
 export function openModal(modalName) {

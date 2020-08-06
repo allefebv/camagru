@@ -7,7 +7,7 @@ use Camagru\Model\Repositories\UserRepository;
 class ControllerValidate {
 
     //logique pour activer le compte
-    //vue vers la page de login
+    //vue vers la page de signin
 
     public function __construct($url)
     {
@@ -15,7 +15,7 @@ class ControllerValidate {
             throw new Exception('Page Introuvable');
         }
         $this->confirmAccount();
-        new ControllerLogin($url);
+        new ControllerSignin($url);
     }
 
     private function confirmAccount()

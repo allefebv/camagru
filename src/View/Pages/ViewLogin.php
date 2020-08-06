@@ -10,7 +10,7 @@
 	</div>
 <? endif; ?>
 
-<div id="loginForm">
+<div id="signinForm">
 	<div id="emailField" class="field">
 		<label class="label has-text-danger">Email</label>
 		<div class="control">
@@ -23,7 +23,7 @@
 			<input id="password" class="input" type="password" placeholder="@MyStrong?Password1">
 		</div>
 	</div>
-	<button class="button is-success" id="login_request">Connexion</button>
+	<button class="button is-success" id="signin_request">Connexion</button>
 	<form action="index.php" method="GET">
 		<input type="hidden" name="url" value="password">
 		<input class="button is-light" type="submit" value="Mot de passe oublié"/>

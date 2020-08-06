@@ -71,31 +71,32 @@ class UserRegisterer {
         return $response;
     }
 
-    public function registerUser()
+    public function registerUser(array $json)
     {
-        $errors['invalid_username'] = !$this->validator->isValidUsername($_POST['username']);
-        $errors['invalid_email'] = !$this->validator->isValidEmail($_POST['email']);
-        $errors['invalid_pwd'] = !$this->validator->isValidPassword($_POST['password']);
-        $errors['duplicate_username'] = !$this->validator->isAvailableUsername($_POST['username']);
-        $errors['duplicate_email'] = !$this->validator->isAvailableEmail($_POST['email']);
+        $errors['invalid_username'] = !$this->validator->isValidUsername($json['username']);
+        $errors['invalid_email'] = !$this->validator->isValidEmail($json['email']);
+        $errors['invalid_pwd'] = !$this->validator->isValidPassword($json['password']);
+        $errors['non_matching_pwds'] = !$this->validator->areIdenticalPasswords($json['password'], $json['passwordconfirm']);
+        $errors['duplicate_username'] = !$this->validator->isAvailableUsername($json['username']);
+        $errors['duplicate_email'] = !$this->validator->isAvailableEmail($json['email']);
         foreach ($errors as $error) {
             if (true === $error) {
-                return $errors;
+                return array_filter($errors, function($item) { return $item; });
             }
         }
-        $this->createUser();
+        $this->createUser($json);
         $this->sendConfirmationEmail();
         $this->userRepository->add($this->user);
         return null;
     }
 
-    private function createUser()
+    private function createUser(array $json)
     {
         $key = md5(uniqid());
         $this->user = new User([
-            'username' => $_POST['username'],
-            'password' => hash('whirlpool', $_POST['password']),
-            'email' => $_POST['email'],
+            'username' => $json['username'],
+            'password' => hash('whirlpool', $json['password']),
+            'email' => $json['email'],
             'key'	=> $key,
         ]);
     }

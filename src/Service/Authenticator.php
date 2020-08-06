@@ -24,7 +24,7 @@ class Authenticator {
 		return FALSE;
 	}
 
-    public function login(string $password)
+    public function signin(string $password)
 	{
 		if (hash('whirlpool', $password) === $this->user->password()) {
 			$_SESSION['logged'] = $this->user->id();

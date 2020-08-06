@@ -25,11 +25,22 @@ class Validator {
         return true;
     }
 
+    public function areIdenticalPasswords(string $password, string $passwordconfirm)
+    {
+        if (!isset($password)
+        || empty($password)
+        || !isset($passwordconfirm)
+        || empty($passwordconfirm)
+        || $password !== $passwordconfirm) {
+            return false;
+        }
+
+        return true;
+    }
+
     public function isValidEmail(string $email)
     {
-        if (!isset($_POST['email'])
-        || empty($_POST['email'])
-        || !preg_match(self::EMAIL_REGEX, $_POST['email'])) {
+        if (empty($email) || !preg_match(self::EMAIL_REGEX, $email)) {
             return false;
         }
 
@@ -38,18 +49,16 @@ class Validator {
 
     public function isValidPassword(string $password)
     {
-        // if (!isset($_POST['password'])
-        // || empty($_POST['password'])
-        // || !preg_match(self::PASSWORD_REGEX, $_POST['password'])) {
-        //     return false;
-        // }
+        if (empty($password) || !preg_match(self::PASSWORD_REGEX, $password)) {
+            return false;
+        }
 
         return true;
     }
 
     public function isAvailableUsername(string $password)
     {
-        if ($this->userRepository->getUserByName($_POST['username'])) {
+        if ($this->userRepository->getUserByName($password)) {
             return false;
         }
 
@@ -58,7 +67,7 @@ class Validator {
 
     public function isAvailableEmail(string $email)
     {
-        if ($this->userRepository->getUserByEmail($_POST['email'])) {
+        if ($this->userRepository->getUserByEmail($email)) {
             return false;
         }
 
