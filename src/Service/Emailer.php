@@ -3,6 +3,7 @@
 namespace Camagru\Service;
 
 use Camagru\Service\EmailTemplate;
+use Camagru\Service\EmailGenerator;
 
 class Emailer {
 

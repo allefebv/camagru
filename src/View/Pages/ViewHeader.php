@@ -61,10 +61,7 @@
 				</section>
 				<footer class="modal-card-foot">
 					<button class="button is-success" id="signin_request">Sign in</button>
-					<form action="index.php" method="GET">
-						<input type="hidden" name="url" value="password">
-						<input class="button" type="submit" value="Forgot Password"/>
-					</form>
+					<button class="button is-warning" id="password_request">Forgot Password</button>
 				</footer>
 			</div>
 		</div>

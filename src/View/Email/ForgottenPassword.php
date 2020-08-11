@@ -1,11 +1,12 @@
 <?php
-    $subject = "account confirmation";
+    $subject = "forgotten password";
 ?>
 
 <html>
     <body>
-        <h1>Bonjour <?= $user->username() ?></h1>
-        <p>Veuillez cliquer sur le lien ci-dessous pour activer votre compte</p>
-        <a href="http://localhost:8080/index.php?url=reset&user=<?= $user->key() ?>">Valider mon compte</a>
+        <h1>Hello <?= $user->username() ?></h1>
+        <p>Please find your new password below</p>
+        <p><?= $password ?></p>
+        <p>Keep it secret. You can change it in your account section at anytime</p>
     </body>
 </html>

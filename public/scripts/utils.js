@@ -1,6 +1,7 @@
 export const errorMessages = {
     "invalid_pwd" : "Password must contain 8 characters, one uppercase, one lowercase, one symbol of @?!* and one digit",
     "invalid_email": "Your Email in invalid",
+    "not_found_email": "No account is linked to this email",
     "non_matching_pwds": "The two password you typed are not identical",
     "duplicate_username": "Sorry, this username is already in use",
     "duplicate_email": "Sorry, there is already an account registered with this email",
@@ -32,20 +33,26 @@ export function ajaxify(jsonString, callback, route) {
 export function notifyUser(status, message) {
     var notificationList = document.getElementById("notificationList")
 
-    var notification = document.createElement("div")
+    var notification = document.createElement('div')
+    notification.classList.add('notification')
+
+    var closeButton = document.createElement('button')
+    closeButton.classList.add('delete')
+
     notification.innerHTML = message
+    notification.appendChild(closeButton)
     switch (status) {
         case "success":
-            notification.style.backgroundColor = "green"
+            notification.classList.add('is-success')
             break
         case "error":
-            notification.style.backgroundColor = "red"
+            notification.classList.add('is-danger')
             break
     }
     notificationList.appendChild(notification)
     setTimeout(() => {
         notification.remove()
-    }, 6000);
+    }, 10000);
 }
 
 export function openModal(modalName) {
