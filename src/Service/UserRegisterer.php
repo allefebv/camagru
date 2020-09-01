@@ -21,14 +21,11 @@ class UserRegisterer {
         $this->authenticator = new Authenticator();
     }
 
-    public function updateUserUsername(User $user, string $username, string $pwd)
+    public function updateUserUsername(User $user, string $username)
     {
         $response['username'] = 1;
-        $this->authenticator->setUser($user);
-        if (!$this->authenticator->verifyPassword($pwd)) {
-            $response['error_pwd'] = 1;
-        } else if (!$this->validator->isValidUsername($username)) {
-            $response['error_format_username'] = 1;
+        if (!$this->validator->isAvailableUsername($username)) {
+            $response['error_unavailable_username'] = 1;
         } else if (!$this->userRepository->update($user, 'username', $username)){
 			$response['error_db'] = 1;
 		} else {
@@ -37,13 +34,10 @@ class UserRegisterer {
         return $response;
     }
 
-    public function updateUserEmail(User $user, string $email, string $pwd)
+    public function updateUserEmail(User $user, string $email)
     {
         $response['email'] = 1;
-        $this->authenticator->setUser($user);
-        if (!$this->authenticator->verifyPassword($pwd)) {
-            $response['error_pwd'] = 1;
-        } else if (!$this->validator->isValidEmail($email)) {
+        if (!$this->validator->isValidEmail($email)) {
             $response['error_format_email'] = 1;
         } else if (!$this->userRepository->update($user, 'email', $this->json['newEmail'])){
 			$response['error_db'] = 1;

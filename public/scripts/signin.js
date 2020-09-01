@@ -25,7 +25,7 @@ const signinResponse = arrayResponse => {
     }
 }
 
-const forgotPasswordRequestButton = document.getElementById('password_request')
+const forgotPasswordRequestButton = document.getElementById('forgot_password_request')
 forgotPasswordRequestButton.onclick = () => {
     let email = document.getElementById('signin-email').value
     utils.ajaxify(

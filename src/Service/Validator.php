@@ -60,9 +60,9 @@ class Validator {
         return true;
     }
 
-    public function isAvailableUsername(string $password)
+    public function isAvailableUsername(string $username)
     {
-        if ($this->userRepository->getUserByName($password)) {
+        if ($this->userRepository->getUserByName($username)) {
             return false;
         }
 

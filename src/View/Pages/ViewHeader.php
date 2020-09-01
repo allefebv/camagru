@@ -61,7 +61,7 @@
 				</section>
 				<footer class="modal-card-foot">
 					<button class="button is-success" id="signin_request">Sign in</button>
-					<button class="button is-warning" id="password_request">Forgot Password</button>
+					<button class="button is-warning" id="forgot_password_request">Forgot Password</button>
 				</footer>
 			</div>
 		</div>

@@ -52,3 +52,11 @@
 .modal p {
     color: black;
 }
+
+.title {
+    color: hsl(0, 0%, 100%);
+}
+
+.label {
+    color: hsl(48, 100%, 67%);
+}
