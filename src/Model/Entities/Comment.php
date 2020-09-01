@@ -19,6 +19,10 @@ final class Comment extends AbstractEntity {
 		parent::__construct($data);
 	}
 
+	public function expose() {
+		return get_object_vars($this);
+	}
+	
 	//SETTERS
 	protected function setPublicationDate($publicationDate) {
 		$this->_publicationDate = $publicationDate;

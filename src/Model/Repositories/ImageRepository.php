@@ -12,12 +12,28 @@ class ImageRepository extends BaseRepository {
 		return $this->getAll('image', Image::class);
 	}
 
-	public function getImagesByPublicationDate() {
+	public function getSomeImages(int $limit) {
+		return $this->getSome('image', Image::class, $limit);
+	}
+
+	public function getAllImagesByPublicationDate() {
 		return $this->getAllOrderByKeyDesc('image', Image::class, 'publicationDate');
+	}
+
+	public function getSomeImagesByPublicationDate(int $limit) {
+		return $this->getSomeOrderByKeyDesc('image', Image::class, 'publicationDate', $limit);
 	}
 
 	public function getImageById($id) {
 		return $this->getByKey('image', Image::class, 'id', $id);
+	}
+
+	public function getExposedImages(array $images) {
+		return $this->getExposedObjects($images);
+	}
+
+	public function getExposedImage($image) {
+		return $this->getExposedObject($image);
 	}
 
 	public function add(Image $image) {

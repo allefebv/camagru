@@ -49,7 +49,11 @@ class Validator {
 
     public function isValidPassword(string $password)
     {
-        if (empty($password) || !preg_match(self::PASSWORD_REGEX, $password)) {
+        // if (empty($password) || !preg_match(self::PASSWORD_REGEX, $password)) {
+        //     return false;
+        // }
+
+        if (empty($password)) {
             return false;
         }
 

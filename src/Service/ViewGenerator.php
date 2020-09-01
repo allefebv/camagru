@@ -13,7 +13,7 @@ class ViewGenerator {
 		$this->_file = 'src/View/Pages/View' . $action . '.php';
 	}
 
-	public function generate(array $data)
+	public function generate(array $data = array())
 	{
 		//Corps de la vue, partie specifique
 		$content = $this->generateFile($this->_file, $data);

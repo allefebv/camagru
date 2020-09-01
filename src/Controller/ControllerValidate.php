@@ -15,7 +15,7 @@ class ControllerValidate {
             throw new Exception('Page Introuvable');
         }
         $this->confirmAccount();
-        new ControllerSignin($url);
+        header('Location: index.php');
     }
 
     private function confirmAccount()

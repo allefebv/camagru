@@ -36,10 +36,10 @@
 				</div>
 			<?php else:?>
 				<div class="navbar-item">
-					<button class="button is-light" id="button-signin">Sign In</button>
+					<button class="button is-light" data-bulma-modal-open="signin">Sign In</button>
 				</div>
 				<div class="navbar-item">
-					<button class="button is-light" id="button-signup">Sign Up</button>
+					<button class="button is-light" data-bulma-modal-open="signup">Sign Up</button>
 				</div>
 			<?php endif;?>
 		</div>

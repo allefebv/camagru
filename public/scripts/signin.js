@@ -17,6 +17,11 @@ const signinResponse = arrayResponse => {
         utils.closeModal('signin')
         utils.goToHome()
         utils.notifyUser("success", "Successful Connection")
+        sessionStorage.setItem('logged', true)
+    } else {
+        for (let response in arrayResponse) {
+            utils.notifyUser("error", utils.errorMessages[response])
+        }
     }
 }
 

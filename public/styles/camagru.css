@@ -34,3 +34,21 @@
 .modal-background {
     background-color: rgba(255, 255, 255, 0.4);
 }
+
+.gallery-image {
+    overflow: hidden;
+    background-color: white;
+}
+
+.gallery-image img {
+    transition: transform 0.4s ease;
+}
+
+.gallery-image img:hover {
+    opacity: 0.7;
+    transform: scale(1.1);
+}
+
+.modal p {
+    color: black;
+}

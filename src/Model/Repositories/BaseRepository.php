@@ -41,9 +41,29 @@ abstract class BaseRepository {
 		$req->closeCursor();
 	}
 
+	protected function getSome($table, $obj, $limit) {
+		$var = NULL;
+		$req = $this->getDb()->prepare('SELECT * FROM ' . $table . ' ORDER BY id desc LIMIT ' . $limit);
+		$req->execute();
+		while ($data = $req->fetch())
+			$var[] = new $obj($data);
+		return $var;
+		$req->closeCursor();
+	}
+
 	protected function getAllOrderByKeyDesc($table, $obj, $key) {
 		$var = NULL;
 		$req = $this->getDb()->prepare('SELECT * FROM ' . $table . ' ORDER BY ' . $key . ' desc');
+		$req->execute();
+		while ($data = $req->fetch())
+			$var[] = new $obj($data);
+		return $var;
+		$req->closeCursor();
+	}
+
+	protected function getSomeOrderByKeyDesc($table, $obj, $key, $limit) {
+		$var = NULL;
+		$req = $this->getDb()->prepare('SELECT * FROM ' . $table . ' ORDER BY ' . $key . ' desc LIMIT ' . $limit);
 		$req->execute();
 		while ($data = $req->fetch())
 			$var[] = new $obj($data);
@@ -61,6 +81,17 @@ abstract class BaseRepository {
 		$req->closeCursor();
 	}
 
+	protected function getByKeyOrderByKey($table, $obj, $whereKey, $whereValue, $orderKey, $order)
+	{
+		$var = NULL;
+		$req = $this->getDb()->prepare('SELECT * FROM ' . $table . ' WHERE `' . $whereKey . '` = \'' . \htmlspecialchars($whereValue) . '\' ORDER BY ' . $orderKey . ' ' . $order);
+		$req->execute();
+		while ($data = $req->fetch())
+			$var[] = new $obj($data);
+		return $var;
+		$req->closeCursor();
+	}
+
 	protected function countByKey($table, $obj, $key, $value) {
 		$var = NULL;
 		$req = $this->getDb()->prepare('SELECT COUNT(*) FROM `' . $table . '` WHERE ' . $key . '=' . \htmlspecialchars($value));
@@ -68,6 +99,18 @@ abstract class BaseRepository {
 		$data = $req->fetch();
 		return $data;
 		$req->closeCursor();
+	}
+
+	protected function getExposedObject($obj) {
+		return $obj->expose();
+	}
+
+	protected function getExposedObjects(array $objs) {
+		foreach($objs as $obj) {
+			$var[] = $this->getExposedObject($obj);
+		}
+		
+		return $var;
 	}
 
 	protected function updateEntry($table, $updateFieldKey, $updateFieldValue, $idKeyField, $idKeyValue) {
