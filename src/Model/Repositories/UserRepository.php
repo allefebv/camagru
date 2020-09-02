@@ -8,7 +8,7 @@ require("config/database.php");
 
 class UserRepository extends BaseRepository {
 
-	//table DB 'users' et classe 'User'
+	//table DB 'users' et entité 'User'
 	public function getUsers() {
 		return $this->getAll('user', User::class);
 	}

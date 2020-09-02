@@ -21,7 +21,9 @@ function focusFilter(element) {
     activeLayerId = element.getAttribute('id');
     overlay.setAttribute('src', element.getAttribute('src'));
     var saveToolTip = document.getElementById('savetooltip');
-    saveToolTip.parentNode.removeChild(saveToolTip);
+    if (saveToolTip) {
+        saveToolTip.parentNode.removeChild(saveToolTip);
+    }
     saveButton.disabled = false;
 }
 

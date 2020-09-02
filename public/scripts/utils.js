@@ -1,13 +1,22 @@
 export const errorMessages = {
     "invalid_pwd" : "Password must contain 8 characters, one uppercase, one lowercase, one symbol of @?!* and one digit",
-    "invalid_email": "Your Email in invalid",
-    "not_found_email": "No account is linked to this email",
-    "non_matching_pwds": "The two password you typed are not identical",
-    "duplicate_username": "Sorry, this username is already in use",
-    "duplicate_email": "Sorry, there is already an account registered with this email",
-    "incorrect_email": "Sorry, there is no account linked to this email",
-    "inactive_account": "Your account is inactive, please click the link in your inbox",
-    "incorrect_pwd": "Incorrect Password"
+    "invalid_email" : "Your Email in invalid",
+    "not_found_email" : "No account is linked to this email",
+    "non_matching_pwds" : "The two password you typed are not identical",
+    "duplicate_username" : "Sorry, this username is already in use",
+    "duplicate_email" : "Sorry, there is already an account registered with this email",
+    "incorrect_email" : "Sorry, there is no account linked to this email",
+    "inactive_account" : "Your account is inactive, please click the link in your inbox",
+    "incorrect_pwd" : "Incorrect Password",
+    "database_error" : "There has been a server internal error",
+}
+
+export const successMessages = {
+    "updated_username" : "Your username has been successfuly updated",
+    "updated_email" : "Your email has been successfuly updated",
+    "updated_notifications" : "Your notifications preferences have been successfuly updated",
+    "updated_password" : "Your password has been updated",
+    "account_deleted" : "Your account has been deleted",
 }
 
 export function ajaxify(jsonString, callback, route) {
@@ -55,7 +64,7 @@ export function notifyUser(status, message) {
     notificationList.appendChild(notification)
     setTimeout(() => {
         notification.remove()
-    }, 10000);
+    }, 3000);
 }
 
 function openModal(modalName) {

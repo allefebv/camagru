@@ -24,6 +24,7 @@ $db->query("CREATE TABLE `user` (
     password                TEXT NOT NULL,
     registrationDate        TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     activated               BOOLEAN DEFAULT 0 NOT NULL,
+    notifications           BOOLEAN DEFAULT 1 NOT NULL,
     `key`                   CHAR(32) NOT NULL
 );");
 

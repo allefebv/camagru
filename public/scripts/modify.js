@@ -1,13 +1,33 @@
 import * as utils from './utils.js'
 
-	const modifyInfoRequestButton = document.getElementById('modify_info_request')
-	modifyInfoRequestButton.onclick = () => {
+document.addEventListener('DOMContentLoaded', () => {
+    getInfo()
+});
+
+	const getInfo = () => {
+		utils.ajaxify(
+			JSON.stringify({
+				getInfo:1
+			}),
+			getInfoResponse,
+			'index.php?url=modify'
+		)
+	}
+
+	const getInfoResponse = (arrayResponse) => {
+		document.getElementById('username-info').value = arrayResponse['username']
+		document.getElementById('email-info').value = arrayResponse['email']
+		document.getElementById('notification-info').checked = arrayResponse['notifications']
+	}
+
+	const setInfoRequestButton = document.getElementById('modify_info_request')
+	setInfoRequestButton.onclick = () => {
 		let email = document.getElementById('email-info').value
 		let username = document.getElementById('username-info').value
 		let notification = document.getElementById('notification-info').checked
 		utils.ajaxify(
 			JSON.stringify({
-				info:1,
+				setInfo:1,
 				email:email,
 				username:username,
 				notification:notification
@@ -18,46 +38,31 @@ import * as utils from './utils.js'
 	}
 
 	const modifyInfoResponse = arrayResponse => {
-		if (arrayResponse['success']) {
-			for (success of arrayResponse['success']) {
-				utils.notifyUser("success", success)
+		console.log(arrayResponse)
+		for (let responseElement of arrayResponse) {
+			if (responseElement['success']) {
+				utils.notifyUser("success", utils.successMessages[responseElement['success']])
+			}
+			if (responseElement['error']) {
+				utils.notifyUser("error", utils.errorMessages[responseElement['error']])
 			}
 		}
-
-		if (arrayResponse['error']) {
-			for (error of arrayResponse['error']) {
-				utils.notifyUser("error", error)
-			}
-		}
+		getInfo()
 	}
 
 
 	var mdp_form = document.getElementById('mdp_form');
 	var delete_form = document.getElementById('delete_form');
 
-	const response = (
-		id_password,
-		id_parent_error,
-		id_new,
-		form,
-		response
-		) => {
-			for (let id of id_password) {
-				document.getElementById(id).value = "";
-			}
-	}
-
 	const modify_password_request_button = document.getElementById('modify_password_request')
 	modify_password_request_button.onclick = () => {
-		current_password = document.getElementById('current_password').value;
-		new_password1 = document.getElementById('new_password1').value;
-		new_password2 = document.getElementById('new_password2').value;
+		let new_password1 = document.getElementById('new_password1').value;
+		let new_password2 = document.getElementById('new_password2').value;
 		utils.ajaxify(
 			JSON.stringify({
-				password:1,
+				modifyPassword:1,
 				new_password1:new_password1,
-				new_password2:new_password2,
-				current_password:current_password
+				new_password2:new_password2
 			}),
 			passwordResponse,
 			'index.php?url=modify'
@@ -65,35 +70,37 @@ import * as utils from './utils.js'
 	}
 
 	function passwordResponse(response) {
-		response(
-			['current_password', 'new_password1', 'new_password2'],
-			'current_password_field',
-			null,
-			mdp_form,
-			response
-		)
+		if (response['success']) {
+			utils.notifyUser("success", utils.successMessages[response['success']])
+			utils.closeModal('password')
+			document.getElementById('new_password1').value = '';
+			document.getElementById('new_password2').value = '';
+		}
+		if (response['error']) {
+			utils.notifyUser("error", utils.errorMessages[response['error']])
+		}
 	}
-
 
 	const delete_request_button = document.getElementById('delete_request')
 	delete_request_button.onclick = () => {
-		delete_password = document.getElementById('delete_password').value;
+		let deletePassword = document.getElementById('delete-password').value;
 		utils.ajaxify(
-			JSON.stringify({ delete:1, password:password }),
+			JSON.stringify({ delete:1, password:deletePassword }),
 			deleteResponse,
 			'index.php?url=modify'
 			);
 	}
 
 	function deleteResponse(response) {
-		response(
-			'delete_password',
-			'deletePasswordField',
-			null,
-			delete_form,
-			response
-		)
-		setTimeout(function() {
-			document.location.reload(true);
-		}, 2000);
+		if (response['success']) {
+			utils.notifyUser("success", utils.successMessages[response['success']])
+			utils.closeModal('delete')
+			document.getElementById('delete-password').value = '';
+			setTimeout(function() {
+				document.location.reload(true);
+			}, 3000);
+		}
+		if (response['error']) {
+			utils.notifyUser("error", utils.errorMessages[response['error']])
+		}
 	}

@@ -14,53 +14,58 @@ class UserRegisterer {
     private $validator;
     private $user;
 
-    public function __construct()
+    public function __construct(User $user = null)
     {
         $this->userRepository = new UserRepository();
         $this->validator = new Validator($this->userRepository);
-        $this->authenticator = new Authenticator();
+        $this->authenticator = new Authenticator($user);
     }
 
     public function updateUserUsername(User $user, string $username)
     {
-        $response['username'] = 1;
         if (!$this->validator->isAvailableUsername($username)) {
-            $response['error_unavailable_username'] = 1;
+            $response['error'] = 'duplicate_username';
         } else if (!$this->userRepository->update($user, 'username', $username)){
-			$response['error_db'] = 1;
+			$response['error'] = 'database_error';
 		} else {
-			$response['success'] = 1;
+			$response['success'] = 'updated_username';
         }
         return $response;
     }
 
     public function updateUserEmail(User $user, string $email)
     {
-        $response['email'] = 1;
         if (!$this->validator->isValidEmail($email)) {
-            $response['error_format_email'] = 1;
-        } else if (!$this->userRepository->update($user, 'email', $this->json['newEmail'])){
-			$response['error_db'] = 1;
+            $response['error'] = 'invalid_email';
+        } else if (!$this->userRepository->update($user, 'email', $email)){
+			$response['error'] = 'database_error';
 		} else {
-			$response['success'] = 1;
+			$response['success'] = 'updated_email';
         }
         return $response;
     }
 
-    public function updateUserPassword(User $user, string $oldPassword, array $newPassword)
+    public function updateUserNotifications(User $user, bool $notif)
     {
-        $response['password'] = 1;
-        $this->authenticator->setUser($user);
-        if (!$this->authenticator->verifyPassword($oldPassword)) {
-            $response['error_current_pwd'] = 1;
-        } else if (!$this->validator->isValidPassword($newPassword[0])) {
-			$response['error_format_new_pwd'] = 1;
-		} else if ($newPassword[0] !== $newPassword[1]) {
-			$response['error_diff_new_pwd'] = 1;
-		} else if (!$this->userRepository->update($user, 'pwd', $this->json['newPassword1'])){
-			$response['error_db'] = 1;
+        $notif = $notif ? 1 : 0;
+        if (!$this->userRepository->update($user, 'notifications', $notif)){
+			$response['error'] = 'database_error';
 		} else {
-			$response['success'] = 1;
+			$response['success'] = 'updated_notifications';
+        }
+        return $response;
+    }
+
+    public function updateUserPassword(User $user, array $newPassword)
+    {
+        if (!$this->validator->isValidPassword($newPassword[0])) {
+			$response['error'] = 'invalid_pwd';
+		} else if ($newPassword[0] !== $newPassword[1]) {
+			$response['error'] = 'non_matching_pwds';
+		} else if (!$this->userRepository->update($user, 'password', $newPassword[0])){
+			$response['error'] = 'database_error';
+		} else {
+			$response['success'] = 'updated_password';
         }
         return $response;
     }
@@ -82,6 +87,21 @@ class UserRegisterer {
         $this->sendConfirmationEmail();
         $this->userRepository->add($this->user);
         return null;
+    }
+
+    public function deleteUser($user, $password)
+    {
+        if (!$this->authenticator->verifyPassword($password)) {
+			$response['error'] = 'incorrect_pwd';
+		}
+		else if (!$this->userRepository->delete($user)) {
+			$response['error'] = 'database_error';
+		}
+		else {
+			$response['success'] = 'account_deleted';
+			$this->authenticator->logout();
+        }
+        return $response;
     }
 
     private function createUser(array $json)

@@ -59,9 +59,11 @@ class CommentPoster {
     {
         $image = $this->imageRepository->getImageById($this->commentData['imageId'])[0];
         $imageAuthor = $this->userRepository->getUserById($image->userId())[0];
-        $this->emailer->setEmailTemplate('NewComment');
-        $this->emailer->generateEmail(array('user' => $imageAuthor));
-        $this->emailer->setRecipient($imageAuthor->email());
-        $this->emailer->send();
+        if ($imageAuthor->id() !== $this->user->id() && $imageAuthor->notifications()) {
+            $this->emailer->setEmailTemplate('NewComment');
+            $this->emailer->generateEmail(array('user' => $imageAuthor));
+            $this->emailer->setRecipient($imageAuthor->email());
+            $this->emailer->send();
+        }
     }
 }

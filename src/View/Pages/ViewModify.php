@@ -66,13 +66,13 @@
 				<div class="new_password_1_field">
 				<label class="label">new password</label>
 				<div class="control">
-					<input name="new_password1" id="new_password1" class="input" type="text">
+					<input name="new_password1" id="new_password1" class="input" type="password">
 				</div>
 			</div>
 			<div id="new_password_2_field" class="field">
 				<label class="label">confirm new password</label>
 				<div class="control">
-					<input name="new_password2" id="new_password2" class="input" type="text">
+					<input name="new_password2" id="new_password2" class="input" type="password">
 				</div>
 			</div>
 				</section>

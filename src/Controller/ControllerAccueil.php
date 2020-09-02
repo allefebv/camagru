@@ -87,7 +87,9 @@ class ControllerAccueil {
 	private function sendImages()
 	{
 		$images = $this->imageRepository->getAllImagesByPublicationDate();
-		echo json_encode($this->imageRepository->getExposedImages($images));
+		if ($images) {
+			echo json_encode($this->imageRepository->getExposedImages($images));
+		}
 	}
 
 	private function getImageDetails()
@@ -102,7 +104,7 @@ class ControllerAccueil {
 
 	private function getImageComments()
 	{
-		$this->image = $image = $this->imageRepository->getImageById($this->json['imageId'])[0];
+		$this->image = $this->imageRepository->getImageById($this->json['imageId'])[0];
 		$comments = $this->commentRepository->getImageCommentsByPublicationDate($this->json['imageId']);
 		$exposedComments = $comments ? $this->commentRepository->getExposedComments($comments) : null;
 		if ($exposedComments) {

@@ -5,6 +5,7 @@ namespace Camagru\Controller;
 use Camagru\Model\Repositories\UserRepository;
 use Camagru\Service\ViewGenerator;
 use Camagru\Service\UserRegisterer;
+use Camagru\Service\Authenticator;
 use \Exception;
 
 class ControllerModify {
@@ -14,8 +15,10 @@ class ControllerModify {
 	private $userRepository;
 	private $userRegisterer;
 	private $user;
+	private $authenticator;
 
 	public function __construct($url) {
+		$this->userRepository = new UserRepository;
 		if (isset($url) && count($url) > 1) {
 			throw new Exception('Page Introuvable');
 		}
@@ -23,7 +26,6 @@ class ControllerModify {
 			header('Location: index.php');
 		}
 		else if ($this->json = file_get_contents('php://input')) {
-			$this->userRegisterer = new UserRegisterer();
 			$this->actionDispatch();
 		}
 		else {
@@ -33,12 +35,13 @@ class ControllerModify {
 
 	private function actionDispatch() {
 		$this->json = json_decode($this->json, TRUE);
-		$this->userRepository = new UserRepository;
 		$this->user = ($this->userRepository->getUserById($_SESSION['logged']))[0];
-		if (isset($this->json['info'])) {
-			$this->modifyInfo();
-		}
-		else if (isset($this->json['modifyPassword'])) {
+		$this->userRegisterer = new UserRegisterer($this->user);
+		if (isset($this->json['setInfo'])) {
+			$this->setInfo();
+		} elseif (isset($this->json['getInfo'])) {
+			$this->sendInfo();
+		} else if (isset($this->json['modifyPassword'])) {
 			$this->password();
 		}
 		else if (isset($this->json['delete'])) {
@@ -46,10 +49,28 @@ class ControllerModify {
 		}
 	}
 
-	private function modifyInfo() {
+	private function setInfo()
+	{
 		if ($this->json['username'] !== $this->user->username()) {
-			$this->userRegisterer->updateUserUsername($this->user, $this->json['username']);
+			$response [] = $this->userRegisterer->updateUserUsername($this->user, $this->json['username']);
 		}
+		if ($this->json['email'] !== $this->user->email()) {
+			$response [] = $this->userRegisterer->updateUserEmail($this->user, $this->json['email']);
+		}
+		if ($this->json['notification'] !== $this->user->notifications()) {
+			$response [] = $this->userRegisterer->updateUserNotifications($this->user, $this->json['notification']);
+		}
+		echo json_encode($response);
+	}
+
+	private function sendInfo()
+	{
+		$this->user = ($this->userRepository->getUserById($_SESSION['logged']))[0];
+		echo json_encode(array(
+			'username' => $this->user->username(),
+			'email' => $this->user->email(),
+			'notifications' => $this->user->notifications()
+		));
 	}
 
 	private function username() {
@@ -58,7 +79,7 @@ class ControllerModify {
 			$this->json['new_username'],
 			$this->json['password']
 		);
-		echo \json_encode($response);
+		echo json_encode($response);
 	}
 
 	private function email() {
@@ -67,34 +88,29 @@ class ControllerModify {
 			$this->json['password'],
 			$this->json['new_email']
 		);
-		echo \json_encode($response);
+		echo json_encode($response);
 	}
 
 	private function password() {
 		$response = $this->userRegisterer->updateUserPassword(
 			$this->user,
-			$this->json['current_password'],
 			[$this->json['new_password1'], $this->json['new_password2']]
 		);
-		echo \json_encode($response);
+		echo json_encode($response);
 	}
 
 	private function delete() {
-		if (!$this->user->verifyPassword($this->json['password'])) {
-			echo json_encode(array('delete' => 1, 'incorrect_pwd' => 1));
-		}
-		else if (!$this->userRepository->delete($this->user)) {
-			echo json_encode(array('delete' => 1, 'db_error' => 1));
-		}
-		else {
-			echo json_encode(array('delete' => 1, 'success' => 1));
-			$this->user->logout();
-		}
+		$response = $this->userRegisterer->deleteUser(
+			$this->user,
+			$this->json['password']
+		);
+		echo json_encode($response);
 	}
 
 	private function generateModifyView() {
+		$this->user = ($this->userRepository->getUserById($_SESSION['logged']))[0];
 		$this->viewGenerator = new ViewGenerator('Modify');
-		$this->viewGenerator->generate(array());
+		$this->viewGenerator->generate(array('user' => $this->user));
 	}
 }
 

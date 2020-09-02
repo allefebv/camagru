@@ -14,6 +14,7 @@ final class User extends AbstractEntity {
 	private $email;
 	private $key;
 	private $activated;
+	private $notifications;
 
 	public function __construct(array $data)
 	{
@@ -54,6 +55,11 @@ final class User extends AbstractEntity {
 	protected function setUsername($username)
 	{
 		$this->username = $username;
+	}
+
+	protected function setNotifications($notifications)
+	{
+		$this->notifications = $notifications;
 	}
 
 	protected function setPassword($password)
@@ -132,6 +138,11 @@ final class User extends AbstractEntity {
 	public function email()
 	{
 		return $this->email;
+	}
+
+	public function notifications()
+	{
+		return (bool) $this->notifications;
 	}
 }
 
