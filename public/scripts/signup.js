@@ -11,15 +11,18 @@ signup_request_button.onclick = () => {
         signupResponse,
         'index.php?url=signup'
     );
+    signup_request_button.classList.add('is-loading')
 }
 
 const signupResponse = arrayResponse => {
     document.getElementById('signup-password').value = "";
+    document.getElementById('signup-password-confirm').value = "";
     if (arrayResponse['success']) {
         utils.closeModal('signup')
-        utils.goToHome()
-        utils.notifyUser("success", "Successful AccountCreation, an Email will be sent to you to validate your account")
         utils.notifyUser("success", "An Email will be sent to you to validate your account")
+        signup_request_button.classList.remove('is-loading')
+        document.getElementById('signup-username').value = "";
+        document.getElementById('signup-email').value = "";
     } else {
         for (var response in arrayResponse) {
             utils.notifyUser("error", utils.errorMessages[response])

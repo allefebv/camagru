@@ -15,7 +15,7 @@ const signinResponse = arrayResponse => {
     document.getElementById('signin-password').value = "";
     if (arrayResponse['success']) {
         utils.closeModal('signin')
-        utils.goToHome()
+        utils.reloadPage()
         utils.notifyUser("success", "Successful Connection")
         sessionStorage.setItem('logged', true)
     } else {

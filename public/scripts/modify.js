@@ -96,9 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			utils.notifyUser("success", utils.successMessages[response['success']])
 			utils.closeModal('delete')
 			document.getElementById('delete-password').value = '';
-			setTimeout(function() {
-				document.location.reload(true);
-			}, 3000);
+			utils.reloadPage(3000)
 		}
 		if (response['error']) {
 			utils.notifyUser("error", utils.errorMessages[response['error']])

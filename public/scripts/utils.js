@@ -106,8 +106,10 @@ export function closeModal(modalName) {
 }
     
 
-export function goToHome() {
-    document.location.href = '/index.php'
+export function reloadPage(delay = 0) {
+    setTimeout(function() {
+        document.location.reload(true);
+    }, delay);
 }
 
 function successConnexionStatus(response) {

@@ -28,6 +28,7 @@ class ControllerAccueil {
 		$this->commentRepository = new CommentRepository;
 		$this->userRepository = new UserRepository;
 		$this->imageRepository = new ImageRepository;
+		$this->likePoster = new LikePoster;
 		
 		if (((is_array($url) || $url instanceof countable)
 			&& count($url)) && count($url) > 1)
@@ -49,7 +50,7 @@ class ControllerAccueil {
 		$this->json = json_decode($this->json, TRUE);
 
 		if (isset($this->json['like'])) {
-			$this->likeComment();
+			$this->likeImage();
 		} else if (isset($this->json['getImages'])) {
 			$this->sendImages();
 		} else if (isset($this->json['getImageDetails'])) {
@@ -63,11 +64,11 @@ class ControllerAccueil {
 		}
 	}
 
-	private function likeComment()
+	private function likeImage()
 	{
 		$this->user = ($this->userRepository->getUserById($_SESSION['logged']))[0];
 		if (isset($this->json['like'])) {
-			$this->user->likeImage($this->json);
+			$this->likePoster->likeImage($this->json['imageId'], $this->user);
 			$image = $this->imageRepository->getImageById($this->json['imageId'])[0];
 			echo json_encode(array('like' => 1, 'likes' => $image->likes(), 'imageId' => $this->json['imageId']));
 		}

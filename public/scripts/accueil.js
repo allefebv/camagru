@@ -17,13 +17,15 @@ const likeResponse = (responseData) => {
 
 const postComment = () => {
     let text = document.getElementById('comment_text').value
-    utils.ajaxify(
-        JSON.stringify({
-            comment:text,
-            imageId:sessionStorage.getItem('modal-image-id') }),
-        successPostComment,
-        'index.php?url=accueil'
-    )
+    if (text) {
+        utils.ajaxify(
+            JSON.stringify({
+                comment:text,
+                imageId:sessionStorage.getItem('modal-image-id') }),
+            successPostComment,
+            'index.php?url=accueil'
+        )
+    }
 }
 
 const successPostComment = (response) => {

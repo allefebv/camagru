@@ -2,9 +2,6 @@
 
 namespace Camagru\Model\Entities;
 
-use Camagru\Model\Repositories\LikeRepository;
-use Camagru\Model\Entities\Like;
-
 final class User extends AbstractEntity {
 
 	private $id;
@@ -38,17 +35,6 @@ final class User extends AbstractEntity {
 	public function deactivate()
 	{
 		$this->setActivated(0);
-	}
-
-	public function likeImage(array $data)
-	{
-		$this->_likeRepository = new LikeRepository;
-		$pair = ['userId' => $this->id(), 'imageId' => $data['imageId']];
-		if ($this->_likeRepository->likeStatus($pair) === 1) {
-			$this->_likeRepository->delete(new Like($pair));
-		} else {
-			$this->_likeRepository->add(new Like($pair));
-		}
 	}
 
 	//SETTERS
