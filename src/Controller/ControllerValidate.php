@@ -21,12 +21,12 @@ class ControllerValidate {
     private function confirmAccount()
     {
         $userRepository = new UserRepository();
-        $user = $userRepository->getUserByKey($_GET['user'])[0];
+        $user = $userRepository->getUserByActivationKey($_GET['user'])[0];
         if ($user) {
             $newKey = md5(uniqid());
             $user->activate();
             $userRepository->update($user, 'activated', $user->activated());
-            $userRepository->update($user, '`key`', $newKey);
+            $userRepository->update($user, 'activationKey', $newKey);
             $_GET['user'] = $newKey;
         }
     } 

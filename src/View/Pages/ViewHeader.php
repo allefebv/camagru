@@ -60,8 +60,9 @@
 					<input id="signin-password" class="input" type="password" placeholder="Password">
 				</section>
 				<footer class="modal-card-foot">
-					<button class="button is-success" id="signin_request">Sign in</button>
-					<button class="button is-warning" id="forgot_password_request">Forgot Password</button>
+					<button class="button is-success" id="signin-request">Sign in</button>
+					<button class="button is-warning" id="forgot-password-request">Forgot Password</button>
+					<button class="button is-warning" id="resend-activation-link-request">Resend Activation Link</button>
 				</footer>
 			</div>
 		</div>

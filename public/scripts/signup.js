@@ -7,7 +7,12 @@ signup_request_button.onclick = () => {
     let password = document.getElementById('signup-password').value
     let passwordconfirm = document.getElementById('signup-password-confirm').value
     utils.ajaxify(
-        JSON.stringify({ username:username, email:email, password:password, passwordconfirm:passwordconfirm }),
+        JSON.stringify({
+            signup:1,
+            username:username,
+            email:email,
+            password:password,
+            passwordconfirm:passwordconfirm }),
         signupResponse,
         'index.php?url=signup'
     );

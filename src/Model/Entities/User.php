@@ -9,7 +9,7 @@ final class User extends AbstractEntity {
 	private $password;
 	private $registrationDate;
 	private $email;
-	private $key;
+	private $activationKey;
 	private $activated;
 	private $notifications;
 
@@ -71,9 +71,9 @@ final class User extends AbstractEntity {
 		$this->id = $id;
 	}
 
-	protected function setKey($key)
+	protected function setActivationKey($activationKey)
 	{
-		$this->key = $key;
+		$this->activationKey = $activationKey;
 	}
 
 	protected function setActivated(int $bool)
@@ -91,9 +91,9 @@ final class User extends AbstractEntity {
 		return $this->id;
 	}
 
-	public function key()
+	public function activationKey()
 	{
-		return $this->key;
+		return $this->activationKey;
 	}
 
 	public function activated()
@@ -103,7 +103,7 @@ final class User extends AbstractEntity {
 
 	public function status()
 	{
-		return $this->key;
+		return $this->activationKey;
 	}
 
 	public function username()

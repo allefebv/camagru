@@ -28,7 +28,7 @@ class ControllerPassword {
         $this->userRepository = new UserRepository();
         $this->user = ($this->userRepository->getUserByEmail($this->json['email']))[0];
 		if (!$this->user) {
-			echo json_encode(array('not_found_email' => 1));
+			echo json_encode(array('error' => 'not_found_email'));
 		} else {
             $this->sendResetEmail();
         }
@@ -43,6 +43,7 @@ class ControllerPassword {
         $emailer->setEmailTemplate('ForgottenPassword');
         $emailer->generateEmail(array('user' => $this->user, 'password' => $password));
         $emailer->setRecipient($this->user->email());
-		$emailer->send();
+        $emailer->send();
+        echo json_encode(array('success' => 'password_email_sent'));
     }
 }

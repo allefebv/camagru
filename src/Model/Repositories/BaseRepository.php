@@ -73,7 +73,7 @@ abstract class BaseRepository {
 
 	protected function getByKey($table, $obj, $key, $value) {
 		$var = NULL;
-		$req = $this->getDb()->prepare('SELECT * FROM ' . $table . ' WHERE `' . $key . '` = \'' . \htmlspecialchars($value) . '\'');
+		$req = $this->getDb()->prepare('SELECT * FROM ' . $table . ' WHERE ' . $key . ' = \'' . \htmlspecialchars($value) . '\'');
 		$req->execute();
 		while ($data = $req->fetch())
 			$var[] = new $obj($data);

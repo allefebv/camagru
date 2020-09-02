@@ -25,7 +25,7 @@ $db->query("CREATE TABLE `user` (
     registrationDate        TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     activated               BOOLEAN DEFAULT 0 NOT NULL,
     notifications           BOOLEAN DEFAULT 1 NOT NULL,
-    `key`                   CHAR(32) NOT NULL
+    activationKey           CHAR(32) NOT NULL
 );");
 
 $db->query("CREATE TABLE `image` (

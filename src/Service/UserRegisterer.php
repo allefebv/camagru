@@ -104,14 +104,26 @@ class UserRegisterer {
         return $response;
     }
 
+    public function resendConfirmationEmail(User $user)
+    {
+        $this->user = $user;
+        $activationKey = md5(uniqid());
+        $this->userRepository->update($user, 'activationKey', $activationKey);
+        $emailer = new Emailer();
+		$emailer->setEmailTemplate('AccountConfirmation');
+		$emailer->generateEmail(array('user' => $this->user));
+		$emailer->setRecipient($this->user->email());
+		$emailer->send();
+    }
+
     private function createUser(array $json)
     {
-        $key = md5(uniqid());
+        $activationKey = md5(uniqid());
         $this->user = new User([
             'username' => $json['username'],
             'password' => hash('whirlpool', $json['password']),
             'email' => $json['email'],
-            'key'	=> $key,
+            'activationKey'	=> $activationKey,
         ]);
     }
 
@@ -123,17 +135,4 @@ class UserRegisterer {
 		$emailer->setRecipient($this->user->email());
 		$emailer->send();
     }
-    
-    private function resendConfirmationEmail(User $user)
-    {
-        $this->user = $user;
-        $key = md5(uniqid());
-        $this->userRepository->update($user, 'key', $key);
-        $emailer = new Emailer();
-		$emailer->setEmailTemplate('AccountConfirmation');
-		$emailer->generateEmail(array('user' => $this->user));
-		$emailer->setRecipient($this->user->email());
-		$emailer->send();
-    }
-
 }

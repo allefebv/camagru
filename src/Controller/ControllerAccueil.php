@@ -123,8 +123,8 @@ class ControllerAccueil {
 
 	private function islogged()
 	{
-		if ($_SESSION['logged']) {
-			$reponse = ['logged' => true];
+		if (isset($_SESSION['logged']) && $_SESSION['logged']) {
+			$response = ['logged' => true];
 		} else {
 			$response = ['logged' => false];
 		}

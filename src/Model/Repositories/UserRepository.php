@@ -25,17 +25,17 @@ class UserRepository extends BaseRepository {
 		return $this->getByKey('user', User::class, 'email', $email);
 	}
 
-	public function getUserByKey($key) {
-		return $this->getByKey('user', User::class, 'key', $key);
+	public function getUserByActivationKey($activationKey) {
+		return $this->getByKey('user', User::class, 'activationKey', $activationKey);
 	}
 
 	public function add(User $user) {
-		$req = $this->getDb()->prepare('INSERT INTO user(username, `password`, email, `key`) VALUES(:username, :password, :email, :key)');
+		$req = $this->getDb()->prepare('INSERT INTO user(username, `password`, email, activationKey) VALUES(:username, :password, :email, :activationKey)');
 		$req->execute(array(
 			'username'	=> $user->username(),
 			'password'	=> $user->password(),
 			'email' 	=> $user->email(),
-			'key'		=> $user->key()));
+			'activationKey'		=> $user->activationKey()));
 	}
 
 	public function delete(User $user) {
