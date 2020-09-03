@@ -43,10 +43,8 @@ const forgotPasswordResponse = arrayResponse => {
     if (arrayResponse['success']) {
         utils.closeModal('signin')
         utils.notifyUser("success", "An Email with your new password has been sent")
-    } else {
-        for (var response in arrayResponse) {
-            utils.notifyUser("error", utils.errorMessages[response])
-        }
+    }  else if (arrayResponse['error']) {
+        utils.notifyUser("error", utils.errorMessages[arrayResponse['error']])
     }
 }
 

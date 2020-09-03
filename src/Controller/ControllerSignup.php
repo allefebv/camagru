@@ -54,7 +54,10 @@ class ControllerSignup {
 		if (!$user) {
 			echo json_encode(array('error' => 'not_found_email'));
 		} else {
-			$this->userRegisterer->resendConfirmationEmail($user);
+			$activationKey = md5(uniqid());
+			$this->userRepository->update($user, 'activationKey', $activationKey);
+			$user = ($this->userRepository->getUserByEmail($this->json['email']))[0];
+			$this->userRegisterer->sendConfirmationEmail($user);
 			echo json_encode(array('success' => 'email_sent'));
         }
 		

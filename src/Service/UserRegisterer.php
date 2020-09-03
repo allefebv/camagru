@@ -104,15 +104,15 @@ class UserRegisterer {
         return $response;
     }
 
-    public function resendConfirmationEmail(User $user)
-    {
-        $this->user = $user;
-        $activationKey = md5(uniqid());
-        $this->userRepository->update($user, 'activationKey', $activationKey);
-        $emailer = new Emailer();
+    public function sendConfirmationEmail(User $user = null)
+	{
+        if ($this->user) {
+            $user = $this->user;
+        }
+		$emailer = new Emailer();
 		$emailer->setEmailTemplate('AccountConfirmation');
-		$emailer->generateEmail(array('user' => $this->user));
-		$emailer->setRecipient($this->user->email());
+		$emailer->generateEmail(array('user' => $user));
+		$emailer->setRecipient($user->email());
 		$emailer->send();
     }
 
@@ -125,14 +125,5 @@ class UserRegisterer {
             'email' => $json['email'],
             'activationKey'	=> $activationKey,
         ]);
-    }
-
-    private function sendConfirmationEmail()
-	{
-		$emailer = new Emailer();
-		$emailer->setEmailTemplate('AccountConfirmation');
-		$emailer->generateEmail(array('user' => $this->user));
-		$emailer->setRecipient($this->user->email());
-		$emailer->send();
     }
 }
