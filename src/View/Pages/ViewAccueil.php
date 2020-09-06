@@ -2,8 +2,13 @@
 	$this->_title = 'Accueil';
 ?>
 <div class="container has-text-centered">
-	<div id="gallery" class="columns is-centered is-multiline">
-	</div>		
+	<div class="columns">
+		<div class="column is-one-fifth"></div>
+		<div class="column">
+			<div id="gallery" class="columns is-centered is-multiline"></div>	
+		</div>
+		<div class="column is-one-fifth"></div>
+	</div>
 </div>
 
 <div class="modal" id="modal-image">

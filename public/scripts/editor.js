@@ -7,15 +7,15 @@ var toSendContext = toSend.getContext('2d');
 var activeLayerId;
 var img;
 
-if (navigator.mediaDevices.getUserMedia) {
-    navigator.mediaDevices.getUserMedia({ video: true })
-        .then(function (stream) {
-            background.srcObject = stream;
-        })
-        .catch(function (error) {
-            console.log("Something went wrong!");
-        });
-}
+navigator.getMedia = ( navigator.getUserMedia ||
+    navigator.webkitGetUserMedia ||
+    navigator.mozGetUserMedia ||
+    navigator.msGetUserMedia);
+
+navigator.getMedia({video: true}, function() {
+        background.srcObject = stream;
+    }, function() {
+});
 
 function focusFilter(element) {
     activeLayerId = element.getAttribute('id');

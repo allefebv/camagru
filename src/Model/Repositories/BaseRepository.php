@@ -71,6 +71,16 @@ abstract class BaseRepository {
 		$req->closeCursor();
 	}
 
+	protected function getSomeOrderByKeyDescOffsetIdInf($table, $obj, $key, $limit, $offset) {
+		$var = NULL;
+		$req = $this->getDb()->prepare('SELECT * FROM ' . $table . ' WHERE id < ' . $offset . ' ORDER BY ' . $key . ' desc LIMIT ' . $limit);
+		$req->execute();
+		while ($data = $req->fetch())
+			$var[] = new $obj($data);
+		return $var;
+		$req->closeCursor();
+	}
+
 	protected function getByKey($table, $obj, $key, $value) {
 		$var = NULL;
 		$req = $this->getDb()->prepare('SELECT * FROM ' . $table . ' WHERE ' . $key . ' = \'' . \htmlspecialchars($value) . '\'');

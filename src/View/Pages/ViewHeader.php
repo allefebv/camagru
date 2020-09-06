@@ -1,7 +1,7 @@
-<nav class="navbar has-background-primary" role="navigation" aria-label="main navigation">
+<nav class="navbar has-background-dark main-navbar is-fixed-top" role="navigation" aria-label="main navigation">
 	<div class="navbar-brand">
-		<a class="navbar-item button" href="index.php">
-			<img src="../public/tabicon.ico" height=100%>
+		<a class="navbar-item" href="index.php">
+			<img src="../public/camagru.png">
 		</a>
 		<a id="myBurger" role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navMenu">
 			<span aria-hidden="true"></span>

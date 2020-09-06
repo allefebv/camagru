@@ -1,6 +1,22 @@
 import * as utils from './utils.js'
 
+document.addEventListener('DOMContentLoaded', () => {
+    utils.getConnexionStatus()
+    getImages()
+});
 
+window.addEventListener("scroll", function() {
+    if (sessionStorage.getItem('ajax-in-progress')) {
+        return;
+    }
+
+    let documentHeight = document.body.clientHeight
+    let ScrolledAndVisibleHeight = window.pageYOffset + window.innerHeight
+    if ((documentHeight - 300) < ScrolledAndVisibleHeight && sessionStorage.getItem('no-more') !== undefined) {
+        getImages()
+        sessionStorage.setItem('ajax-in-progress', 1)
+    }
+})
 
 const likeImage = (event) => {
     utils.ajaxify(
@@ -34,8 +50,14 @@ const successPostComment = (response) => {
 }
 
 const getImages = () => {
+    let last = document.getElementById('gallery').lastChild
+    let lastId = last ? last.lastChild.id : null
     utils.ajaxify(
-        JSON.stringify({ getImages:1 }),
+        JSON.stringify({
+            getImages:1,
+            nbImages:3,
+            lastId:lastId
+        }),
         getImagesResponse,
         'index.php?url=accueil'
     )
@@ -72,6 +94,12 @@ const getImagesResponse = (images) => {
         figure.appendChild(image)
     }
     utils.initOpenModals()
+    if (images.empty === 1) {
+        sessionStorage.setItem('no-more', 1)
+    } else if (document.body.clientHeight < window.innerHeight) {
+        getImages()
+    }
+    sessionStorage.removeItem('ajax-in-progress')
 }
 
 const changeModalDetails = (element) => {
@@ -252,8 +280,3 @@ const addComment = (authorText, commentText) => {
     authorElement.appendChild(authorTextElement)
     commentElement.appendChild(commentTextElement)
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-    getImages()
-    utils.getConnexionStatus()
-});
