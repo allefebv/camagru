@@ -1,4 +1,4 @@
-<nav class="navbar has-background-primary" role="navigation" aria-label="main navigation">
+<nav class="navbar has-background-dark main-navbar is-fixed-top" role="navigation" aria-label="main navigation">
 	<div class="navbar-brand">
 		<a class="navbar-item button" href="index.php">
 			<img src="../public/tabicon.ico" height=100%>

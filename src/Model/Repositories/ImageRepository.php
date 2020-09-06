@@ -24,6 +24,10 @@ class ImageRepository extends BaseRepository {
 		return $this->getSomeOrderByKeyDesc('image', Image::class, 'publicationDate', $limit);
 	}
 
+	public function getSomeImagesByPublicationDateOffset(int $limit, int $offset) {
+		return $this->getSomeOrderByKeyDescOffsetIdInf('image', Image::class, 'publicationDate', $limit, $offset);
+	}
+
 	public function getImageById($id) {
 		return $this->getByKey('image', Image::class, 'id', $id);
 	}

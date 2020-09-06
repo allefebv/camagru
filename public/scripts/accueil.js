@@ -1,6 +1,17 @@
 import * as utils from './utils.js'
 
-
+document.addEventListener('DOMContentLoaded', () => {
+    let documentHeight = document.body.clientHeight
+    let windowHeight = window.innerHeight
+    let i = 0
+    while (documentHeight < windowHeight
+        && sessionStorage.getItem('no-more') === null
+        && i < 15) {
+        getImages()
+        i++
+    }
+    utils.getConnexionStatus()
+});
 
 const likeImage = (event) => {
     utils.ajaxify(
@@ -33,9 +44,23 @@ const successPostComment = (response) => {
     document.getElementById('comment_text').value = ''
 }
 
+window.addEventListener("scroll", function() {
+    let documentHeight = document.body.clientHeight
+    let ScrolledAndVisibleHeight = window.pageYOffset + window.innerHeight
+
+    if ((documentHeight - 300) < ScrolledAndVisibleHeight) {
+        getImages()
+    }
+})
+
 const getImages = () => {
+    let lastId = document.getElementById('gallery').lastChild.id
     utils.ajaxify(
-        JSON.stringify({ getImages:1 }),
+        JSON.stringify({
+            getImages:1,
+            nbImages:3,
+            lastId:lastId
+        }),
         getImagesResponse,
         'index.php?url=accueil'
     )
@@ -43,6 +68,9 @@ const getImages = () => {
 
 const getImagesResponse = (images) => {
     const gallery = document.getElementById('gallery')
+    if (images.length === 0) {
+        sessionStorage.setItem('no-more', 1)
+    }
     for (var i = 0; i < images.length ; i++) {
 
         var column = document.createElement('div')
@@ -252,8 +280,3 @@ const addComment = (authorText, commentText) => {
     authorElement.appendChild(authorTextElement)
     commentElement.appendChild(commentTextElement)
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-    getImages()
-    utils.getConnexionStatus()
-});

@@ -87,7 +87,12 @@ class ControllerAccueil {
 
 	private function sendImages()
 	{
-		$images = $this->imageRepository->getAllImagesByPublicationDate();
+		if ($this->json['lastId']) {
+			$images = $this->imageRepository->getSomeImagesByPublicationDateOffset($this->json['nbImages'], $this->json['lastId']);
+		} else {
+			$images = $this->imageRepository->getSomeImagesByPublicationDate($this->json['nbImages']);
+		}
+
 		if ($images) {
 			echo json_encode($this->imageRepository->getExposedImages($images));
 		}
