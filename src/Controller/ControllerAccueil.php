@@ -33,10 +33,11 @@ class ControllerAccueil {
 		if (((is_array($url) || $url instanceof countable)
 			&& count($url)) && count($url) > 1)
 			throw new Exception('Page Introuvable');
-		else if ($this->json = file_get_contents('php://input'))
+		else if ($this->json = file_get_contents('php://input')) {
 			$this->actionDispatch();
-		else
+		} else {
 			$this->gallery();
+		}
 	}
 
 	private function gallery()

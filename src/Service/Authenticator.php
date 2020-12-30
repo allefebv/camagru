@@ -20,7 +20,6 @@ class Authenticator {
 		if ($this->user->activated()) {
 			return TRUE;
 		}
-		
 		return FALSE;
 	}
 
@@ -31,7 +30,6 @@ class Authenticator {
 			$_SESSION['username'] = $this->user->username();
 			return TRUE;
 		}
-		
 		return FALSE;
 	}
 

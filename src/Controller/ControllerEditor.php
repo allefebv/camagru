@@ -13,16 +13,29 @@ class ControllerEditor {
 	private $_viewGenerator;
 	private $_imageRepository;
 	private $_layerRepository;
-	private $_json;
+	private $json;
 
 	public function __construct($url) {
 		if (isset($url) && count($url) > 1)
 			throw new Exception('Page Introuvable');
 		else if (!isset($_SESSION['logged']))
 			throw new Exception('Section Autorisée aux utilisateurs connectés');
-		else if ($this->_json = file_get_contents('php://input'))
+		else if ($this->json = file_get_contents('php://input'))
+			$this->actionDispatch();
+		else
+			$this->editor();
+	}
+
+	private function actionDispatch() {
+		$this->json = json_decode($this->json, TRUE);
+
+		if (isset($this->json['img'])) {
+			$this->createImg();
+		} else if (isset($this->json['save'])) {
 			$this->saveImg();
-		$this->editor();
+		} else {
+			$this->getLayers();
+		}
 	}
 
 	private function editor() {
@@ -31,37 +44,59 @@ class ControllerEditor {
 		$this->_viewGenerator->generate(array('layers' => $this->_layerRepository->getLayers()));
 	}
 
+	private function getLayers() {
+		$this->_layerRepository = new LayerRepository;
+		$layers = $this->_layerRepository->getLayers();
+		$layers = $this->_layerRepository->getExposedLayers($layers);
+
+		header('Content-Type: application/json');
+		echo \json_encode($layers);
+	}
+
+	private function createImg() {
+		$imgUrl = base64_decode(explode(',', $this->json['img'])[1]);
+		$userImage = \imagecreatefromstring($imgUrl);
+
+		$layerRepository = new LayerRepository;
+		$layer = ($layerRepository->getLayerById($this->json['layer']))[0];
+		$layerPath = $layer->pathToLayer();
+		$layerImage = \imagecreatefrompng($_SERVER['DOCUMENT_ROOT'].$layerPath);
+		$layerWidth = imagesx($layerImage);
+		$layerHeight = imagesy($layerImage);
+		
+		$resizedLayer = imagecreatetruecolor($this->json['width'], $this->json['height']); 
+		
+		imagealphablending($userImage, true);
+		\imagesavealpha($userImage, true);
+		
+		imagealphablending($resizedLayer, false);
+		\imagesavealpha($resizedLayer, true);
+		
+		imagecopyresampled($resizedLayer, $layerImage, 0, 0, 0, 0, $this->json['width'], $this->json['height'], $layerWidth, $layerHeight);
+		imagecopyresampled($userImage, $resizedLayer, 240 - $this->json['width'] / 2, 135 - $this->json['height'] / 2, 0, 0, $this->json['width'], $this->json['height'], $this->json['width'], $this->json['height']);
+
+		ob_start();
+		imagepng($userImage);
+		$contents =  ob_get_clean();
+
+		header('Content-Type: application/json');
+		echo json_encode(array('img' => \base64_encode($contents)));
+	}
+
 	private function saveImg() {
 		$this->_imageRepository = new ImageRepository;
-		$this->_json = \json_decode($this->_json, TRUE);
 
-		$imgUrl = explode(',', $this->_json['img']);
+		$imgUrl = $this->json['save'];
+		$imgUrl = base64_decode($imgUrl);
 
-		$imgUrl = base64_decode($imgUrl[1]);
 		$imgId = (int)current($this->_imageRepository->getBiggestId()) + 1;
-		$imgName = 'image_' . $imgId . '.png';
+		$imgName = 'image_' . $imgId . '.jpg';
 		$imgPath = '/data/userImages/'.$imgName;
 		$img = new Image(array('pathToImage' => $imgPath, 'userId' => $_SESSION['logged']));
 		$this->_imageRepository->add($img);
 		file_put_contents($_SERVER['DOCUMENT_ROOT'].$imgPath, $imgUrl);
-
-
-		$layerRepository = new LayerRepository;
-		$layer = ($layerRepository->getLayerById($this->_json['layer']))[0];
-		$layerPath = $layer->pathToLayer();
-
-		$userImage = \imagecreatefrompng($_SERVER['DOCUMENT_ROOT'].$imgPath);
-		$layerImage = \imagecreatefrompng($_SERVER['DOCUMENT_ROOT'].$layerPath);
-		$layerWidth = imagesx($layerImage);
-		$layerHeight = imagesy($layerImage);
-		imagealphablending($userImage, true);
-		imagesavealpha($userImage, true);
-		imagecopyresampled($userImage, $layerImage, 0, 0, 0, 0, 320, 240, $layerWidth, $layerHeight);
-		imagepng($userImage, $_SERVER['DOCUMENT_ROOT'].$imgPath);
+		\http_response_code(200);
 	}
-
-	//Page d'accueil = header (connexion etc) + gallerie + footer
-
 }
 
 ?>

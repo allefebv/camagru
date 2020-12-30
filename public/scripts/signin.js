@@ -17,9 +17,11 @@ const signinResponse = arrayResponse => {
     document.getElementById('signin-password').value = "";
     if (arrayResponse['success']) {
         utils.closeModal('signin')
-        utils.reloadPage(2000)
         utils.notifyUser("success", "Successful Connection")
-        sessionStorage.setItem('logged', true)
+        sessionStorage.setItem('logged', true);
+        sessionStorage.setItem('username', arrayResponse['username']);
+        sessionStorage.setItem('userId', arrayResponse['userId']);
+        utils.reloadPage(2000);
     } else {
         for (let response in arrayResponse) {
             utils.notifyUser("error", utils.errorMessages[response])

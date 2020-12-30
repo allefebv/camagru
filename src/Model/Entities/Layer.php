@@ -32,4 +32,7 @@ final class Layer extends AbstractEntity {
 		return $this->_pathToLayer;
 	}
 
+	public function expose() {
+		return get_object_vars($this);
+	}
 }

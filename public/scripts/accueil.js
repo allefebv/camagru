@@ -73,6 +73,7 @@ const getImagesResponse = (images) => {
         var card = document.createElement('div')
         card.classList.add('card', 'gallery-image')
         card.setAttribute('data-bulma-modal-open', 'image')
+        card.setAttribute('data-author-id', images[i]._userId);
         card.id = images[i]._id
         card.addEventListener("click", function() {
             changeModalDetails(this)
@@ -82,7 +83,7 @@ const getImagesResponse = (images) => {
         cardImage.classList.add('card-image')
 
         var figure = document.createElement('figure')
-        figure.classList.add('image', 'is-4by3')
+        figure.classList.add('image', 'is-16by9')
 
         var image = document.createElement('img')
         image.src = images[i]._pathToImage
@@ -112,10 +113,9 @@ const changeModalDetails = (element) => {
 
 const successGetDetails = (details) => {
 
-    modalBase()
+    modalBase(details)
     modalHeader(details.imageAuthor, details.imageDetails._likes)
     modalImage(details.imageDetails)
-    console.log(details)
 
     let modalCardBody = document.createElement('div')
     modalCardBody.classList.add('modal-card-body')
@@ -135,18 +135,20 @@ const successGetDetails = (details) => {
     utils.initCloseModals()
 }
 
-const modalBase = () => {
-    let modalBackground = document.createElement('div')
-    modalBackground.classList.add('modal-background')
-    modalBackground.setAttribute('data-bulma-modal', 'close')
+const modalBase = (details) => {
+    let modalBackground = document.createElement('div');
+    modalBackground.classList.add('modal-background');
+    modalBackground.setAttribute('data-bulma-modal', 'close');
+    modalBackground.setAttribute('data-author-id', details.imageDetails._userId);
+    modalBackground.setAttribute('data-author-name', details.imageAuthor);
     utils.initCloseModals()
 
-    let modalContent = document.createElement('div')
-    modalContent.classList.add('modal-content')
-    modalContent.id = 'modal-image-content'
+    let modalContent = document.createElement('div');
+    modalContent.classList.add('modal-content');
+    modalContent.id = 'modal-image-content';
 
-    document.getElementById('modal-image').appendChild(modalBackground)
-    document.getElementById('modal-image').appendChild(modalContent)
+    document.getElementById('modal-image').appendChild(modalBackground);
+    document.getElementById('modal-image').appendChild(modalContent);
 }
 
 const modalHeader = (authorName, likesNb) => {
@@ -190,7 +192,7 @@ const modalHeader = (authorName, likesNb) => {
 
 const modalImage = (imageDetails) => {
     let imageContainer = document.createElement('p')
-    imageContainer.classList.add('image', 'is-4by3')
+    imageContainer.classList.add('image', 'is-16by9')
     imageContainer.id = 'modal-image-image'
 
     let image = document.createElement('img')

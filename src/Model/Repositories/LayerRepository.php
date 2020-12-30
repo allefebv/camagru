@@ -20,6 +20,10 @@ class LayerRepository extends BaseRepository {
 	public function getLayerById($id) {
 		return $this->getByKey('layer', Layer::class, 'id', $id);
 	}
+
+	public function getExposedLayers(array $layers) {
+		return $this->getExposedObjects($layers);
+	}
 }
 
 ?>

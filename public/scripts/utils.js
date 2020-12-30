@@ -19,6 +19,44 @@ export const successMessages = {
     "account_deleted" : "Your account has been deleted",
 }
 
+export const POST_METHOD = "POST";
+
+const TIMEOUT = 5000;
+
+export function fetchApi(url, args) {
+	return new Promise((resolve, reject) => {
+		setTimeout(() => {
+			reject(new Error("timeout"));
+		}, TIMEOUT);
+
+		if (
+			args.body &&
+			args.headers &&
+			args.headers["Content-Type"] &&
+			args.headers["Content-Type"] === "application/json"
+		) {
+            console.log("stringify json");
+			args.body = JSON.stringify(args.body);
+		}
+
+		fetch(url, args)
+			.then((response) => {
+				if (!response.ok) {
+                    console.log("reject response not ok");
+					reject(new Error(response.statusText));
+				}
+				return response;
+			})
+			.then((response) => {
+                if (response.headers.get("content-type") === 'application/json') {
+					resolve(response.json());
+                } else {
+                    resolve();
+                }
+			});
+	});
+}
+
 export function ajaxify(jsonString, callback, route) {
     var httpRequest = new XMLHttpRequest();
     httpRequest.onreadystatechange = function() {

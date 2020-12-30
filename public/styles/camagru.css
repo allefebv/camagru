@@ -1,78 +1,83 @@
 .page-footer {
-    position: fixed;
-    display: block;
-    width: 100%;
-    left: 0;
-    bottom: 0;
-    padding-top: 0.3rem;
-    padding-bottom: 0.3rem;
+	position: fixed;
+	display: block;
+	width: 100%;
+	left: 0;
+	bottom: 0;
+	padding-top: 0.3rem;
+	padding-bottom: 0.3rem;
 }
 
 html {
-    background-color: bisque;
+	background-color: bisque;
 }
 
 .background-content {
-    width:320px;
-    height:240px;
+	width: 480;
+	height: 270;
 }
 
 #overlay {
-    max-width:100%;
-    max-height:100%;
+	max-width: 100%;
+	max-height: 100%;
 }
 
 .tooltiptext {
-    visibility: hidden;
-    color: #fff;
+	visibility: hidden;
+	color: #fff;
 }
 
 .tooltip:hover .tooltiptext {
-    visibility: visible;
+	visibility: visible;
 }
 
 .tooltip {
-    overflow: overlay;
+	overflow: overlay;
 }
 
 .input-file {
-    display: none;
+	display: none;
 }
 
 .import-file {
-    cursor: pointer;
+	cursor: pointer;
 }
 
 .modal-card {
-    background-color: aliceblue;
+	background-color: aliceblue;
 }
 
 .modal-background {
-    background-color: rgba(255, 255, 255, 0.4);
+	background-color: rgba(255, 255, 255, 0.4);
 }
 
 .gallery-image {
-    overflow: hidden;
-    background-color: white;
+	overflow: hidden;
+	background-color: white;
 }
 
 .gallery-image img {
-    transition: transform 0.4s ease;
+	transition: transform 0.4s ease;
 }
 
 .gallery-image img:hover {
-    opacity: 0.7;
-    transform: scale(1.1);
+	opacity: 0.7;
+	transform: scale(1.1);
 }
 
 .modal p {
-    color: black;
+	color: black;
 }
 
 .title {
-    color: hsl(0, 0%, 100%);
+	color: hsl(0, 0%, 100%);
 }
 
 .label {
-    color: hsl(48, 100%, 67%);
+	color: hsl(48, 100%, 67%);
+}
+
+.editor {
+	width: 480;
+	height: 270;
 }

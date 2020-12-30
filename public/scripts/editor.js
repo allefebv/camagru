@@ -1,21 +1,64 @@
+import { fetchApi, POST_METHOD } from "./utils.js";
+import * as utils from './utils.js'
+
 var background = document.getElementById('webcam');
-var layer = document.getElementById('layer');
+var importNode = document.getElementById('import');
+var layersNode = document.getElementById('layers');
 var overlay = document.getElementById('overlay');
 var toSend = document.getElementById('to_send');
 var saveButton = document.getElementById('save');
 var toSendContext = toSend.getContext('2d');
+var userHasWebcam;
 var activeLayerId;
 var img;
+
+document.addEventListener('DOMContentLoaded', () => {
+    importNode.addEventListener('change', fileImport);
+});
 
 navigator.getMedia = ( navigator.getUserMedia ||
     navigator.webkitGetUserMedia ||
     navigator.mozGetUserMedia ||
     navigator.msGetUserMedia);
 
-navigator.getMedia({video: true}, function() {
+navigator.getMedia(
+    {video: true},
+    () => {
         background.srcObject = stream;
-    }, function() {
-});
+        userHasWebcam = true;
+        getLayers();
+        document.getElementById('savetooltip').innerHTML = 'Please select a filter';
+    },
+    () => { 
+        userHasWebcam = false;
+        document.getElementById('selectcam').style.display = 'none';
+        document.getElementById('savetooltip').innerHTML = 'Please import an image';
+    }
+);
+
+function getLayers() {
+    fetchApi(
+        'index.php?url=editor',
+    {
+        method: POST_METHOD,
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: {getLayers: true},
+    })
+    .then((layers) => {
+        for(let layer of layers) {
+            let img = document.createElement('img');
+            img.setAttribute('src', layer._pathToLayer);
+            img.setAttribute('id', layer._id);
+            img.setAttribute('width', '50px');
+            img.setAttribute('height', '50px');
+            img.addEventListener("click", () => focusFilter(img));
+            layersNode.appendChild(img);
+        }
+    })
+    .catch((error) => console.log(error));
+}
 
 function focusFilter(element) {
     activeLayerId = element.getAttribute('id');
@@ -27,54 +70,102 @@ function focusFilter(element) {
     saveButton.disabled = false;
 }
 
-function createCanvas() {
-    var canv = document.createElement('canvas');
-    canv.width = 160;
-    canv.height = 120;
-    var context = canv.getContext('2d');
-    document.getElementById("previews").appendChild(canv);
-    context.drawImage(background, 0, 0, 160, 120);
-    context.drawImage(overlay, 40, 5, 80, 120);
-}
-
 document.getElementById('selectcam').addEventListener("click", function() {
     background.style.display = 'none';
     background = document.getElementById('webcam');
     background.style.display = '';
 });
 
-function fileImport(element) {
-    var reader = new FileReader();
-    background.style.display = 'none';
-    background = document.getElementById('uploaded-img');
-    reader.onload = function (e) {
-        background.setAttribute('src', e.target.result);
+//CONTROL IMAGE ASPECT RATIO SIZE
+function fileImport(event) {
+    let file = event.currentTarget.files[0];
+    let img = new Image();
+    let _URL = window.URL || window.webkitURL;
+    let objectUrl = _URL.createObjectURL(file);
+    img.onload = function () {
+        console.log(this.height, this.width, this.width / this.height, 16 / 8.5, 16 / 9.5)
+        if (this.width / this.height > 16 / 8.5 || this.width / this.height < 16 / 9.5) {
+            console.log("hello", this.width / this.height < 16 / 8.5, this.width / this.height > 16 / 9.5);
+        } else {
+            background.style.display = 'none';
+            background = document.getElementById('uploaded-img');
+            background.width = 480;
+            background.height = 270;
+            background.setAttribute('src', objectUrl);
+            background.style.display = '';
+            if (layersNode.getElementsByTagName('img').length === 0) {
+                getLayers();
+                document.getElementById('savetooltip').innerHTML = 'Please select a filter';
+            }
+        }
+        _URL.revokeObjectURL(objectUrl);
     };
-    reader.readAsDataURL(element.files[0]);
-    background.style.display = '';
+    img.src = objectUrl;
 }
 
+function saveImage(details, container) {
+    console.log("DETAILS: ",details);
+    fetchApi(
+        'index.php?url=editor',
+        {
+            method: POST_METHOD,
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: details,
+        }).then(() => {
+            utils.notifyUser("success", "Your image has been saved");
+            deleteImage(container);
+        }).catch((error) => console.log(error));
+}
+
+function deleteImage(container) {
+    container.remove();
+}
+
+function addPreview(json) {
+
+    let container = document.createElement('div');
+    container.classList.add('container');
+    document.getElementById('previews').appendChild(container);
+
+    let img = new Image(480, 270)
+    img.src = 'data:img/jpg;base64,' + json.img;
+    container.appendChild(img);
+
+    let saveButton = document.createElement('button');
+    saveButton.addEventListener('click', () => saveImage({save:json.img}, container));
+    saveButton.classList.add('button');
+    saveButton.innerHTML = 'Save';
+    container.appendChild(saveButton);
+
+    let deleteButton = document.createElement('button');
+    deleteButton.addEventListener('click', () => deleteImage(container));
+    deleteButton.classList.add('button', 'danger');
+    deleteButton.innerHTML = 'Delete';
+    container.appendChild(deleteButton);
+}
+
+const createImageMontage = (details) => {
+    return fetchApi(
+        'index.php?url=editor',
+        {
+            method: POST_METHOD,
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: details,
+        });
+    };
+
 saveButton.addEventListener("click", function() {
-    var httpRequest = new XMLHttpRequest();
-    createCanvas();
     toSendContext.clearRect(0, 0, toSend.width, toSend.height);
-    toSendContext.drawImage(background, 0, 0, 320, 240);
-    img = toSend.toDataURL("image/png");
-
-    if (!httpRequest) {
-        alert('Impossible de creer une instance XMLHTTP');
-        return false;
-    }
-
-    httpRequest.onreadystatechange = function() {
-        if (httpRequest.readyState === 4 && httpRequest.status !== 200) {
-            console.log('error return requete serveur');
-            document.write(httpRequest.status);
-            return false;
-        }
-    }
-
-    httpRequest.open('POST', 'index.php?url=editor', true);
-    httpRequest.setRequestHeader('Content-Type', 'multipart/form-data');
-    httpRequest.send(JSON.stringify({ img:img, layer:activeLayerId }));
+    toSendContext.drawImage(background, 0, 0, 480, 270);
+    img = toSend.toDataURL("image/jpg");
+    console.log(img, overlay.width, overlay.height);
+    createImageMontage({img:img, layer:activeLayerId, width: overlay.width, height: overlay.height})
+        .then((json) => {
+            addPreview(json);
+        })
+        .catch();
 });
