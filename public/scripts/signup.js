@@ -3,7 +3,7 @@ import * as utils from './utils.js'
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('signup-password-confirm').addEventListener("keyup", (event) => {
         if(event.key !== "Enter" || !document.getElementById('modal-signup').classList.contains('is-active')) return;
-        document.getElementById('signin-request').click();
+        document.getElementById('signup-request').click();
         event.preventDefault();
     });
 });
