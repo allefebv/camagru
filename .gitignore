@@ -1,5 +1,4 @@
 .vscode
 db/*
-public/userImages/*
 data/db/
-data/userImages/
+data/userImages/*
