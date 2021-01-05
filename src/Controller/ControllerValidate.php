@@ -12,7 +12,6 @@ class ControllerValidate {
             throw new Exception('Page Introuvable');
         }
         $this->confirmAccount();
-        header('Location: index.php?validation=true');
     }
 
     private function confirmAccount()
@@ -25,6 +24,9 @@ class ControllerValidate {
             $userRepository->update($user, 'activated', $user->activated());
             $userRepository->update($user, 'activationKey', $newKey);
             $_GET['user'] = $newKey;
+            header('Location: index.php?validation=true');
+        } else {
+            header('Location: index.php?validation=false');
         }
     } 
 

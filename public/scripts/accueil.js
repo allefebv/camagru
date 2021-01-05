@@ -9,13 +9,16 @@ document.addEventListener('DOMContentLoaded', () => {
             addFilterOwnImages();
         }
     });
-    if (window.location.href.indexOf("validation") > -1) {
+    if (window.location.href.indexOf("validation=true") > -1) {
         utils.notifyUser('success', 'Your account has been activated');
+    }
+    else if (window.location.href.indexOf("validation=false") > -1) {
+        utils.notifyUser('error', 'Wrong validation key, ask for a new activation link');
     }
     if (window.location.href.indexOf("l=s") > -1) {
         utils.notifyUser('success', 'Successful login');
     }
-    history.pushState({}, '', "index.php");
+    // history.pushState({}, '', "index.php");
     getImages();
 });
 
@@ -197,9 +200,7 @@ const successGetDetails = (details) => {
 
     utils.createElement('div', null, ['modal-card-body'], 'modal-image-body', 'modal-image-content');
 
-    if (sessionStorage.getItem('logged') === "true") {
-        addCommentLikeArea(details.imageDetails)
-    }   
+    addCommentLikeArea(details.imageDetails)  
 
     if (details.imageComments) {
         for (let comment of details.imageComments) {
@@ -269,43 +270,53 @@ const modalImage = (imageDetails) => {
 }
 
 const addCommentLikeArea = (imageDetails) => {
+
     let level = document.createElement('div')
     level.classList.add('level')
 
     let leftPart = document.createElement('div')
     leftPart.classList.add('level-left')
 
-    let commentBoxDiv = document.createElement('div')
-    commentBoxDiv.classList.add('level-item')
-
-    let commentTextArea = document.createElement('textarea')
-    commentTextArea.classList.add('textarea')
-    commentTextArea.id = "comment_text"
-    commentTextArea.rows = "1"
-    commentTextArea.placeholder = "Comment"
-
-    let commentButtonDiv = document.createElement('div')
-    commentButtonDiv.classList.add('level-item')
-
-    let commentButton = document.createElement('button')
-    commentButton.classList.add('button')
-    commentButton.id = 'comment_request'
-    commentButton.addEventListener('click', postComment)
-
-    let commentButtonText = document.createTextNode('Post')
-    commentButton.appendChild(commentButtonText)
-
     let rightPart = document.createElement('div')
     rightPart.classList.add('level-right')
 
-    let likeButtonDiv = document.createElement('div')
-    likeButtonDiv.classList.add('level-item')
+    let likeString = imageDetails._likes === 0 ? 'no likes yet' : imageDetails._likes === 1 ? '1 like' : imageDetails._likes + 'likes'
+    let likeNbDiv = utils.createElement('div', likeString, ['level-item'], 'likes-nb')
 
-    let likeButton = document.createElement('button')
-    likeButton.id = 'like_request'
-    likeButton.imageId = imageDetails._id
-    likeButton.addEventListener('click', likeImage)
-    utils.fetchApi('index.php?url=accueil',
+    document.getElementById('modal-image-body').appendChild(level)
+    level.appendChild(leftPart)
+    level.appendChild(rightPart)
+    rightPart.appendChild(likeNbDiv);
+
+    if (sessionStorage.getItem('logged') === "true") {
+        let commentBoxDiv = document.createElement('div')
+        commentBoxDiv.classList.add('level-item')
+
+        let commentTextArea = document.createElement('textarea')
+        commentTextArea.classList.add('textarea')
+        commentTextArea.id = "comment_text"
+        commentTextArea.rows = "1"
+        commentTextArea.placeholder = "Comment"
+
+        let commentButtonDiv = document.createElement('div')
+        commentButtonDiv.classList.add('level-item')
+
+        let commentButton = document.createElement('button')
+        commentButton.classList.add('button')
+        commentButton.id = 'comment_request'
+        commentButton.addEventListener('click', postComment)
+
+        let commentButtonText = document.createTextNode('Post')
+        commentButton.appendChild(commentButtonText)
+
+        let likeButtonDiv = document.createElement('div')
+        likeButtonDiv.classList.add('level-item')
+    
+        let likeButton = document.createElement('button')
+        likeButton.id = 'like_request'
+        likeButton.imageId = imageDetails._id
+        likeButton.addEventListener('click', likeImage)
+        utils.fetchApi('index.php?url=accueil',
         {
             method: POST_METHOD,
             headers: {
@@ -322,18 +333,13 @@ const addCommentLikeArea = (imageDetails) => {
             }
         });
 
-    let likeNbDiv = utils.createElement('div', imageDetails._likes, ['level-item'], 'likes-nb')
-
-    document.getElementById('modal-image-body').appendChild(level)
-    level.appendChild(leftPart)
-    level.appendChild(rightPart)
-    leftPart.appendChild(commentBoxDiv)
-    commentBoxDiv.appendChild(commentTextArea)
-    leftPart.appendChild(commentButtonDiv)
-    commentButtonDiv.appendChild(commentButton)
-    rightPart.appendChild(likeButtonDiv)
-    rightPart.appendChild(likeNbDiv);
-    likeButtonDiv.appendChild(likeButton)
+        leftPart.appendChild(commentBoxDiv)
+        commentBoxDiv.appendChild(commentTextArea)
+        leftPart.appendChild(commentButtonDiv)
+        commentButtonDiv.appendChild(commentButton)
+        rightPart.appendChild(likeButtonDiv)
+        likeButtonDiv.appendChild(likeButton)
+    }
 }
 
 const addComment = (authorText, commentText) => {
