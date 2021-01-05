@@ -5,7 +5,7 @@ namespace Camagru\Service;
 use Camagru\Model\Repositories\LikeRepository;
 use Camagru\Model\Entities\Like;
 
-class LikePoster {
+class LikeService {
 
     private $likeRepository;
 
@@ -19,9 +19,19 @@ class LikePoster {
 		$pair = ['userId' => $user->id(), 'imageId' => $imageId];
 		if ($this->likeRepository->likeStatus($pair) === 1) {
 			$this->likeRepository->delete(new Like($pair));
+			return 'delete';
 		} else {
 			$this->likeRepository->add(new Like($pair));
+			return 'like';
 		}
+	}
+
+	public function hasUserLikedImage($imageId, $user) {
+		$pair = ['userId' => $user->id(), 'imageId' => $imageId];
+		if ($this->likeRepository->likeStatus($pair) === 1) {
+			return true;
+		}
+		return false;
 	}
 
 }

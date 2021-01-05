@@ -14,7 +14,7 @@
         <section id="content" class="section has-text-centered">
             <?= $content ?>
         </section>
-        <footer class="level has-background-dark has-text-primary page-footer">
+        <footer class="level has-background-dark has-text-primary page-footer page-footer">
             <div class="container has-text-centered">
                     made by allefebv
             </div>

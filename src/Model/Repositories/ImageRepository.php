@@ -24,8 +24,16 @@ class ImageRepository extends BaseRepository {
 		return $this->getSomeOrderByKeyDesc('image', Image::class, 'publicationDate', $limit);
 	}
 
+	public function getSomeImagesByPublicationDateUserIs(int $limit, $userId) {
+		return $this->getSomeOrderByKeyDescUserIs('image', Image::class, 'publicationDate', $limit, $userId);
+	}
+
 	public function getSomeImagesByPublicationDateOffset(int $limit, int $offset) {
 		return $this->getSomeOrderByKeyDescOffsetIdInf('image', Image::class, 'publicationDate', $limit, $offset);
+	}
+
+	public function getSomeImagesFromUserByPublicationDateWithOffset(int $limit, int $offset, int $userId) {
+		return $this->getSomeOrderByKeyDescOffsetIdInfUserIs('image', Image::class, 'publicationDate', $limit, $offset, $userId);
 	}
 
 	public function getImageById($id) {
@@ -46,7 +54,8 @@ class ImageRepository extends BaseRepository {
 	}
 
 	public function delete(Image $image) {
-
+		$this->deleteEntry('image', 'id', $image->id());
+		\unlink($_SERVER['DOCUMENT_ROOT'] . $image->pathToImage());
 	}
 
 	public function update(Image $image) {

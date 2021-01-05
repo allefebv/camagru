@@ -9,4 +9,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     utils.initOpenModals()
     utils.initCloseModals()
+
+    let logout = document.getElementById('logout-button');
+    logout && logout.addEventListener('click', () => {
+        sessionStorage.removeItem('username');
+        sessionStorage.removeItem('userId');
+    })
 });

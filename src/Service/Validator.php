@@ -21,7 +21,6 @@ class Validator {
         if (!isset($username) || empty($username)) {
             return false;
         }
-
         return true;
     }
 
@@ -34,7 +33,6 @@ class Validator {
         || $password !== $passwordconfirm) {
             return false;
         }
-
         return true;
     }
 
@@ -43,20 +41,14 @@ class Validator {
         if (empty($email) || !preg_match(self::EMAIL_REGEX, $email)) {
             return false;
         }
-
         return true;
     }
 
     public function isValidPassword(string $password)
     {
-        // if (empty($password) || !preg_match(self::PASSWORD_REGEX, $password)) {
-        //     return false;
-        // }
-
-        if (empty($password)) {
+        if (empty($password) || !preg_match(self::PASSWORD_REGEX, $password)) {
             return false;
         }
-
         return true;
     }
 
@@ -65,7 +57,6 @@ class Validator {
         if ($this->userRepository->getUserByName($username)) {
             return false;
         }
-
         return true;
     }
 
@@ -74,7 +65,6 @@ class Validator {
         if ($this->userRepository->getUserByEmail($email)) {
             return false;
         }
-
         return true;
     }
 

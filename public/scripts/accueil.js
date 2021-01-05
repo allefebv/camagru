@@ -1,11 +1,48 @@
 import * as utils from './utils.js'
+import { fetchApi, POST_METHOD } from "./utils.js";
+
+var ownImages = false;
 
 document.addEventListener('DOMContentLoaded', () => {
-    utils.getConnexionStatus()
-    getImages()
+    utils.getConnexionStatus().then(() => {
+        if (sessionStorage.getItem('logged') === 'true') {
+            addFilterOwnImages();
+        }
+    });
+    if (window.location.href.indexOf("validation") > -1) {
+        utils.notifyUser('success', 'Your account has been activated');
+    }
+    if (window.location.href.indexOf("l=s") > -1) {
+        utils.notifyUser('success', 'Successful login');
+    }
+    history.pushState({}, '', "index.php");
+    getImages();
 });
 
-window.addEventListener("scroll", function() {
+function addFilterOwnImages() {
+    utils.createElement('div', null, ['navbar-item'], 'item-my-images', 'nav-start');
+    utils.createElement('div', null, ['navbar-item'], 'item-all-images', 'nav-start');
+    let ownImagesButton = utils.createElement('button', 'my images', ['button'], null, 'item-my-images');
+    let allImagesButton = utils.createElement('button', 'all images', ['button', 'is-success'], null, 'item-all-images');
+
+    ownImagesButton.addEventListener('click', () => {
+        allImagesButton.classList.remove('is-success');
+        ownImagesButton.classList.add('is-success');
+        document.getElementById('gallery').textContent = '';
+        ownImages = true;
+        getImages(ownImages);
+    });
+
+    allImagesButton.addEventListener('click', () => {
+        ownImagesButton.classList.remove('is-success');
+        allImagesButton.classList.add('is-success');
+        document.getElementById('gallery').textContent = '';
+        ownImages = false;
+        getImages(ownImages);
+    })
+}
+
+function loadMoreImages() {
     if (sessionStorage.getItem('ajax-in-progress')) {
         return;
     }
@@ -13,10 +50,98 @@ window.addEventListener("scroll", function() {
     let documentHeight = document.body.clientHeight
     let ScrolledAndVisibleHeight = window.pageYOffset + window.innerHeight
     if ((documentHeight - 300) < ScrolledAndVisibleHeight && sessionStorage.getItem('no-more') !== undefined) {
-        getImages()
+        getImages(ownImages);
         sessionStorage.setItem('ajax-in-progress', 1)
     }
-})
+}
+
+window.addEventListener("scroll", loadMoreImages);
+window.addEventListener("resize", loadMoreImages);
+
+const getImages = (onlyOwn) => {
+    let last = document.getElementById('gallery').lastChild
+    let lastId = last ? last.lastChild.id : null
+    if (onlyOwn) {
+        utils.ajaxify(
+            JSON.stringify({
+                getOwnImages:1,
+                nbImages:3,
+                lastId:lastId
+            }),
+            getImagesResponse,
+            'index.php?url=accueil'
+        )
+    } else {
+        utils.ajaxify(
+            JSON.stringify({
+                getAllImages:1,
+                nbImages:3,
+                lastId:lastId
+            }),
+            getImagesResponse,
+            'index.php?url=accueil'
+        )
+    }
+}
+
+const getImagesResponse = (images) => {
+    const gallery = document.getElementById('gallery')
+    for (var i = 0; i < images.length ; i++) {
+
+        var column = document.createElement('div')
+        column.classList.add('column', 'is-one-third')
+
+        var card = document.createElement('div')
+        card.classList.add('card', 'gallery-image')
+        card.setAttribute('data-bulma-modal-open', 'image')
+        card.setAttribute('data-author-id', images[i]._userId);
+        card.id = images[i]._id
+        card.addEventListener("click", function() {
+            changeModalDetails(this)
+        })
+
+        if (images[i]._userId === parseInt(sessionStorage.getItem('userId'))) {
+            var deleteButton = utils.createElement('button', 'X', ['button', 'delete-image-button']);
+            card.appendChild(deleteButton);
+    
+            deleteButton.addEventListener('click', (e) => {
+                utils.fetchApi('index.php', {
+                    method: POST_METHOD,
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: {deleteImage: e.currentTarget.parentNode.id},
+                }).then((response) => {
+                    document.getElementById('gallery').textContent = '';
+                    getImages(ownImages);
+                });
+                e.stopPropagation();
+            });
+        }
+
+        var cardImage = document.createElement('div')
+        cardImage.classList.add('card-image')
+
+        var figure = document.createElement('figure')
+        figure.classList.add('image', 'is-16by9')
+
+        var image = document.createElement('img')
+        image.src = images[i]._pathToImage
+
+        gallery.appendChild(column)
+        column.appendChild(card)
+        card.appendChild(cardImage)
+        cardImage.appendChild(figure)
+        figure.appendChild(image)
+    }
+    utils.initOpenModals()
+    if (images.empty === 1) {
+        sessionStorage.setItem('no-more', 1)
+    } else if (document.body.clientHeight < window.innerHeight) {
+        getImages(ownImages);
+    }
+    sessionStorage.removeItem('ajax-in-progress')
+}
 
 const likeImage = (event) => {
     utils.ajaxify(
@@ -27,7 +152,14 @@ const likeImage = (event) => {
 }
 
 const likeResponse = (responseData) => {
-    let likesNb = document.getElementById('likes-number');
+    if (responseData['action'] === 'delete') {
+        document.getElementById('like_request').classList.add('is-light');
+        document.getElementById('like_request').innerHTML = 'Like'
+    } else {
+        document.getElementById('like_request').classList.remove('is-light');
+        document.getElementById('like_request').innerHTML = 'Unlike'
+    }
+    let likesNb = document.getElementById('likes-nb');
     likesNb.innerHTML = responseData['likes'];
 }   
 
@@ -49,60 +181,6 @@ const successPostComment = (response) => {
     document.getElementById('comment_text').value = ''
 }
 
-const getImages = () => {
-    let last = document.getElementById('gallery').lastChild
-    let lastId = last ? last.lastChild.id : null
-    utils.ajaxify(
-        JSON.stringify({
-            getImages:1,
-            nbImages:3,
-            lastId:lastId
-        }),
-        getImagesResponse,
-        'index.php?url=accueil'
-    )
-}
-
-const getImagesResponse = (images) => {
-    const gallery = document.getElementById('gallery')
-    for (var i = 0; i < images.length ; i++) {
-
-        var column = document.createElement('div')
-        column.classList.add('column', 'is-one-third')
-
-        var card = document.createElement('div')
-        card.classList.add('card', 'gallery-image')
-        card.setAttribute('data-bulma-modal-open', 'image')
-        card.setAttribute('data-author-id', images[i]._userId);
-        card.id = images[i]._id
-        card.addEventListener("click", function() {
-            changeModalDetails(this)
-        })
-
-        var cardImage = document.createElement('div')
-        cardImage.classList.add('card-image')
-
-        var figure = document.createElement('figure')
-        figure.classList.add('image', 'is-16by9')
-
-        var image = document.createElement('img')
-        image.src = images[i]._pathToImage
-
-        gallery.appendChild(column)
-        column.appendChild(card)
-        card.appendChild(cardImage)
-        cardImage.appendChild(figure)
-        figure.appendChild(image)
-    }
-    utils.initOpenModals()
-    if (images.empty === 1) {
-        sessionStorage.setItem('no-more', 1)
-    } else if (document.body.clientHeight < window.innerHeight) {
-        getImages()
-    }
-    sessionStorage.removeItem('ajax-in-progress')
-}
-
 const changeModalDetails = (element) => {
     utils.ajaxify(
         JSON.stringify({ getImageDetails:1, imageId:element.id }),
@@ -114,13 +192,10 @@ const changeModalDetails = (element) => {
 const successGetDetails = (details) => {
 
     modalBase(details)
-    modalHeader(details.imageAuthor, details.imageDetails._likes)
+    modalHeader(details.imageAuthor)
     modalImage(details.imageDetails)
 
-    let modalCardBody = document.createElement('div')
-    modalCardBody.classList.add('modal-card-body')
-    modalCardBody.id = 'modal-image-body'
-    document.getElementById('modal-image-content').appendChild(modalCardBody)
+    utils.createElement('div', null, ['modal-card-body'], 'modal-image-body', 'modal-image-content');
 
     if (sessionStorage.getItem('logged') === "true") {
         addCommentLikeArea(details.imageDetails)
@@ -151,7 +226,7 @@ const modalBase = (details) => {
     document.getElementById('modal-image').appendChild(modalContent);
 }
 
-const modalHeader = (authorName, likesNb) => {
+const modalHeader = (authorName) => {
     let modalHeader = document.createElement('header')
     modalHeader.classList.add('modal-card-head')
     modalHeader.id = 'modal-image-header'
@@ -167,27 +242,17 @@ const modalHeader = (authorName, likesNb) => {
 
     let rightPart = document.createElement('div')
     rightPart.classList.add('level-right')
-
-    let likesNbLevelItem = document.createElement('div')
-    likesNbLevelItem.classList.add('level-item')
     
     let author = document.createElement('strong')
     let authorText = document.createTextNode("Image By " + authorName)
         
-    let likes = document.createElement('strong')
-    likes.id = 'likes-number'
-    let likesText = document.createTextNode(likesNb)
-    
     document.getElementById('modal-image-content').appendChild(modalHeader)
     modalHeader.appendChild(level)
     level.appendChild(leftPart)
     level.appendChild(rightPart)
     leftPart.appendChild(authorNameLevelItem)
-    rightPart.appendChild(likesNbLevelItem)
     authorNameLevelItem.appendChild(author)
-    likesNbLevelItem.appendChild(likes)
     author.appendChild(authorText)
-    likes.appendChild(likesText)
 }
 
 const modalImage = (imageDetails) => {
@@ -237,13 +302,27 @@ const addCommentLikeArea = (imageDetails) => {
     likeButtonDiv.classList.add('level-item')
 
     let likeButton = document.createElement('button')
-    likeButton.classList.add('button', 'is-danger')
     likeButton.id = 'like_request'
     likeButton.imageId = imageDetails._id
     likeButton.addEventListener('click', likeImage)
+    utils.fetchApi('index.php?url=accueil',
+        {
+            method: POST_METHOD,
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: {hasUserLikedImage: 1, imageId: imageDetails._id}
+        }).then((response) => {
+            if (response.like_status === true) {
+                likeButton.classList.add('button', 'is-link')
+                likeButton.innerHTML = 'Unlike'
+            } else {
+                likeButton.classList.add('button', 'is-light', 'is-link')
+                likeButton.innerHTML = 'Like'
+            }
+        });
 
-    let likeButtonText = document.createTextNode('Like')
-    likeButton.appendChild(likeButtonText)
+    let likeNbDiv = utils.createElement('div', imageDetails._likes, ['level-item'], 'likes-nb')
 
     document.getElementById('modal-image-body').appendChild(level)
     level.appendChild(leftPart)
@@ -253,6 +332,7 @@ const addCommentLikeArea = (imageDetails) => {
     leftPart.appendChild(commentButtonDiv)
     commentButtonDiv.appendChild(commentButton)
     rightPart.appendChild(likeButtonDiv)
+    rightPart.appendChild(likeNbDiv);
     likeButtonDiv.appendChild(likeButton)
 }
 
@@ -267,11 +347,8 @@ const addComment = (authorText, commentText) => {
     content.classList.add('content')
 
     let authorElement = document.createElement('strong')
-    
     let authorTextElement = document.createTextNode(authorText)
-
     let commentElement = document.createElement('p')
-
     let commentTextElement = document.createTextNode(commentText)
 
     document.getElementById('modal-image-body').appendChild(article)

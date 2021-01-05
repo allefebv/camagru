@@ -94,7 +94,7 @@ class ControllerEditor {
 		$imgPath = '/data/userImages/'.$imgName;
 		$img = new Image(array('pathToImage' => $imgPath, 'userId' => $_SESSION['logged']));
 		$this->_imageRepository->add($img);
-		file_put_contents($_SERVER['DOCUMENT_ROOT'].$imgPath, $imgUrl);
+		file_put_contents($_SERVER['DOCUMENT_ROOT'] . $imgPath, $imgUrl);
 		\http_response_code(200);
 	}
 }

@@ -81,3 +81,26 @@ html {
 	width: 480;
 	height: 270;
 }
+
+.delete-image-button {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	z-index: 2;
+	height: 25px;
+	width: 10px;
+}
+
+.page-footer {
+	z-index: 3;
+}
+
+.buttons-container {
+	display: flex;
+	justify-content: center;
+}
+
+.preview-container {
+	display: flex;
+	flex-direction: column;
+}

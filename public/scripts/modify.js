@@ -38,7 +38,6 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 
 	const modifyInfoResponse = arrayResponse => {
-		console.log(arrayResponse)
 		for (let responseElement of arrayResponse) {
 			if (responseElement['success']) {
 				utils.notifyUser("success", utils.successMessages[responseElement['success']])

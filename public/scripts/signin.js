@@ -1,5 +1,14 @@
 import * as utils from './utils.js'
 
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('signin-password').addEventListener("keyup", (event) => {
+        if(event.key !== "Enter" || !document.getElementById('modal-signin').classList.contains('is-active')) return;
+        document.getElementById('signin-request').click();
+        event.preventDefault();
+    });
+});
+
+
 const signinRequestButton = document.getElementById('signin-request')
 signinRequestButton.onclick = () => {
     let email = document.getElementById('signin-email').value
@@ -17,11 +26,12 @@ const signinResponse = arrayResponse => {
     document.getElementById('signin-password').value = "";
     if (arrayResponse['success']) {
         utils.closeModal('signin')
-        utils.notifyUser("success", "Successful Connection")
         sessionStorage.setItem('logged', true);
         sessionStorage.setItem('username', arrayResponse['username']);
         sessionStorage.setItem('userId', arrayResponse['userId']);
-        utils.reloadPage(2000);
+        document.location.href = '?l=s'
+    } else if (arrayResponse['already_logged_in']) {
+        utils.reloadPage();
     } else {
         for (let response in arrayResponse) {
             utils.notifyUser("error", utils.errorMessages[response])

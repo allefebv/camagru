@@ -10,7 +10,7 @@
 		</a>
   	</div>
 	<div id="navMenu" class="navbar-menu">
-		<div class="navbar-start">
+		<div class="navbar-start" id="nav-start">
 			<?php if (isset($_SESSION['logged'])): ?>
 				<div class="navbar-item">
 					<form action="index.php" method="GET">
@@ -25,7 +25,7 @@
 				<div class="navbar-item">
 					<form action="index.php" method="GET">
 						<input type="hidden" name="url" value="logout">
-						<input class="button is-light" type="submit" value="Log out"/>
+						<input id='logout-button' class="button is-light" type="submit" value="Log out"/>
 					</form>
 				</div>
 				<div class="navbar-item">
@@ -60,7 +60,7 @@
 					<input id="signin-password" class="input" type="password" placeholder="Password">
 				</section>
 				<footer class="modal-card-foot">
-					<button class="button is-success" id="signin-request">Sign in</button>
+					<button type='submit' class="button is-success" id="signin-request">Sign in</button>
 					<button class="button is-warning" id="forgot-password-request">Forgot Password</button>
 					<button class="button is-warning" id="resend-activation-link-request">Resend Activation Link</button>
 				</footer>
@@ -85,7 +85,7 @@
 					<input id="signup-password-confirm" class="input" type="password" placeholder="Confirm Password">
 				</section>
 				<footer class="modal-card-foot">
-					<button class="button is-success" id="signup_request">Sign up</button>
+					<button class="button is-success" id="signup-request">Sign up</button>
 				</footer>
 			</div>
 		</div>

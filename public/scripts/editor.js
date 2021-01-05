@@ -83,9 +83,8 @@ function fileImport(event) {
     let _URL = window.URL || window.webkitURL;
     let objectUrl = _URL.createObjectURL(file);
     img.onload = function () {
-        console.log(this.height, this.width, this.width / this.height, 16 / 8.5, 16 / 9.5)
         if (this.width / this.height > 16 / 8.5 || this.width / this.height < 16 / 9.5) {
-            console.log("hello", this.width / this.height < 16 / 8.5, this.width / this.height > 16 / 9.5);
+            utils.notifyUser('error', 'image must be 16:9 ratio');
         } else {
             background.style.display = 'none';
             background = document.getElementById('uploaded-img');
@@ -104,7 +103,6 @@ function fileImport(event) {
 }
 
 function saveImage(details, container) {
-    console.log("DETAILS: ",details);
     fetchApi(
         'index.php?url=editor',
         {
@@ -126,24 +124,27 @@ function deleteImage(container) {
 function addPreview(json) {
 
     let container = document.createElement('div');
-    container.classList.add('container');
+    container.classList.add('container', 'preview-container');
     document.getElementById('previews').appendChild(container);
 
     let img = new Image(480, 270)
     img.src = 'data:img/jpg;base64,' + json.img;
     container.appendChild(img);
 
+    let buttonsContainer = utils.createElement('div', null, ['buttons-container']);
+    container.appendChild(buttonsContainer);
+
     let saveButton = document.createElement('button');
     saveButton.addEventListener('click', () => saveImage({save:json.img}, container));
     saveButton.classList.add('button');
     saveButton.innerHTML = 'Save';
-    container.appendChild(saveButton);
+    buttonsContainer.appendChild(saveButton);
 
     let deleteButton = document.createElement('button');
     deleteButton.addEventListener('click', () => deleteImage(container));
     deleteButton.classList.add('button', 'danger');
     deleteButton.innerHTML = 'Delete';
-    container.appendChild(deleteButton);
+    buttonsContainer.appendChild(deleteButton);
 }
 
 const createImageMontage = (details) => {
@@ -162,7 +163,6 @@ saveButton.addEventListener("click", function() {
     toSendContext.clearRect(0, 0, toSend.width, toSend.height);
     toSendContext.drawImage(background, 0, 0, 480, 270);
     img = toSend.toDataURL("image/jpg");
-    console.log(img, overlay.width, overlay.height);
     createImageMontage({img:img, layer:activeLayerId, width: overlay.width, height: overlay.height})
         .then((json) => {
             addPreview(json);

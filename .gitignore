@@ -1,6 +1,4 @@
 .vscode
-public/layers/*
-todo
 db/*
 public/userImages/*
 data/db/

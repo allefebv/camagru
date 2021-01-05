@@ -71,9 +71,29 @@ abstract class BaseRepository {
 		$req->closeCursor();
 	}
 
+	protected function getSomeOrderByKeyDescUserIs($table, $obj, $key, $limit, $userId) {
+		$var = NULL;
+		$req = $this->getDb()->prepare('SELECT * FROM ' . $table . ' WHERE userId = ' . $userId . ' ORDER BY ' . $key . ' desc LIMIT ' . $limit);
+		$req->execute();
+		while ($data = $req->fetch())
+			$var[] = new $obj($data);
+		return $var;
+		$req->closeCursor();
+	}
+
 	protected function getSomeOrderByKeyDescOffsetIdInf($table, $obj, $key, $limit, $offset) {
 		$var = NULL;
 		$req = $this->getDb()->prepare('SELECT * FROM ' . $table . ' WHERE id < ' . $offset . ' ORDER BY ' . $key . ' desc LIMIT ' . $limit);
+		$req->execute();
+		while ($data = $req->fetch())
+			$var[] = new $obj($data);
+		return $var;
+		$req->closeCursor();
+	}
+
+	protected function getSomeOrderByKeyDescOffsetIdInfUserIs($table, $obj, $key, $limit, $offset, $userId) {
+		$var = NULL;
+		$req = $this->getDb()->prepare('SELECT * FROM ' . $table . ' WHERE id < ' . $offset . ' AND userId = ' . $userId . ' ORDER BY ' . $key . ' desc LIMIT ' . $limit);
 		$req->execute();
 		while ($data = $req->fetch())
 			$var[] = new $obj($data);

@@ -6,16 +6,13 @@ use Camagru\Model\Repositories\UserRepository;
 
 class ControllerValidate {
 
-    //logique pour activer le compte
-    //vue vers la page de signin
-
     public function __construct($url)
     {
         if (isset($url) && count($url) > 1) {
             throw new Exception('Page Introuvable');
         }
         $this->confirmAccount();
-        header('Location: index.php');
+        header('Location: index.php?validation=true');
     }
 
     private function confirmAccount()

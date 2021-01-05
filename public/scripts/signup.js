@@ -1,7 +1,15 @@
 import * as utils from './utils.js'
 
-const signup_request_button = document.getElementById('signup_request')
-signup_request_button.onclick = () => {
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('signup-password-confirm').addEventListener("keyup", (event) => {
+        if(event.key !== "Enter" || !document.getElementById('modal-signup').classList.contains('is-active')) return;
+        document.getElementById('signin-request').click();
+        event.preventDefault();
+    });
+});
+
+const signupRequestButton = document.getElementById('signup-request')
+signupRequestButton.onclick = () => {
     let username = document.getElementById('signup-username').value
     let email = document.getElementById('signup-email').value
     let password = document.getElementById('signup-password').value
@@ -16,16 +24,16 @@ signup_request_button.onclick = () => {
         signupResponse,
         'index.php?url=signup'
     );
-    signup_request_button.classList.add('is-loading')
+    signupRequestButton.classList.add('is-loading')
 }
 
 const signupResponse = arrayResponse => {
+    signupRequestButton.classList.remove('is-loading')
     document.getElementById('signup-password').value = "";
     document.getElementById('signup-password-confirm').value = "";
     if (arrayResponse['success']) {
         utils.closeModal('signup')
         utils.notifyUser("success", "An Email will be sent to you to validate your account")
-        signup_request_button.classList.remove('is-loading')
         document.getElementById('signup-username').value = "";
         document.getElementById('signup-email').value = "";
     } else {

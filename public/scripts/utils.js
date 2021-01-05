@@ -35,20 +35,18 @@ export function fetchApi(url, args) {
 			args.headers["Content-Type"] &&
 			args.headers["Content-Type"] === "application/json"
 		) {
-            console.log("stringify json");
 			args.body = JSON.stringify(args.body);
 		}
 
 		fetch(url, args)
 			.then((response) => {
 				if (!response.ok) {
-                    console.log("reject response not ok");
 					reject(new Error(response.statusText));
 				}
 				return response;
 			})
 			.then((response) => {
-                if (response.headers.get("content-type") === 'application/json') {
+                if (response.headers.get("Content-type") === 'application/json') {
 					resolve(response.json());
                 } else {
                     resolve();
@@ -61,7 +59,6 @@ export function ajaxify(jsonString, callback, route) {
     var httpRequest = new XMLHttpRequest();
     httpRequest.onreadystatechange = function() {
         if (httpRequest.readyState === 4 && httpRequest.status !== 200) {
-            console.log('error return requete serveur')
             document.write(httpRequest.status)
             return false
         }
@@ -152,17 +149,38 @@ export function reloadPage(delay = 0) {
 
 function successConnexionStatus(response) {
     if (response.logged === true) {
-        sessionStorage.setItem('logged', true)
+        sessionStorage.setItem('logged', true);
     } else {
-        sessionStorage.setItem('logged', false)
+        sessionStorage.setItem('logged', false);
     }
 }
 
 export function getConnexionStatus() {
-    ajaxify(
-        JSON.stringify({ connexionStatus:1 }),
-        successConnexionStatus,
-        'index.php'
-    )
+    return fetchApi('index.php', {
+        method: POST_METHOD,
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: { connexionStatus:1 },
+    }).then((response) => {
+        successConnexionStatus(response);
+    });
 }
 
+export function createElement(type = div, innerHTML = null, classList = null, id = null, parentId = null) {
+    let element = document.createElement(type);
+    for (let className of classList) {
+        element.classList.add(className);
+    }
+    if (innerHTML !== null) {
+        element.innerHTML = innerHTML;
+    }
+    if (id) {
+        element.id = id;
+    }
+    if (parentId) {
+        let parent = document.getElementById(parentId);
+        parent.appendChild(element);
+    }
+    return element;
+}
