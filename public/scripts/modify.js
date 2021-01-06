@@ -25,16 +25,27 @@ document.addEventListener('DOMContentLoaded', () => {
 		let email = document.getElementById('email-info').value
 		let username = document.getElementById('username-info').value
 		let notification = document.getElementById('notification-info').checked
-		utils.ajaxify(
-			JSON.stringify({
-				setInfo:1,
-				email:email,
-				username:username,
-				notification:notification
-			}),
-			modifyInfoResponse,
-			'index.php?url=modify'
-		)
+		let error = false;
+		if (typeof email === 'string' && email.length > 29) {
+			error = true;
+			utils.notifyUser('error', 'email must be under 30 characters');
+		}
+		if (typeof username === 'string' && username.length > 19) {
+			error = true;
+			utils.notifyUser('error', 'username must be under 20 characters');
+		}
+		if (error === false) {
+			utils.ajaxify(
+				JSON.stringify({
+					setInfo:1,
+					email:email,
+					username:username,
+					notification:notification
+				}),
+				modifyInfoResponse,
+				'index.php?url=modify'
+			)
+		}
 	}
 
 	const modifyInfoResponse = arrayResponse => {
@@ -57,15 +68,22 @@ document.addEventListener('DOMContentLoaded', () => {
 	modify_password_request_button.onclick = () => {
 		let new_password1 = document.getElementById('new_password1').value;
 		let new_password2 = document.getElementById('new_password2').value;
-		utils.ajaxify(
-			JSON.stringify({
-				modifyPassword:1,
-				new_password1:new_password1,
-				new_password2:new_password2
-			}),
-			passwordResponse,
-			'index.php?url=modify'
-		);
+		let error = false;
+		if (typeof new_password1 === 'string' && new_password1.length > 49) {
+			error = true;
+			utils.notifyUser('error', 'password must be under 50 characters')
+		}
+		if (error === false) {
+			utils.ajaxify(
+				JSON.stringify({
+					modifyPassword:1,
+					new_password1:new_password1,
+					new_password2:new_password2
+				}),
+				passwordResponse,
+				'index.php?url=modify'
+			);
+		}
 	}
 
 	function passwordResponse(response) {

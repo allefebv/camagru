@@ -10,21 +10,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
 const signupRequestButton = document.getElementById('signup-request')
 signupRequestButton.onclick = () => {
+    let error = false;
     let username = document.getElementById('signup-username').value
     let email = document.getElementById('signup-email').value
     let password = document.getElementById('signup-password').value
     let passwordconfirm = document.getElementById('signup-password-confirm').value
-    utils.ajaxify(
-        JSON.stringify({
-            signup:1,
-            username:username,
-            email:email,
-            password:password,
-            passwordconfirm:passwordconfirm }),
-        signupResponse,
-        'index.php?url=signup'
-    );
-    signupRequestButton.classList.add('is-loading')
+    if (typeof username === 'string' && username.length > 19) {
+        error = true;
+        utils.notifyUser('error', 'username must be under 20 characters');
+    }
+    if (typeof email === 'string' && email.length > 29) {
+        error = true;
+        utils.notifyUser('error', 'email must be under 30 characters');
+    }
+    if (typeof password === 'string' && password.length > 49) {
+        error = true;
+        utils.notifyUser('error', 'password must be under 50 characters');
+    }
+    if (error === false) {
+        utils.ajaxify(
+            JSON.stringify({
+                signup:1,
+                username:username,
+                email:email,
+                password:password,
+                passwordconfirm:passwordconfirm }),
+            signupResponse,
+            'index.php?url=signup'
+        );
+        signupRequestButton.classList.add('is-loading')
+    }
 }
 
 const signupResponse = arrayResponse => {
