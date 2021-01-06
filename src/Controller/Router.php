@@ -18,10 +18,7 @@ class Router {
 				$controller = new ControllerAccueil($url);
 			}
 		} catch(Exception $e) {
-			$errorMsg = $e->getMessage();
-			$errorMsg = $controllerFile;
-			$viewGenerator = new ViewGenerator('Error');
-			$viewGenerator->generate(array('errorMsg' => $errorMsg));
+			header('Location: index.php');
 		}
 	}
 
