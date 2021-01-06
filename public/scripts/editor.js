@@ -22,8 +22,8 @@ navigator.getMedia = ( navigator.getUserMedia ||
     navigator.msGetUserMedia);
 
 navigator.getMedia(
-    {video: true},
-    () => {
+    {video: { width: 480, height: 270 }},
+    (stream) => {
         background.srcObject = stream;
         userHasWebcam = true;
         getLayers();
